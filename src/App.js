@@ -23,12 +23,14 @@ import CookieConsent from "react-cookie-consent";
 import JDPage from "./Pages/JDPage";
 import NodalDir from "./Pages/NodalDir";
 import OrderList from "./Pages/OrderList";
+import NurseryPage from "./Pages/NurseryPage";
 
 const ROLES = {
   HMT: "HMT",
   JD: "JD",
   DHO: "DHO/CHO",
   Nodal: "Nodal",
+  Nursery: "Nursery",
 };
 
 const theme = createTheme({
@@ -75,6 +77,8 @@ const App = () => {
         return "/dho&cho";
       case ROLES.Nodal:
         return "/nodal";
+      case ROLES.Nursery:
+        return "/nursery";
       default:
         return "/home";
     }
@@ -121,7 +125,7 @@ const App = () => {
                   <Route path="/orderList" element={<OrderList />} />
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/contact" element={<ContactUs />} />
-
+                  <Route path="/nursery" element={<NurseryPage />} />
                   {/* we want to protect these routes */}
                   <Route element={<PersistLogin />}>
                     <Route
@@ -141,7 +145,11 @@ const App = () => {
                     <Route element={<RequireAuth allowedRoles={[ROLES.HMT]} />}>
                       <Route path="/hmt" element={<Home />} />
                     </Route>
-
+                    <Route
+                      element={<RequireAuth allowedRoles={[ROLES.Nursery]} />}
+                    >
+                      <Route path="/nursery" element={<NurseryPage />} />
+                    </Route>
                     <Route element={<RequireAuth allowedRoles={[ROLES.JD]} />}>
                       <Route path="/jd" element={<JDPage />} />
                     </Route>
@@ -149,7 +157,9 @@ const App = () => {
                     <Route element={<RequireAuth allowedRoles={[ROLES.DHO]} />}>
                       <Route path="/dho&cho" element={<SPPage />} />
                     </Route>
-                    <Route element={<RequireAuth allowedRoles={[ROLES.Nodal]} />}>
+                    <Route
+                      element={<RequireAuth allowedRoles={[ROLES.Nodal]} />}
+                    >
                       <Route path="/nodal" element={<NodalDir />} />
                       <Route path="/requestSla" element={<SLARequestApp />} />
                     </Route>

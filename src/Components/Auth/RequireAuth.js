@@ -20,7 +20,7 @@ const RequireAuth = ({ allowedRoles }) => {
     return token;
   };
   const userRole = fetchToken()?.data?.user_role;
-console.log(userRole,"====userRole")
+  console.log(userRole, "====userRole");
   const token = fetchToken()?.token;
   return [userRole]?.find((role) => allowedRoles?.includes(role)) ? (
     <Outlet />

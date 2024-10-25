@@ -1,16 +1,17 @@
 import { Button, Grid } from "@mui/material";
-import MapBox from "./MapContent/MapBox";
 import { getFetch } from "../Components/API/Api";
 import CloseIcon from "@mui/icons-material/Close";
 import { UserContext } from "../context/UserContext";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import React, { useContext, useEffect, useState } from "react";
-import PlantTableContainer from "./PlantTables/PlantTableContainer";
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
 import HMTModal from "../Components/PlantModals/HMTModal";
 import SecureLS from "secure-ls";
+import MapBox from "../Home/MapContent/MapBox";
+import NurseryTable from "../Components/Nursery/NurseryTable";
+import NurseryTableContainer from "../Components/Nursery/NurseryTableContainer";
 
-const Home = () => {
+const NurseryPage = () => {
   const { selectedState, selectedDistrict } = useContext(UserContext);
   const [level, setLevel] = useState(0);
   const [mainMapCard, setMainMapCard] = useState({});
@@ -21,6 +22,9 @@ const Home = () => {
   const [uniqueDistricts, setUniqueDistricts] = useState([]);
   const [districtDropdown, setDistrictDropdown] = useState([]);
   const [plantVarietiesData, setPlantVarietiesData] = useState([]);
+  const [plantTableData, setPlantTableData] = useState([]);
+  const [tableLoading, setTableLoading] = useState();
+
   const [breadcrumbData, setBreadcrumbData] = useState(["District"]);
   const [districtWisePlantData, setDistrictWisePlantData] = useState([]);
   const [PlantNurseryTableLoder, setPlantNurseryTableLoder] = useState(false);
@@ -193,10 +197,10 @@ const Home = () => {
 
   return (
     <React.Fragment>
-      <HMTModal
+      {/* <HMTModal
         HMTModalopen={HMTModalopen}
         handleHMTModalClose={handleHMTModalClose}
-      />
+      /> */}
       <Grid
         style={{
           marginTop: "3rem",
@@ -301,23 +305,10 @@ const Home = () => {
           </Grid>
         )}
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <PlantTableContainer
-            level={level}
-            setLevel={setLevel}
-            fetchPlants={fetchPlants}
-            plantWiseData={plantWiseData}
-            fetchNurserys={fetchNurserys}
-            breadcrumbData={breadcrumbData}
-            nurseryWiseData={nurseryWiseData}
-            setBreadcrumbData={setBreadcrumbData}
-            fetchPlantVariety={fetchPlantVariety}
-            plantVarietiesData={plantVarietiesData}
-            districtWisePlantData={districtWisePlantData}
-            PlantDistrictTableLoder={PlantDistrictTableLoder}
-          />
+          <NurseryTableContainer />
         </Grid>
       </Grid>
     </React.Fragment>
   );
 };
-export default Home;
+export default NurseryPage;
