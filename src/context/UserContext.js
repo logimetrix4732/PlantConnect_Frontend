@@ -35,6 +35,8 @@ export const UserContextProvider = (props) => {
     }
     return token;
   };
+  const tokenData = fetchToken();
+
   const checkTokenValidity = () => {
     const token = fetchToken();
     // if (!token) {
@@ -174,6 +176,7 @@ export const UserContextProvider = (props) => {
     <UserContext.Provider
       value={{
         contextData: [userData, setUserData],
+        tokenData,
         loading,
         getLogin,
         getTableData,

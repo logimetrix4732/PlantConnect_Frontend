@@ -9,14 +9,11 @@ import React, {
 import Legend from "./Legend";
 import SecureLS from "secure-ls";
 import CloseIcon from "@mui/icons-material/Close";
-
 import {
   GoogleMap,
-  // Marker,
   Polygon,
   useJsApiLoader,
 } from "@react-google-maps/api";
-// import { AllStateDist } from "../../Components/MapData/AllStateDist";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./Map1.css";
@@ -326,7 +323,7 @@ export default function Map1({
                   fillColor: highlightedColor || boundary.color,
                   fillOpacity: 0.35,
                 }}
-                // onClick={() => handleDistrictClick(boundary)} // Add interaction
+                // onClick={() => handleDistrictClick(boundary)}
               />
             ))}
 

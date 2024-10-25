@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
+const NurseryRegistrationModal = ({ HMTModalopen, handleHMTModalClose }) => {
   const field = [
     {
       options: ["Option 1", "Option 2", "Option 3"],
@@ -45,7 +45,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
       address: "A",
       contact: "1234567890",
       distance: "A",
-      requirement: 0, // initial value
+      requirement: 0, 
     },
     {
       id: 2,
@@ -56,7 +56,6 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
       distance: "B",
       requirement: 0,
     },
-    // Add more objects following the same pattern
   ];
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -345,4 +344,4 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
   );
 };
 
-export default HMTModal;
+export default NurseryRegistrationModal;

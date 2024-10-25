@@ -5,10 +5,10 @@ import { UserContext } from "../context/UserContext";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import React, { useContext, useEffect, useState } from "react";
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
-import HMTModal from "../Components/PlantModals/HMTModal";
 import SecureLS from "secure-ls";
 import MapBox from "../Home/MapContent/MapBox";
 import PlantTableContainer from "../Home/PlantTables/PlantTableContainer";
+import HMTModal from "../Components1/PlantModals/HMTModal";
 
 const NodalDir = () => {
   const { selectedState, selectedDistrict } = useContext(UserContext);

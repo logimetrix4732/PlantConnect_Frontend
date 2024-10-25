@@ -63,7 +63,7 @@ const App = () => {
   };
 
   const tokenData = fetchToken();
-  const userRole = tokenData?.data.user_role;
+  const userRole = tokenData?.data?.user_role;
   const isAuthenticated = !!tokenData;
   const roleBasedRedirect = (userRole) => {
     switch (userRole) {

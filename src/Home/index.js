@@ -7,11 +7,12 @@ import { closeSnackbar, enqueueSnackbar } from "notistack";
 import React, { useContext, useEffect, useState } from "react";
 import PlantTableContainer from "./PlantTables/PlantTableContainer";
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
-import HMTModal from "../Components/PlantModals/HMTModal";
 import SecureLS from "secure-ls";
+import HMTModal from "../Components1/PlantModals/HMTModal";
 
 const Home = () => {
-  const { selectedState, selectedDistrict } = useContext(UserContext);
+  const { selectedState, selectedDistrict,tokenData } = useContext(UserContext);
+  console.log(tokenData,"tokenData")
   const [level, setLevel] = useState(0);
   const [mainMapCard, setMainMapCard] = useState({});
   const [plantWiseData, setPlantWiseData] = useState([]);
@@ -22,6 +23,7 @@ const Home = () => {
   const [districtDropdown, setDistrictDropdown] = useState([]);
   const [plantVarietiesData, setPlantVarietiesData] = useState([]);
   const [breadcrumbData, setBreadcrumbData] = useState(["District"]);
+  const [NurseryRegisOpen, setNurseryRegisOModalOpen] = useState(false);
   const [districtWisePlantData, setDistrictWisePlantData] = useState([]);
   const [PlantNurseryTableLoder, setPlantNurseryTableLoder] = useState(false);
   const [PlantVarietyTableLoder, setPlantVarietyTableLoder] = useState(false);
@@ -33,27 +35,22 @@ const Home = () => {
     district: "All",
   });
 
-  const ls = new SecureLS({ encodingType: "aes" });
-  const fetchToken = () => {
-    let token = null;
-    try {
-      const data = ls.get("authToken");
-      if (typeof data === "string" && data.trim().length > 0) {
-        token = JSON.parse(data);
-      }
-    } catch (error) {
-      ls.remove("authToken");
-    }
-    return token;
-  };
-
-  const tokenData = fetchToken()?.data;
+  //HMT Form Modal
   const handleClickHMTModalOpen = () => {
     setHMTModalOpen(true);
   };
 
   const handleHMTModalClose = () => {
     setHMTModalOpen(false);
+  };
+
+  //Nursery RegistrationModal
+  const handleClickNurseryRegisModalOpen = () => {
+    setNurseryRegisOModalOpen(true);
+  };
+
+  const handleNurseryRegisModalClose = () => {
+    setNurseryRegisOModalOpen(false);
   };
 
   //handlechange Dropdowns
@@ -197,6 +194,7 @@ const Home = () => {
         HMTModalopen={HMTModalopen}
         handleHMTModalClose={handleHMTModalClose}
       />
+
       <Grid
         style={{
           marginTop: "3rem",
@@ -273,7 +271,7 @@ const Home = () => {
           padding: "20px 33px 20px 33px",
         }}
       >
-        {tokenData?.user_role === "HMT" && (
+        {tokenData?.data?.user_role === "HMT" && (
           <Grid
             item
             xs={12}
