@@ -24,6 +24,8 @@ import JDPage from "./Pages/JDPage";
 import NodalDir from "./Pages/NodalDir";
 import OrderList from "./Pages/OrderList";
 import NurseryPage from "./Pages/NurseryPage";
+import NurseryOrderTable from "./Components/Nursery/NurseryOrderTable";
+import NurseryOrderPage from "./Pages/NurseryOrderPage";
 
 const ROLES = {
   HMT: "HMT",
@@ -125,7 +127,12 @@ const App = () => {
                   <Route path="/orderList" element={<OrderList />} />
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/contact" element={<ContactUs />} />
+                  {/* Nusery Login */}
                   <Route path="/nursery" element={<NurseryPage />} />
+                  <Route
+                    path="/nurseryorderlist"
+                    element={<NurseryOrderPage />}
+                  />
                   {/* we want to protect these routes */}
                   <Route element={<PersistLogin />}>
                     <Route
@@ -149,6 +156,10 @@ const App = () => {
                       element={<RequireAuth allowedRoles={[ROLES.Nursery]} />}
                     >
                       <Route path="/nursery" element={<NurseryPage />} />
+                      <Route
+                        path="/nurseryorderlist"
+                        element={<NurseryOrderPage />}
+                      />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={[ROLES.JD]} />}>
                       <Route path="/jd" element={<JDPage />} />

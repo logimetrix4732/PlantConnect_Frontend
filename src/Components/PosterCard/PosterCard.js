@@ -22,8 +22,7 @@ export default function PosterCard() {
       if (typeof data === "string" && data.trim().length > 0) {
         token = JSON.parse(data);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
     return token;
   };
   let userDetails = fetchToken()?.data;
@@ -58,6 +57,14 @@ export default function PosterCard() {
         {
           path: "/orderList",
           title: "Order List",
+          openModal: false,
+        },
+      ];
+    } else if (userDetails?.user_role === "NURSERY") {
+      return [
+        {
+          path: "/nurseryOrderList",
+          title: "Nursery Order List",
           openModal: false,
         },
       ];

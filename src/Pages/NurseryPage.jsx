@@ -22,7 +22,90 @@ const NurseryPage = () => {
   const [uniqueDistricts, setUniqueDistricts] = useState([]);
   const [districtDropdown, setDistrictDropdown] = useState([]);
   const [plantVarietiesData, setPlantVarietiesData] = useState([]);
-  const [plantTableData, setPlantTableData] = useState([]);
+  const plantsData = [
+    {
+      sNo: 1,
+      plantName: "A",
+      varietyOfPlants: 80,
+      quantityEntered: 80,
+      quantityApproved: 80,
+      physicalVerificationStatus: "Pending",
+      ordered: 340,
+      received: 80,
+    },
+    {
+      sNo: 2,
+      plantName: "B",
+      varietyOfPlants: 45,
+      quantityEntered: 45,
+      quantityApproved: 45,
+      physicalVerificationStatus: "Verified",
+      ordered: 684,
+      received: 245,
+    },
+    {
+      sNo: 3,
+      plantName: "C",
+      varietyOfPlants: 33,
+      quantityEntered: 33,
+      quantityApproved: 33,
+      physicalVerificationStatus: "Verified",
+      ordered: 346,
+      received: 346,
+    },
+    {
+      sNo: 4,
+      plantName: "D",
+      varietyOfPlants: 66,
+      quantityEntered: 66,
+      quantityApproved: 66,
+      physicalVerificationStatus: "Verified",
+      ordered: 490,
+      received: 490,
+    },
+    {
+      sNo: 5,
+      plantName: "E",
+      varietyOfPlants: 12,
+      quantityEntered: 12,
+      quantityApproved: 12,
+      physicalVerificationStatus: "Pending",
+      ordered: 267,
+      received: 267,
+    },
+    {
+      sNo: 6,
+      plantName: "F",
+      varietyOfPlants: 55,
+      quantityEntered: 55,
+      quantityApproved: 55,
+      physicalVerificationStatus: "Pending",
+      ordered: 257,
+      received: 257,
+    },
+    {
+      sNo: 7,
+      plantName: "G",
+      varietyOfPlants: 3,
+      quantityEntered: 3,
+      quantityApproved: 3,
+      physicalVerificationStatus: "Pending",
+      ordered: null,
+      received: null,
+    },
+    {
+      sNo: 8,
+      plantName: "H",
+      varietyOfPlants: 2,
+      quantityEntered: 2,
+      quantityApproved: 2,
+      physicalVerificationStatus: "Pending",
+      ordered: null,
+      received: null,
+    },
+  ];
+
+  const [plantTableData, setPlantTableData] = useState(plantsData);
   const [tableLoading, setTableLoading] = useState();
 
   const [breadcrumbData, setBreadcrumbData] = useState(["District"]);
@@ -36,6 +119,27 @@ const NurseryPage = () => {
     division: "Kumaon",
     district: "All",
   });
+  const mapCard = [
+    {
+      bg: "#FFD7F0",
+      // highlight: "#426d52",
+      highlight: "#FC97D6",
+      tag: "Plant Varity",
+      value: mainMapCard.totalHmts || 0,
+    },
+    {
+      bg: "#FDF9D6",
+      highlight: "#FFE731",
+      tag: "Plant Subcategory",
+      value: mainMapCard.totalplantNames || 0,
+    },
+    {
+      bg: "#d4ecde",
+      highlight: "#426d52",
+      tag: "Total Number of Plants",
+      value: mainMapCard.totalNurseries || 0,
+    },
+  ];
 
   const ls = new SecureLS({ encodingType: "aes" });
   const fetchToken = () => {
@@ -262,6 +366,7 @@ const NurseryPage = () => {
         </Grid>
       </Grid>
       <MapBox
+        mapCard={mapCard}
         // userRole={userRole}
         mainMapCard={mainMapCard}
         districtList={stateDropDown}
@@ -305,7 +410,7 @@ const NurseryPage = () => {
           </Grid>
         )}
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <NurseryTableContainer />
+          <NurseryTableContainer data={plantTableData} />
         </Grid>
       </Grid>
     </React.Fragment>

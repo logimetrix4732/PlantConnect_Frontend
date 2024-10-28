@@ -71,7 +71,7 @@ export default function NurseryTableContainer({
       )}
 
        */}
-      <NurseryTable />
+      <NurseryTable data={data} />
     </React.Fragment>
   );
 }

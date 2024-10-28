@@ -36,7 +36,7 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
   useEffect(() => {
     if (data?.length) {
       const filtered = data.filter((item) =>
-        item.districtName?.toLowerCase()?.includes(search?.toLowerCase())
+        item.plantName?.toLowerCase()?.includes(search?.toLowerCase())
       );
       setFilteredData(filtered);
       setPageIndex(0);
@@ -188,35 +188,55 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
                           style={{ whiteSpace: "nowrap" }}
                           className="colorCodeTable"
                         >
-                          {row.districtName}
+                          {row.plantName}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.hmtCount}
+                          {row.varietyOfPlants}
                         </StyledTableCell>
                         <StyledTableCell
-                          style={{
-                            color: row.nurseryCount === 0 ? "#808080" : "blue",
-                            textDecoration:
-                              row.nurseryCount === 0 ? "none" : "underline",
-                            cursor:
-                              row.nurseryCount === 0 ? "default" : "pointer",
-                          }}
-                          onClick={() =>
-                            row.nurseryCount !== 0 && handleClickParent(row)
-                          }
+                          className="colorCodeTable"
+                          // style={{
+                          //   color:
+                          //     row.quantityEntered === 0 ? "#808080" : "blue",
+                          //   textDecoration:
+                          //     row.nurseryCount === 0 ? "none" : "underline",
+                          //   cursor:
+                          //     row.nurseryCount === 0 ? "default" : "pointer",
+                          // }}
+                          // onClick={() =>
+                          //   row.nurseryCount !== 0 && handleClickParent(row)
+                          // }
                           align="center"
                         >
-                          {row.nurseryCount}
+                          {row.quantityEntered}
                         </StyledTableCell>
 
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.plantCount}
+                          {row.quantityApproved}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.physicalVerificationStatus}
+                        </StyledTableCell>
+                        {/* <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.ordered}
+                        </StyledTableCell> */}
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.received}
                         </StyledTableCell>
                       </StyledTableRow>
                     );

@@ -2,28 +2,28 @@ import { Card, Grid, Typography } from "@mui/material";
 import React from "react";
 import "./MapCards.css";
 
-export default function MapCards({ mainMapCard }) {
-  const mapCard = [
-    {
-      bg: "#d4ecde",
-      highlight: "#426d52",
-      tag: "Total Number of HMT's",
-      value:
-        mainMapCard.totalHmts||0,
-    },
-    {
-      bg: "#d4ecde",
-      highlight: "#426d52",
-      tag: "Total Number of Plant's",
-      value: mainMapCard.totalplantNames || 0,
-    },
-    {
-      bg: "#d4ecde",
-      highlight: "#426d52",
-      tag: "Total Number of Nurserie's",
-      value: mainMapCard.totalNurseries || 0,
-    },
-  ];
+export default function MapCards({ mainMapCard, mapCard = [] }) {
+  // const mapCard = [
+  //   {
+  //     bg: "#d4ecde",
+  //     highlight: "#426d52",
+  //     tag: "Total Number of HMT's",
+  //     value:
+  //       mainMapCard.totalHmts||0,
+  //   },
+  //   {
+  //     bg: "#d4ecde",
+  //     highlight: "#426d52",
+  //     tag: "Total Number of Plant's",
+  //     value: mainMapCard.totalplantNames || 0,
+  //   },
+  //   {
+  //     bg: "#d4ecde",
+  //     highlight: "#426d52",
+  //     tag: "Total Number of Nurserie's",
+  //     value: mainMapCard.totalNurseries || 0,
+  //   },
+  // ];
 
   return (
     <Grid container spacing={2} columnSpacing={4} className="main-map-cards">
