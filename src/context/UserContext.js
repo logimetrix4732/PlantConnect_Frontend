@@ -44,6 +44,16 @@ export const UserContextProvider = (props) => {
     // }
   };
 
+  //Nursery Registration
+  const [NurseryRegistrationModalopen, setNurseryRegistrationModalopen] =
+    useState(false);
+  const handleNurseryRegistrationModalOpen = () => {
+    setNurseryRegistrationModalopen(true);
+  };
+  const handleNurseryRegistrationModalClose = () => {
+    setNurseryRegistrationModalopen(false);
+  };
+
   const handleLogout = () => {
     ls.removeAll();
     setAuth(null);
@@ -200,6 +210,9 @@ export const UserContextProvider = (props) => {
         setFormListData,
         dragAndDropEditData,
         setDragAndDropEditData,
+        NurseryRegistrationModalopen,
+        handleNurseryRegistrationModalOpen,
+        handleNurseryRegistrationModalClose,
       }}
     >
       {/* {loading && <Loader />} */}

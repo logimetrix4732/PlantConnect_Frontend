@@ -13,66 +13,35 @@ import {
   Select,
   MenuItem,
   Typography,
+  FormHelperText,
+  FormControl,
 } from "@mui/material";
-import PlantModalTable from "../../Home/PlantTables/PlantModalTable";
-import EnterOTPForm from "../EnterOTPForm";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const NurseryRegistrationModal = ({ HMTModalopen, handleHMTModalClose }) => {
+const NurseryRegistrationModal = ({
+  errors,
+  nurseryRegistration,
+  NurseryRegistrationModalopen,
+  handleChangeNurseryRegistration,
+  handleNurseryRegistrationSubmit,
+  handleNurseryRegistrationModalClose,
+}) => {
   const field = [
     {
       options: ["Option 1", "Option 2", "Option 3"],
     },
   ];
-  const headCells = [
-    { id: "id", label: "S.No" },
-    { id: "Nursery Name", label: "Nursery Name" },
-    { id: "Availability", label: "Availability" },
-    { id: "Address", label: "Address" },
-    { id: "Contact Detail", label: "Contact Detail" },
-    { id: "Distance", label: "Distance" },
-    { id: "Requirement", label: "Requirement" },
-    { id: "Action", label: "Action" },
-  ];
-  const nurseries = [
-    {
-      id: 1,
-      name: "A",
-      availability: 8,
-      address: "A",
-      contact: "1234567890",
-      distance: "A",
-      requirement: 0, 
-    },
-    {
-      id: 2,
-      name: "B",
-      availability: 15,
-      address: "B",
-      contact: "844567890",
-      distance: "B",
-      requirement: 0,
-    },
-  ];
-  const [openDialog, setOpenDialog] = useState(false);
 
-  const handleOpen = () => {
-    setOpenDialog(true);
-  };
-
-  const handleClose = () => {
-    setOpenDialog(false);
-  };
   return (
     <React.Fragment>
       <Dialog
-        open={HMTModalopen}
+        open={NurseryRegistrationModalopen}
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleHMTModalClose}
+        onClose={handleNurseryRegistrationModalClose}
         aria-describedby="alert-dialog-slide-description"
         maxWidth="lg"
         fullWidth
@@ -82,15 +51,15 @@ const NurseryRegistrationModal = ({ HMTModalopen, handleHMTModalClose }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            height: "60px",
+            height: "40px",
             position: "relative",
           }}
           id="customized-dialog-title"
         >
-          <span>Form</span>
+          <span>Nursery Registration</span>
           <IconButton
             aria-label="close"
-            onClick={handleHMTModalClose}
+            onClick={handleNurseryRegistrationModalClose}
             sx={{
               position: "absolute",
               right: 8,
@@ -102,241 +71,297 @@ const NurseryRegistrationModal = ({ HMTModalopen, handleHMTModalClose }) => {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <Grid container spacing={2} mt={0.1}>
-            <Grid item lg={4} xs={6}>
+          <Grid container columnSpacing={2} rowSpacing={1}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
-                Farmer Name
+                Nursery Name
               </Typography>
-              <TextField
-                fullWidth
-                placeholder="Farmer Name"
-                size="small"
-                variant="outlined"
-                className="textfield-form"
-              />
-            </Grid>
-            <Grid item lg={4} xs={6}>
-              <Typography component="div" className="label-Form">
-                Mobile Number
-              </Typography>
-              <TextField
-                fullWidth
-                placeholder="Mobile Number"
-                size="small"
-                variant="outlined"
-                className="textfield-form"
-              />
-            </Grid>
-            <Grid item lg={4} xs={6}>
-              <Typography component="div" className="label-Form">
-                Aadhaar Number
-              </Typography>
-              <TextField
-                fullWidth
-                placeholder="Aadhaar Number"
-                size="small"
-                variant="outlined"
-                className="textfield-form"
-              />
-            </Grid>
-            <Grid item lg={4} xs={6}>
-              <Typography component="div" className="label-Form">
-                Farmer Latitude
-              </Typography>
-              <TextField
-                fullWidth
-                placeholder="Farmer Latitude"
-                size="small"
-                variant="outlined"
-                className="textfield-form"
-              />
-            </Grid>
-            <Grid item lg={4} xs={6}>
-              <Typography component="div" className="label-Form">
-                Farmer Longitude
-              </Typography>
-              <TextField
-                fullWidth
-                placeholder="Farmer Longitude"
-                size="small"
-                variant="outlined"
-                className="textfield-form"
-              />
-            </Grid>
-            <Grid item lg={4} xs={6}>
-              <Typography component="div" className="label-Form">
-                Farmer Address
-              </Typography>
-              <TextField
-                fullWidth
-                placeholder="Farmer Address"
-                size="small"
-                variant="outlined"
-                className="textfield-form"
-              />
-            </Grid>
-            <Grid item lg={4} xs={6}>
-              <Typography component="div" className="label-Form">
-                Farmer Pin code
-              </Typography>
-              <TextField
-                fullWidth
-                placeholder="Farmer Pin code"
-                size="small"
-                variant="outlined"
-                className="textfield-form"
-              />
+              <FormControl fullWidth error={!!errors.nursery_name}>
+                <TextField
+                  placeholder="Nursery Name"
+                  size="small"
+                  name="nursery_name"
+                  variant="outlined"
+                  className="textfield-form"
+                  value={nurseryRegistration.nursery_name}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="Nursery Name"
+                />
+                <FormHelperText>{errors.nursery_name}</FormHelperText>
+              </FormControl>
             </Grid>
 
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
-                Season
+                Nursery License No.
               </Typography>
-              <Select
-                fullWidth
-                displayEmpty
-                className="textfield-form"
-                variant="outlined"
-                placeholder="Select Plant Variety"
-                size="small"
-                sx={{
-                  color: "#000000",
-                }}
-              >
-                {field[0].options.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
+              <FormControl fullWidth error={!!errors.license_no}>
+                <TextField
+                  fullWidth
+                  placeholder="Nursery License No."
+                  size="small"
+                  name="license_no"
+                  variant="outlined"
+                  className="textfield-form"
+                  value={nurseryRegistration.license_no}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="Nursery License No."
+                />
+                <FormHelperText>{errors.license_no}</FormHelperText>
+              </FormControl>
             </Grid>
-            <Grid item lg={4} xs={6}>
+
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
-                Scheme
+                Nursery Address
               </Typography>
-              <Select
-                fullWidth
-                displayEmpty
-                className="textfield-form"
-                variant="outlined"
-                placeholder="Select Plant Variety"
-                size="small"
-                sx={{
-                  color: "#000000",
-                }}
-              >
-                {field[0].options.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
+              <FormControl fullWidth error={!!errors.address}>
+                <TextField
+                  fullWidth
+                  placeholder="Nursery Address"
+                  size="small"
+                  name="address"
+                  variant="outlined"
+                  className="textfield-form"
+                  value={nurseryRegistration.address}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="Nursery Address"
+                />
+                <FormHelperText>{errors.address}</FormHelperText>
+              </FormControl>
             </Grid>
-            <Grid item lg={4} xs={12}>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                Nursery Latitude
+              </Typography>
+              <FormControl fullWidth error={!!errors.latitude}>
+                <TextField
+                  fullWidth
+                  placeholder="Nursery Latitude"
+                  size="small"
+                  variant="outlined"
+                  name="latitude"
+                  className="textfield-form"
+                  value={nurseryRegistration.latitude}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="Nursery Latitude"
+                />
+                <FormHelperText>{errors.latitude}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                Nursery Longitude
+              </Typography>
+              <FormControl fullWidth error={!!errors.longitude}>
+                <TextField
+                  fullWidth
+                  placeholder="Nursery Longitude"
+                  size="small"
+                  variant="outlined"
+                  name="longitude"
+                  className="textfield-form"
+                  value={nurseryRegistration.longitude}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="Nursery Longitude"
+                />
+                <FormHelperText>{errors.longitude}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                Nursery Area
+              </Typography>
+              <FormControl fullWidth error={!!errors.area}>
+                <TextField
+                  fullWidth
+                  placeholder="Nursery Area"
+                  size="small"
+                  variant="outlined"
+                  name="area"
+                  className="textfield-form"
+                  value={nurseryRegistration.area}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="Nursery Area"
+                />
+                <FormHelperText>{errors.area}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                State
+              </Typography>
+              <FormControl fullWidth error={!!errors.state}>
+                <TextField
+                  fullWidth
+                  placeholder="State"
+                  size="small"
+                  variant="outlined"
+                  name="state"
+                  className="textfield-form"
+                  value={nurseryRegistration.state}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="State"
+                />
+                <FormHelperText>{errors.state}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                Pin Code
+              </Typography>
+              <FormControl fullWidth error={!!errors.pin_code}>
+                <TextField
+                  fullWidth
+                  placeholder="Pin Code"
+                  size="small"
+                  variant="outlined"
+                  name="pin_code"
+                  className="textfield-form"
+                  value={nurseryRegistration.pin_code}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="Pin Code"
+                />
+                <FormHelperText>{errors.pin_code}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                Nursery Owner Name
+              </Typography>
+              <FormControl fullWidth error={!!errors.owner_name}>
+                <TextField
+                  fullWidth
+                  placeholder="Nursery Owner Name"
+                  size="small"
+                  variant="outlined"
+                  name="owner_name"
+                  className="textfield-form"
+                  value={nurseryRegistration.owner_name}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="Nursery Owner Name"
+                />
+                <FormHelperText>{errors.owner_name}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                Nursery Owner Mobile No.
+              </Typography>
+              <FormControl fullWidth error={!!errors.owner_mobile}>
+                <TextField
+                  fullWidth
+                  placeholder="Nursery Owner Mobile No."
+                  size="small"
+                  variant="outlined"
+                  name="owner_mobile"
+                  className="textfield-form"
+                  value={nurseryRegistration.owner_mobile}
+                  onChange={handleChangeNurseryRegistration}
+                  aria-label="Nursery Owner Mobile No."
+                />
+                <FormHelperText>{errors.owner_mobile}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                Division
+              </Typography>
+              <FormControl fullWidth error={!!errors.division}>
+                <Select
+                  displayEmpty
+                  className="textfield-form"
+                  variant="outlined"
+                  name="division"
+                  placeholder="Division"
+                  size="small"
+                  value={nurseryRegistration.division}
+                  onChange={handleChangeNurseryRegistration}
+                  sx={{ color: "#000000" }}
+                >
+                  {field[0].options.map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.division}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                District
+              </Typography>
+              <FormControl fullWidth error={!!errors.district}>
+                <Select
+                  displayEmpty
+                  className="textfield-form"
+                  variant="outlined"
+                  name="district"
+                  placeholder="Select District"
+                  size="small"
+                  value={nurseryRegistration.district}
+                  onChange={handleChangeNurseryRegistration}
+                  sx={{ color: "#000000" }}
+                >
+                  {field[0].options.map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.district}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Plant Category
               </Typography>
-              <Select
-                fullWidth
-                displayEmpty
-                className="textfield-form"
-                variant="outlined"
-                placeholder="Select Plant Category"
-                size="small"
-                sx={{
-                  color: "#000000",
-                }}
-              >
-                {field[0].options.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item lg={4} xs={12}>
-              <Typography component="div" className="label-Form">
-                Plant Name
-              </Typography>
-              <Select
-                fullWidth
-                displayEmpty
-                className="textfield-form"
-                variant="outlined"
-                placeholder="Select Plant Name"
-                size="small"
-                sx={{
-                  color: "#000000",
-                }}
-              >
-                {field[0].options.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item lg={4} xs={12}>
-              <Typography component="div" className="label-Form">
-                Plant Quantity
-              </Typography>
-              <Select
-                fullWidth
-                displayEmpty
-                className="textfield-form"
-                variant="outlined"
-                placeholder="Select Plant Quantity"
-                size="small"
-                sx={{
-                  color: "#000000",
-                }}
-              >
-                {field[0].options.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item lg={4} xs={12}>
-              <Typography component="div" className="label-Form">
-                Plant Category
-              </Typography>
-              <Select
-                fullWidth
-                displayEmpty
-                className="textfield-form"
-                variant="outlined"
-                placeholder="Select Plant Category"
-                size="small"
-                sx={{
-                  color: "#000000",
-                }}
-              >
-                {field[0].options.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
+              <FormControl fullWidth error={!!errors.plant_category}>
+                <Select
+                  displayEmpty
+                  className="textfield-form"
+                  variant="outlined"
+                  name="plant_category"
+                  placeholder="Select Plant Category"
+                  value={nurseryRegistration.plant_category}
+                  onChange={handleChangeNurseryRegistration}
+                  size="small"
+                  sx={{ color: "#000000" }}
+                >
+                  {field[0].options.map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.plant_category}</FormHelperText>
+              </FormControl>
             </Grid>
           </Grid>
-         
-      <EnterOTPForm open={openDialog} onClose={handleClose} />
-
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center" }}>
           <Button
-            onClick={handleOpen}
             style={{
               width: "130px",
               height: "40px",
               color: "#2f73fa",
-              borderRadius:"8px",
+              borderRadius: "8px",
               boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.11)",
             }}
+            onClick={handleNurseryRegistrationSubmit}
           >
-            Send OTP
+            Register
           </Button>
         </DialogActions>
       </Dialog>

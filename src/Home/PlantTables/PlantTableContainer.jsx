@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Breadcrumbs, Typography } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link } from "react-router-dom";
-import { ArunachalPradesh, ManiPur, StaticStateData } from "./StaticData";
+import { districtData, nurseryData, plantData } from "./StaticData";
 import PlantDistrictTable from "./PlantDistrictTable";
 import PlantNurseryTable from "./PlantNurseryTable";
 import PlantNameTable from "./PlantNameTable";
@@ -11,6 +11,7 @@ import PlantVarietyTable from "./PlantVarietyTable";
 export default function PlantTableContainer({
   level,
   setLevel,
+  tokenData,
   fetchPlants,
   fetchNurserys,
   plantWiseData,
@@ -23,7 +24,6 @@ export default function PlantTableContainer({
   PlantDistrictTableLoder,
 }) {
   const handleClickParent = (row) => {
-    console.log(level, "===level");
     if (level === 0) {
       setLevel(1);
       fetchNurserys(row?.districtName);
@@ -76,21 +76,23 @@ export default function PlantTableContainer({
 
       {level === 0 && (
         <PlantDistrictTable
-          data={districtWisePlantData}
-          loading={PlantDistrictTableLoder}
+          data={districtData}
+          // loading={PlantDistrictTableLoder}
           handleClickParent={handleClickParent}
         />
       )}
       {level === 1 && (
         <PlantNurseryTable
-          data={nurseryWiseData}
+          data={nurseryData}
+          // data={nurseryWiseData}
           loading={false}
           handleClickParent={handleClickParent}
         />
       )}
       {level === 2 && (
         <PlantNameTable
-          data={plantWiseData}
+          data={plantData}
+          // data={plantWiseData}
           loading={false}
           handleClickParent={handleClickParent}
         />

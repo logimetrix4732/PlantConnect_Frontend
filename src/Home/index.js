@@ -1,18 +1,23 @@
 import { Button, Grid } from "@mui/material";
 import MapBox from "./MapContent/MapBox";
-import { getFetch } from "../Components/API/Api";
 import CloseIcon from "@mui/icons-material/Close";
 import { UserContext } from "../context/UserContext";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
+import HMTModal from "../Components1/PlantModals/HMTModal";
+import { getFetch, postFetch } from "../Components/API/Api";
 import React, { useContext, useEffect, useState } from "react";
 import PlantTableContainer from "./PlantTables/PlantTableContainer";
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
-import SecureLS from "secure-ls";
-import HMTModal from "../Components1/PlantModals/HMTModal";
+import NurseryRegistrationModal from "../Components1/PlantModals/NurseryRegistrationModal";
 
 const Home = () => {
-  const { selectedState, selectedDistrict,tokenData } = useContext(UserContext);
-  console.log(tokenData,"tokenData")
+  const {
+    tokenData,
+    selectedState,
+    selectedDistrict,
+    NurseryRegistrationModalopen,
+    handleNurseryRegistrationModalClose,
+  } = useContext(UserContext);
   const [level, setLevel] = useState(0);
   const [mainMapCard, setMainMapCard] = useState({});
   const [plantWiseData, setPlantWiseData] = useState([]);
@@ -23,7 +28,6 @@ const Home = () => {
   const [districtDropdown, setDistrictDropdown] = useState([]);
   const [plantVarietiesData, setPlantVarietiesData] = useState([]);
   const [breadcrumbData, setBreadcrumbData] = useState(["District"]);
-  const [NurseryRegisOpen, setNurseryRegisOModalOpen] = useState(false);
   const [districtWisePlantData, setDistrictWisePlantData] = useState([]);
   const [PlantNurseryTableLoder, setPlantNurseryTableLoder] = useState(false);
   const [PlantVarietyTableLoder, setPlantVarietyTableLoder] = useState(false);
@@ -34,25 +38,19 @@ const Home = () => {
     division: "Kumaon",
     district: "All",
   });
+  useEffect(()=>{
+    if(tokenData?.data?.user_role === "HMT"){
+      setLevel(1)
+    }
+  },[])
 
   //HMT Form Modal
   const handleClickHMTModalOpen = () => {
     setHMTModalOpen(true);
   };
-
   const handleHMTModalClose = () => {
     setHMTModalOpen(false);
   };
-
-  //Nursery RegistrationModal
-  const handleClickNurseryRegisModalOpen = () => {
-    setNurseryRegisOModalOpen(true);
-  };
-
-  const handleNurseryRegisModalClose = () => {
-    setNurseryRegisOModalOpen(false);
-  };
-
   //handlechange Dropdowns
   const handleStates = (newValue, key) => {
     setLevel(0);
@@ -62,7 +60,6 @@ const Home = () => {
       [key]: newValue,
     }));
   };
-
   //Division and dristrict according data comes
   useEffect(() => {
     const fetchUser = async () => {
@@ -92,7 +89,6 @@ const Home = () => {
 
     fetchUser();
   }, [selectedValue.district, selectedValue.division]);
-
   //Division according district dropdown comes
   useEffect(() => {
     const fetchUser = async () => {
@@ -119,7 +115,6 @@ const Home = () => {
 
     fetchUser();
   }, [selectedValue.division]);
-
   //district according numrserys comes
   const fetchNurserys = async (district) => {
     setPlantNurseryTableLoder(true);
@@ -143,7 +138,6 @@ const Home = () => {
       });
     }
   };
-
   //nursery according Plants comes
   const fetchPlants = async (nurseryId) => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/plantName?nurseryId=${nurseryId}`;
@@ -165,7 +159,6 @@ const Home = () => {
       });
     }
   };
-
   //Plant Name according Plant Variety comes
   const fetchPlantVariety = async (plantName) => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/plantName/plntVariety?plantName=${plantName}`;
@@ -187,14 +180,105 @@ const Home = () => {
       });
     }
   };
+  //nursery registration
+  const [errors, setErrors] = useState({});
+  const [nurseryRegistration, setNurseryRegistration] = useState({
+    nursery_name: "",
+    license_no: "",
+    latitude: "",
+    longitude: "",
+    state: "",
+    division: "",
+    pin_code: "",
+    address: "",
+    area: "",
+    owner_name: "",
+    owner_mobile: "",
+    district: "",
+    plant_category: "",
+  });
+  const handleChangeNurseryRegistration = (event) => {
+    const { name, value } = event.target;
+    setNurseryRegistration((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+  const validateNurseryRegistration = () => {
+    const newErrors = {};
+    const requiredFields = [
+      'nursery_name', 'license_no', 'latitude', 'longitude',
+      'state', 'division', 'pin_code', 'address',
+      'area', 'owner_name', 'owner_mobile', 'district', 'plant_category'
+    ];
 
+    requiredFields.forEach((field) => {
+      if (!nurseryRegistration[field]) {
+        newErrors[field] = `${field.replace(/_/g, ' ')} is required`;
+      }
+    });
+
+    // Additional validations (e.g., mobile number format, latitude/longitude range) can be added here
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+  const handleNurseryRegistrationSubmit = async () => {
+    if (!validateNurseryRegistration()) {
+      return; // Return if validation fails
+    }
+  
+    try {
+      const response = await postFetch(
+        `${process.env.REACT_APP_API_URL_LOCAL}/api/nurseries/register`,
+        nurseryRegistration
+      );
+  
+      // Check if response has a status code
+      if (response && response.status === 200) {
+        enqueueSnackbar("Nursery Registration successful", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+  
+      // Show error notification
+      enqueueSnackbar("Nursery Registration failed", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+        iconVariant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
   return (
     <React.Fragment>
       <HMTModal
         HMTModalopen={HMTModalopen}
         handleHMTModalClose={handleHMTModalClose}
       />
-
+      <NurseryRegistrationModal
+        errors={errors}
+        nurseryRegistration={nurseryRegistration}
+        NurseryRegistrationModalopen={NurseryRegistrationModalopen}
+        handleChangeNurseryRegistration={handleChangeNurseryRegistration}
+        handleNurseryRegistrationSubmit={handleNurseryRegistrationSubmit}
+        handleNurseryRegistrationModalClose={
+          handleNurseryRegistrationModalClose
+        }
+      />
       <Grid
         style={{
           marginTop: "3rem",
@@ -302,6 +386,7 @@ const Home = () => {
           <PlantTableContainer
             level={level}
             setLevel={setLevel}
+            tokenData={tokenData}
             fetchPlants={fetchPlants}
             plantWiseData={plantWiseData}
             fetchNurserys={fetchNurserys}

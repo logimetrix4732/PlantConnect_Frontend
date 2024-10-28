@@ -131,9 +131,9 @@ console.log(userDetails,"==userDetails")
           { text: "About The Scheme", path: "/about" },
           { text: "Contact Us", path: "/contact" },
         ]
-      : userDetails && userDetails.user_role === "DHO/CHO"
+      : userDetails && userDetails.user_role === "CHO"
       ? [
-          { text: "Home", path: "/dho&cho" },
+          { text: "Home", path: "/cho" },
           { text: "About The Scheme", path: "/about" },
           { text: "Contact Us", path: "/contact" },
         ]
@@ -255,7 +255,7 @@ console.log(userDetails,"==userDetails")
                             ? "HMT"
                             : userDetails.user_role === "JD"
                             ? "JD"
-                            : userDetails.user_role === "DHO/CHO"
+                            : userDetails.user_role === "CHO"
                             ? "DHO & CHO"
                             : userDetails.user_role === "SLA"
                             ? "SLA"

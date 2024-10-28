@@ -84,7 +84,6 @@ export default function Login() {
             roles: [data.data.user_role],
           });
           ls.set("authToken", JSON.stringify(data.data));
-          console.log(data.data,"========")
           if (data.data.user_role === "JS") {
             navigate("/da&fw", { replace: true });
             window.history.replaceState("/da&fw");
@@ -143,7 +142,6 @@ export default function Login() {
       if (response.success === true) {
         console.log(response)
         if (response.data.user_role === "HMT") {
-          console.log("hfkjdshfkshdf")
           navigate("/da&fw", { replace: true });
           window.history.replaceState("/da&fw");
         } else if (response.data.user_role === "DC") {

@@ -19,9 +19,9 @@ import {
 
 const headCells = [
   { id: "id", label: "S.No" },
-  { id: "PlantsName", label: "Plants Name" },
-  { id: "plantVariety", label: "Plant Variety" },
-  { id: "Plant Count", label: "Plant Count" },
+  { id: "Variety", label: "Variety Name" },
+  { id: "Variety Count", label: "Variety Count" },
+  // { id: "plantVariety", label: "Plant Variety" },
 ];
 
 export default function PlantVarietyTable({

@@ -15,7 +15,6 @@ import Unauthorized from "./Components/Auth/Unauthorize/Unauthorized";
 import AboutUs from "./Pages/AboutUs";
 import ContactUs from "./Pages/ContactUs";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import SPPage from "./Pages/DhoChoPage";
 import SecureLS from "secure-ls";
 import SLARequestApp from "./Pages/SLARequestApp";
 import SPAppraisal from "./Pages/SPAppraisal";
@@ -23,11 +22,13 @@ import CookieConsent from "react-cookie-consent";
 import JDPage from "./Pages/JDPage";
 import NodalDir from "./Pages/NodalDir";
 import OrderList from "./Pages/OrderList";
-
+import DhoChoPage from "./Pages/DhoChoPage";
+import VisitApproval from "./Components1/DHOComponents/VisitApproval/VisitApproval";
+import RegisteredNurseries from "./Components1/DHOComponents/RegisteredNurseries/RegisteredNurseries";
 const ROLES = {
   HMT: "HMT",
   JD: "JD",
-  DHO: "DHO/CHO",
+  CHO: "CHO",
   Nodal: "Nodal",
 };
 
@@ -71,8 +72,8 @@ const App = () => {
         return "/hmt";
       case ROLES.JD:
         return "/jd";
-      case ROLES.DHO:
-        return "/dho&cho";
+      case ROLES.CHO:
+        return "/cho";
       case ROLES.Nodal:
         return "/nodal";
       default:
@@ -118,8 +119,8 @@ const App = () => {
                   {/* public routes */}
 
                   <Route path="unauthorized" element={<Unauthorized />} />
-                  <Route path="/orderList" element={<OrderList />} />
                   <Route path="/about" element={<AboutUs />} />
+                  <Route path="/contact" element={<ContactUs />} />
                   <Route path="/contact" element={<ContactUs />} />
 
                   {/* we want to protect these routes */}
@@ -133,23 +134,31 @@ const App = () => {
                     </Route>
                     <Route
                       element={
-                        <RequireAuth allowedRoles={[ROLES.DHO, ROLES.JD]} />
+                        <RequireAuth allowedRoles={[ROLES.CHO, ROLES.JD]} />
                       }
                     >
                       <Route path="/spAppraisal" element={<SPAppraisal />} />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={[ROLES.HMT]} />}>
                       <Route path="/hmt" element={<Home />} />
+                      <Route path="/orderList" element={<OrderList />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[ROLES.JD]} />}>
                       <Route path="/jd" element={<JDPage />} />
                     </Route>
 
-                    <Route element={<RequireAuth allowedRoles={[ROLES.DHO]} />}>
-                      <Route path="/dho&cho" element={<SPPage />} />
+                    <Route element={<RequireAuth allowedRoles={[ROLES.CHO]} />}>
+                      <Route path="/cho" element={<DhoChoPage />} />
+                      <Route path="/approval" element={<VisitApproval />} />
+                      <Route
+                        path="/regisNurseries"
+                        element={<RegisteredNurseries />}
+                      />
                     </Route>
-                    <Route element={<RequireAuth allowedRoles={[ROLES.Nodal]} />}>
+                    <Route
+                      element={<RequireAuth allowedRoles={[ROLES.Nodal]} />}
+                    >
                       <Route path="/nodal" element={<NodalDir />} />
                       <Route path="/requestSla" element={<SLARequestApp />} />
                     </Route>
