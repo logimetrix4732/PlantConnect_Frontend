@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import React, { useState } from "react";
 import RegisteredNurseriesTbl from "./RegisteredNurseriesTbl";
 import RegisteredNurseriesModal from "./RegisteredNurseriesModal";
-import { nurseryDataVisitApprove } from "../../../Home/PlantTables/StaticData";
+import { nurseryDataVisitApprove } from "../../PlantTables/StaticData";
 
 const RegisteredNurseries = () => {
   const [VisitApprovalModalOpen, setVisitApprovalModalOpen] = useState(false);

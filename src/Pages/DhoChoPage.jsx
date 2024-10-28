@@ -1,18 +1,18 @@
 import { Button, Grid } from "@mui/material";
+import MapBox from "../Home/MapContent/MapBox";
 import { getFetch } from "../Components/API/Api";
 import CloseIcon from "@mui/icons-material/Close";
 import { UserContext } from "../context/UserContext";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
+import HMTModal from "../Components1/PlantModals/HMTModal";
 import React, { useContext, useEffect, useState } from "react";
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
-import MapBox from "../Home/MapContent/MapBox";
-import PlantTableContainer from "../Home/PlantTables/PlantTableContainer";
-import HMTModal from "../Components1/PlantModals/HMTModal";
-import { nurseryData } from "../Home/PlantTables/StaticData";
+import PlanttblContainerNur from "../Components1/PlantTables/PlanttblContainerNur";
 
 const DhoChoPage = () => {
-  const { selectedState, selectedDistrict,tokenData } = useContext(UserContext);
-  const [level, setLevel] = useState(1);
+  const { selectedState, selectedDistrict, tokenData } =
+    useContext(UserContext);
+  const [level, setLevel] = useState(0);
   const [mainMapCard, setMainMapCard] = useState({});
   const [plantWiseData, setPlantWiseData] = useState([]);
   const [stateDropDown, SetStateDropDown] = useState([]);
@@ -21,7 +21,7 @@ const DhoChoPage = () => {
   const [uniqueDistricts, setUniqueDistricts] = useState([]);
   const [districtDropdown, setDistrictDropdown] = useState([]);
   const [plantVarietiesData, setPlantVarietiesData] = useState([]);
-  const [breadcrumbData, setBreadcrumbData] = useState(["District"]);
+  const [breadcrumbData, setBreadcrumbData] = useState(["Nurseries"]);
   const [districtWisePlantData, setDistrictWisePlantData] = useState([]);
   const [PlantNurseryTableLoder, setPlantNurseryTableLoder] = useState(false);
   const [PlantVarietyTableLoder, setPlantVarietyTableLoder] = useState(false);
@@ -33,7 +33,6 @@ const DhoChoPage = () => {
     district: "All",
   });
 
- 
   const handleClickHMTModalOpen = () => {
     setHMTModalOpen(true);
   };
@@ -44,7 +43,7 @@ const DhoChoPage = () => {
 
   //handlechange Dropdowns
   const handleStates = (newValue, key) => {
-    setLevel(1);
+    setLevel(0);
     setBreadcrumbData(["District"]);
     setSelectedValue((prevValue) => ({
       ...prevValue,
@@ -176,14 +175,13 @@ const DhoChoPage = () => {
       });
     }
   };
-console.log(nurseryData,"=nurseryData")
   return (
     <React.Fragment>
       <HMTModal
         HMTModalopen={HMTModalopen}
         handleHMTModalClose={handleHMTModalClose}
       />
-     
+
       <Grid
         style={{
           marginTop: "3rem",
@@ -288,7 +286,7 @@ console.log(nurseryData,"=nurseryData")
           </Grid>
         )}
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <PlantTableContainer
+          <PlanttblContainerNur
             level={level}
             setLevel={setLevel}
             tokenData={tokenData}

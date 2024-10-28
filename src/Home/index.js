@@ -6,9 +6,10 @@ import { closeSnackbar, enqueueSnackbar } from "notistack";
 import HMTModal from "../Components1/PlantModals/HMTModal";
 import { getFetch, postFetch } from "../Components/API/Api";
 import React, { useContext, useEffect, useState } from "react";
-import PlantTableContainer from "./PlantTables/PlantTableContainer";
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
 import NurseryRegistrationModal from "../Components1/PlantModals/NurseryRegistrationModal";
+import PlantTableContainer from "../Components1/PlantTables/PlantTableContainer";
+import PlanttblContainerNur from "../Components1/PlantTables/PlanttblContainerNur";
 
 const Home = () => {
   const {
@@ -27,23 +28,19 @@ const Home = () => {
   const [uniqueDistricts, setUniqueDistricts] = useState([]);
   const [districtDropdown, setDistrictDropdown] = useState([]);
   const [plantVarietiesData, setPlantVarietiesData] = useState([]);
-  const [breadcrumbData, setBreadcrumbData] = useState(["District"]);
   const [districtWisePlantData, setDistrictWisePlantData] = useState([]);
   const [PlantNurseryTableLoder, setPlantNurseryTableLoder] = useState(false);
   const [PlantVarietyTableLoder, setPlantVarietyTableLoder] = useState(false);
   const [PlantDistrictTableLoder, setPlantDistrictTableLoder] = useState(false);
+  const [breadcrumbData, setBreadcrumbData] = useState(
+    tokenData?.data?.user_role === "HMT" ? ["Nurseries"] : ["District"]
+  );  
   const [selectedValue, setSelectedValue] = useState({
     year: "2024",
     state: "Uttarakhand",
     division: "Kumaon",
     district: "All",
   });
-  useEffect(()=>{
-    if(tokenData?.data?.user_role === "HMT"){
-      setLevel(1)
-    }
-  },[])
-
   //HMT Form Modal
   const handleClickHMTModalOpen = () => {
     setHMTModalOpen(true);
@@ -207,14 +204,24 @@ const Home = () => {
   const validateNurseryRegistration = () => {
     const newErrors = {};
     const requiredFields = [
-      'nursery_name', 'license_no', 'latitude', 'longitude',
-      'state', 'division', 'pin_code', 'address',
-      'area', 'owner_name', 'owner_mobile', 'district', 'plant_category'
+      "nursery_name",
+      "license_no",
+      "latitude",
+      "longitude",
+      "state",
+      "division",
+      "pin_code",
+      "address",
+      "area",
+      "owner_name",
+      "owner_mobile",
+      "district",
+      "plant_category",
     ];
 
     requiredFields.forEach((field) => {
       if (!nurseryRegistration[field]) {
-        newErrors[field] = `${field.replace(/_/g, ' ')} is required`;
+        newErrors[field] = `${field.replace(/_/g, " ")} is required`;
       }
     });
 
@@ -227,13 +234,13 @@ const Home = () => {
     if (!validateNurseryRegistration()) {
       return; // Return if validation fails
     }
-  
+
     try {
       const response = await postFetch(
         `${process.env.REACT_APP_API_URL_LOCAL}/api/nurseries/register`,
         nurseryRegistration
       );
-  
+
       // Check if response has a status code
       if (response && response.status === 200) {
         enqueueSnackbar("Nursery Registration successful", {
@@ -249,7 +256,7 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Registration error:", error);
-  
+
       // Show error notification
       enqueueSnackbar("Nursery Registration failed", {
         variant: "error",
@@ -383,21 +390,39 @@ const Home = () => {
           </Grid>
         )}
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <PlantTableContainer
-            level={level}
-            setLevel={setLevel}
-            tokenData={tokenData}
-            fetchPlants={fetchPlants}
-            plantWiseData={plantWiseData}
-            fetchNurserys={fetchNurserys}
-            breadcrumbData={breadcrumbData}
-            nurseryWiseData={nurseryWiseData}
-            setBreadcrumbData={setBreadcrumbData}
-            fetchPlantVariety={fetchPlantVariety}
-            plantVarietiesData={plantVarietiesData}
-            districtWisePlantData={districtWisePlantData}
-            PlantDistrictTableLoder={PlantDistrictTableLoder}
-          />
+          {tokenData?.data?.user_role === "HMT" ? (
+            <PlanttblContainerNur
+              level={level}
+              setLevel={setLevel}
+              tokenData={tokenData}
+              fetchPlants={fetchPlants}
+              plantWiseData={plantWiseData}
+              fetchNurserys={fetchNurserys}
+              breadcrumbData={breadcrumbData}
+              nurseryWiseData={nurseryWiseData}
+              setBreadcrumbData={setBreadcrumbData}
+              fetchPlantVariety={fetchPlantVariety}
+              plantVarietiesData={plantVarietiesData}
+              districtWisePlantData={districtWisePlantData}
+              PlantDistrictTableLoder={PlantDistrictTableLoder}
+            />
+          ) : (
+            <PlantTableContainer
+              level={level}
+              setLevel={setLevel}
+              tokenData={tokenData}
+              fetchPlants={fetchPlants}
+              plantWiseData={plantWiseData}
+              fetchNurserys={fetchNurserys}
+              breadcrumbData={breadcrumbData}
+              nurseryWiseData={nurseryWiseData}
+              setBreadcrumbData={setBreadcrumbData}
+              fetchPlantVariety={fetchPlantVariety}
+              plantVarietiesData={plantVarietiesData}
+              districtWisePlantData={districtWisePlantData}
+              PlantDistrictTableLoder={PlantDistrictTableLoder}
+            />
+          )}
         </Grid>
       </Grid>
     </React.Fragment>

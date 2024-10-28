@@ -3,12 +3,11 @@ import { Breadcrumbs, Typography } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link } from "react-router-dom";
 import { districtData, nurseryData, plantData } from "./StaticData";
-import PlantDistrictTable from "./PlantDistrictTable";
 import PlantNurseryTable from "./PlantNurseryTable";
 import PlantNameTable from "./PlantNameTable";
 import PlantVarietyTable from "./PlantVarietyTable";
 
-export default function PlantTableContainer({
+export default function PlanttblContainerNur({
   level,
   setLevel,
   tokenData,
@@ -24,16 +23,13 @@ export default function PlantTableContainer({
   PlantDistrictTableLoder,
 }) {
   const handleClickParent = (row) => {
+    console.log(row,"dfdfdfdf")
     if (level === 0) {
       setLevel(1);
-      fetchNurserys(row?.districtName);
-      setBreadcrumbData([...breadcrumbData, row.districtName]);
-    } else if (level === 1) {
-      setLevel(2);
       fetchPlants(row?.nurseryId);
       setBreadcrumbData([...breadcrumbData, row.nurseryName]);
-    } else if (level === 2) {
-      setLevel(3);
+    } else if (level === 1) {
+      setLevel(2);
       fetchPlantVariety(row?.plantName);
       setBreadcrumbData([...breadcrumbData, row.plantName]);
     } else if (level === 2) {
@@ -75,13 +71,6 @@ export default function PlantTableContainer({
       </Breadcrumbs>
 
       {level === 0 && (
-        <PlantDistrictTable
-          data={districtData}
-          // loading={PlantDistrictTableLoder}
-          handleClickParent={handleClickParent}
-        />
-      )}
-      {level === 1 && (
         <PlantNurseryTable
           data={nurseryData}
           // data={nurseryWiseData}
@@ -89,7 +78,7 @@ export default function PlantTableContainer({
           handleClickParent={handleClickParent}
         />
       )}
-      {level === 2 && (
+      {level === 1 && (
         <PlantNameTable
           data={plantData}
           // data={plantWiseData}
@@ -97,7 +86,7 @@ export default function PlantTableContainer({
           handleClickParent={handleClickParent}
         />
       )}
-      {level === 3 && (
+      {level === 2 && (
         <PlantVarietyTable
           data={plantVarietiesData}
           loading={false}

@@ -7,8 +7,8 @@ import React, { useContext, useEffect, useState } from "react";
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
 import SecureLS from "secure-ls";
 import MapBox from "../Home/MapContent/MapBox";
-import PlantTableContainer from "../Home/PlantTables/PlantTableContainer";
 import HMTModal from "../Components1/PlantModals/HMTModal";
+import PlantTableContainer from "../Components1/PlantTables/PlantTableContainer";
 
 const NodalDir = () => {
   const { selectedState, selectedDistrict,tokenData } = useContext(UserContext);

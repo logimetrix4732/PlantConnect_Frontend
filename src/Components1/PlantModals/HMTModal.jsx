@@ -14,7 +14,6 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import PlantModalTable from "../../Home/PlantTables/PlantModalTable";
 import EnterOTPForm from "../EnterOTPForm";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
