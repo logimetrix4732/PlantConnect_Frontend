@@ -9,7 +9,7 @@ export default function MapCards({ mainMapCard }) {
       highlight: "#426d52",
       tag: "Total Number of HMT's",
       value:
-        mainMapCard.totalHmts||0,
+        mainMapCard.total_no_of_hmts||0,
     },
     {
       bg: "#d4ecde",
@@ -21,7 +21,7 @@ export default function MapCards({ mainMapCard }) {
       bg: "#d4ecde",
       highlight: "#426d52",
       tag: "Total Number of Nurserie's",
-      value: mainMapCard.totalNurseries || 0,
+      value: mainMapCard.total_no_of_nurseries || 0,
     },
   ];
 

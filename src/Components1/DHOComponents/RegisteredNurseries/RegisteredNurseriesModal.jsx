@@ -55,7 +55,7 @@ const RegisteredNurseriesModal = ({ open, handleClose }) => {
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={1} mt={1}>
-            <Grid item lg={6}>
+            <Grid item lg={6} sm={6} xs={12}>
               <TextField
                 select
                 label="Plant Name"
@@ -70,7 +70,7 @@ const RegisteredNurseriesModal = ({ open, handleClose }) => {
                 <MenuItem value="option3">Option 3</MenuItem>
               </TextField>
             </Grid>
-            <Grid item lg={6}>
+            <Grid item lg={6} sm={6} xs={12}>
               <TextField
                 select
                 label="Plant Varity"
@@ -85,7 +85,7 @@ const RegisteredNurseriesModal = ({ open, handleClose }) => {
                 <MenuItem value="option3">Option 3</MenuItem>
               </TextField>
             </Grid>
-            <Grid item lg={6}>
+            <Grid item lg={6} sm={6} xs={12}>
               <TextField
                 label="Plant Quantity"
                 variant="outlined"
@@ -95,7 +95,7 @@ const RegisteredNurseriesModal = ({ open, handleClose }) => {
                 fullWidth
               />
             </Grid>
-            <Grid item lg={12}>
+            <Grid item lg={12} sm={12} xs={12}>
               <TextField
                 label="Remarks"
                 variant="outlined"

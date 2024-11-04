@@ -23,17 +23,21 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const NurseryRegistrationModal = ({
   errors,
+  stateDropDown,
+  divisionDropdown,
   nurseryRegistration,
   NurseryRegistrationModalopen,
   handleChangeNurseryRegistration,
   handleNurseryRegistrationSubmit,
   handleNurseryRegistrationModalClose,
 }) => {
-  const field = [
-    {
-      options: ["Option 1", "Option 2", "Option 3"],
-    },
-  ];
+  console.log(stateDropDown, "==stateDropDown");
+  const field = {
+    name: "fieldName",
+    options: stateDropDown,
+    options1: divisionDropdown,
+    options2: stateDropDown,
+  };
 
   return (
     <React.Fragment>
@@ -190,27 +194,6 @@ const NurseryRegistrationModal = ({
                 <FormHelperText>{errors.area}</FormHelperText>
               </FormControl>
             </Grid>
-
-            <Grid item lg={4} sm={6} xs={12}>
-              <Typography component="div" className="label-Form">
-                State
-              </Typography>
-              <FormControl fullWidth error={!!errors.state}>
-                <TextField
-                  fullWidth
-                  placeholder="State"
-                  size="small"
-                  variant="outlined"
-                  name="state"
-                  className="textfield-form"
-                  value={nurseryRegistration.state}
-                  onChange={handleChangeNurseryRegistration}
-                  aria-label="State"
-                />
-                <FormHelperText>{errors.state}</FormHelperText>
-              </FormControl>
-            </Grid>
-
             <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Pin Code
@@ -270,7 +253,35 @@ const NurseryRegistrationModal = ({
                 <FormHelperText>{errors.owner_mobile}</FormHelperText>
               </FormControl>
             </Grid>
-
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                State
+              </Typography>
+              <FormControl fullWidth error={!!errors.division}>
+                <Select
+                  displayEmpty
+                  className="textfield-form"
+                  variant="outlined"
+                  name="state"
+                  placeholder="State"
+                  size="small"
+                  value={nurseryRegistration.state}
+                  onChange={handleChangeNurseryRegistration}
+                  sx={{ color: "#000000" }}
+                >
+                  {field.options.map((option, index) => (
+                    <MenuItem
+                      key={index}
+                      value={option}
+                      sx={{ color: "#808080" }}
+                    >
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.state}</FormHelperText>
+              </FormControl>
+            </Grid>
             <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Division
@@ -287,8 +298,12 @@ const NurseryRegistrationModal = ({
                   onChange={handleChangeNurseryRegistration}
                   sx={{ color: "#000000" }}
                 >
-                  {field[0].options.map((option, index) => (
-                    <MenuItem key={index} value={option}>
+                  {field.options1.map((option, index) => (
+                    <MenuItem
+                      key={index}
+                      value={option}
+                      sx={{ color: "#808080" }}
+                    >
                       {option}
                     </MenuItem>
                   ))}
@@ -313,39 +328,17 @@ const NurseryRegistrationModal = ({
                   onChange={handleChangeNurseryRegistration}
                   sx={{ color: "#000000" }}
                 >
-                  {field[0].options.map((option, index) => (
-                    <MenuItem key={index} value={option}>
+                  {field.options2.map((option, index) => (
+                    <MenuItem
+                      key={index}
+                      value={option}
+                      sx={{ color: "#808080" }}
+                    >
                       {option}
                     </MenuItem>
                   ))}
                 </Select>
                 <FormHelperText>{errors.district}</FormHelperText>
-              </FormControl>
-            </Grid>
-
-            <Grid item lg={4} sm={6} xs={12}>
-              <Typography component="div" className="label-Form">
-                Plant Category
-              </Typography>
-              <FormControl fullWidth error={!!errors.plant_category}>
-                <Select
-                  displayEmpty
-                  className="textfield-form"
-                  variant="outlined"
-                  name="plant_category"
-                  placeholder="Select Plant Category"
-                  value={nurseryRegistration.plant_category}
-                  onChange={handleChangeNurseryRegistration}
-                  size="small"
-                  sx={{ color: "#000000" }}
-                >
-                  {field[0].options.map((option, index) => (
-                    <MenuItem key={index} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText>{errors.plant_category}</FormHelperText>
               </FormControl>
             </Grid>
           </Grid>

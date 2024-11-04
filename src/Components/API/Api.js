@@ -1,5 +1,21 @@
 import axios from "axios";
+import SecureLS from "secure-ls";
 
+const ls = new SecureLS({ encodingType: "aes" });
+const fetchToken = () => {
+  let token = null;
+  try {
+    const data = ls.get("authToken");
+    if (typeof data === "string" && data.trim().length > 0) {
+      token = JSON.parse(data);
+    }
+  } catch (error) {
+    // console.error("Could not parse JSON", error);
+    ls.remove("authToken");
+  }
+  return token;
+};
+const token = fetchToken()?.token || "";
 // GET request
 export const getFetch = async (url) => {
   try {
@@ -8,7 +24,7 @@ export const getFetch = async (url) => {
         "Content-Type": "application/json",
       },
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error("GET request error:", error);
     return error.response;
@@ -36,6 +52,7 @@ export const postFetch = async (url, data) => {
     const response = await axios.post(url, data, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;

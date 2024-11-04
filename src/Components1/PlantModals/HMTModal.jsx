@@ -20,52 +20,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
+const HMTModal = ({
+  OTPModal,
+  HMTOrder,
+  HMTModalopen,
+  handleCloseOTPModal,
+  handleChangeHMTOder,
+  handleHMTModalClose,
+  handleHMTOrderSubmit,
+}) => {
   const field = [
     {
       options: ["Option 1", "Option 2", "Option 3"],
     },
   ];
-  const headCells = [
-    { id: "id", label: "S.No" },
-    { id: "Nursery Name", label: "Nursery Name" },
-    { id: "Availability", label: "Availability" },
-    { id: "Address", label: "Address" },
-    { id: "Contact Detail", label: "Contact Detail" },
-    { id: "Distance", label: "Distance" },
-    { id: "Requirement", label: "Requirement" },
-    { id: "Action", label: "Action" },
-  ];
-  const nurseries = [
-    {
-      id: 1,
-      name: "A",
-      availability: 8,
-      address: "A",
-      contact: "1234567890",
-      distance: "A",
-      requirement: 0, // initial value
-    },
-    {
-      id: 2,
-      name: "B",
-      availability: 15,
-      address: "B",
-      contact: "844567890",
-      distance: "B",
-      requirement: 0,
-    },
-    // Add more objects following the same pattern
-  ];
-  const [openDialog, setOpenDialog] = useState(false);
 
-  const handleOpen = () => {
-    setOpenDialog(true);
-  };
 
-  const handleClose = () => {
-    setOpenDialog(false);
-  };
   return (
     <React.Fragment>
       <Dialog
@@ -113,6 +83,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 size="small"
                 variant="outlined"
                 className="textfield-form"
+                name="farmer_name"
+                value={HMTOrder.farmer_name}
+                onChange={handleChangeHMTOder}
               />
             </Grid>
             <Grid item lg={4} sm={6} xs={12}>
@@ -123,8 +96,12 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 fullWidth
                 placeholder="Mobile Number"
                 size="small"
+                type="number"
                 variant="outlined"
                 className="textfield-form"
+                name="mobile_number"
+                value={HMTOrder.mobile_number}
+                onChange={handleChangeHMTOder}
               />
             </Grid>
             <Grid item lg={4} sm={6} xs={12}>
@@ -135,8 +112,12 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 fullWidth
                 placeholder="Aadhaar Number"
                 size="small"
+                type="number"
                 variant="outlined"
                 className="textfield-form"
+                name="aadhaar_number"
+                value={HMTOrder.aadhaar_number}
+                onChange={handleChangeHMTOder}
               />
             </Grid>
             <Grid item lg={4} sm={6} xs={12}>
@@ -149,6 +130,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 size="small"
                 variant="outlined"
                 className="textfield-form"
+                name="latitude"
+                value={HMTOrder.latitude}
+                onChange={handleChangeHMTOder}
               />
             </Grid>
             <Grid item lg={4} sm={6} xs={12}>
@@ -161,6 +145,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 size="small"
                 variant="outlined"
                 className="textfield-form"
+                name="longitude"
+                value={HMTOrder.longitude}
+                onChange={handleChangeHMTOder}
               />
             </Grid>
             <Grid item lg={4} sm={6} xs={12}>
@@ -173,6 +160,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 size="small"
                 variant="outlined"
                 className="textfield-form"
+                name="address"
+                value={HMTOrder.address}
+                onChange={handleChangeHMTOder}
               />
             </Grid>
             <Grid item lg={4} sm={6} xs={12}>
@@ -185,6 +175,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 size="small"
                 variant="outlined"
                 className="textfield-form"
+                name="pin_code"
+                value={HMTOrder.pin_code}
+                onChange={handleChangeHMTOder}
               />
             </Grid>
             <Grid item lg={4} sm={6} xs={12}>
@@ -196,7 +189,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 displayEmpty
                 className="textfield-form"
                 variant="outlined"
-                placeholder="Select Plant Variety"
+                name="season"
+                value={HMTOrder.season}
+                onChange={handleChangeHMTOder}
                 size="small"
                 sx={{
                   color: "#000000",
@@ -218,7 +213,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 displayEmpty
                 className="textfield-form"
                 variant="outlined"
-                placeholder="Select Plant Variety"
+                name="scheme"
+                value={HMTOrder.scheme}
+                onChange={handleChangeHMTOder}
                 size="small"
                 sx={{
                   color: "#000000",
@@ -231,7 +228,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 ))}
               </Select>
             </Grid>
-            <Grid item lg={4} sm={6} xs={122}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Plant Category
               </Typography>
@@ -240,7 +237,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 displayEmpty
                 className="textfield-form"
                 variant="outlined"
-                placeholder="Select Plant Category"
+                name="plant_category"
+                value={HMTOrder.plant_category}
+                onChange={handleChangeHMTOder}
                 size="small"
                 sx={{
                   color: "#000000",
@@ -253,7 +252,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 ))}
               </Select>
             </Grid>
-            <Grid item lg={4} sm={6} xs={122}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Plant Name
               </Typography>
@@ -262,7 +261,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 displayEmpty
                 className="textfield-form"
                 variant="outlined"
-                placeholder="Select Plant Name"
+                name="plant_name"
+                value={HMTOrder.plant_name}
+                onChange={handleChangeHMTOder}
                 size="small"
                 sx={{
                   color: "#000000",
@@ -275,7 +276,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 ))}
               </Select>
             </Grid>
-            <Grid item lg={4} sm={6} xs={122}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Plant Quantity
               </Typography>
@@ -284,29 +285,9 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 displayEmpty
                 className="textfield-form"
                 variant="outlined"
-                placeholder="Select Plant Quantity"
-                size="small"
-                sx={{
-                  color: "#000000",
-                }}
-              >
-                {field[0].options.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item lg={4} sm={6} xs={122}>
-              <Typography component="div" className="label-Form">
-                Plant Category
-              </Typography>
-              <Select
-                fullWidth
-                displayEmpty
-                className="textfield-form"
-                variant="outlined"
-                placeholder="Select Plant Category"
+                name="plant_quantity"
+                value={HMTOrder.plant_quantity}
+                onChange={handleChangeHMTOder}
                 size="small"
                 sx={{
                   color: "#000000",
@@ -320,11 +301,11 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
               </Select>
             </Grid>
           </Grid>
-          <EnterOTPForm open={openDialog} onClose={handleClose} />
+          <EnterOTPForm open={OTPModal} onClose={handleCloseOTPModal} />
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center" }}>
           <Button
-            onClick={handleOpen}
+            onClick={handleHMTOrderSubmit}
             style={{
               width: "130px",
               height: "40px",

@@ -188,6 +188,12 @@ export const plantData = [
     fpoCount: "7",
     plantCount: "300",
   },
+  {
+    plantName: "Sunflower",
+    plantVariety: "Russian Giant",
+    fpoCount: "7",
+    plantCount: "300",
+  },
 ];
 export const nurseryDataVisitApprove = [
   {

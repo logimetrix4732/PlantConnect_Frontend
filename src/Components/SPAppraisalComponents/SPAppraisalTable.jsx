@@ -17,17 +17,13 @@ import {
   Button,
   Stack,
 } from "@mui/material";
-import AutocompleteSelect from "../Dropdown/AutocompleteSelect";
 const headCells = [
   { id: "id", label: "S.No" },
-  { id: "Quarter", label: "Quarter" },
-  { id: "Created On", label: "Created On" },
-  { id: "Year", label: "Year" },
-  { id: "Requistion Amount", label: "Requistion Amount" },
-  { id: "Requistion Date", label: "Requistion Date" },
-  { id: "Approved Amount", label: "Approved Amount" },
-  { id: "Status", label: "Status" },
-  { id: "Remarks by DLMC", label: "Remarks by DLMC" },
+  { id: "HMTName", label: "HMT Name" },
+  { id: "HMT Address", label: "HMT Address" },
+  { id: "Plants Varity", label: "Plants Varity" },
+  { id: "Plant Name", label: "Plant Name" },
+  { id: "Plant Quantity", label: "Plant Quantity" },
   { id: "Action", label: "Action" },
 ];
 export default function SPAppraisalTable({
@@ -80,7 +76,7 @@ export default function SPAppraisalTable({
 
   const StyledTableRow = styled(TableRow)({
     "&:nth-of-type(even)": {
-      backgroundColor: "#BEFCE8",
+      backgroundColor: "#d4ecde",
     },
   });
   const calculateTotals = (data) => {
@@ -184,7 +180,7 @@ export default function SPAppraisalTable({
       >
         <StyledTableContainer component={Paper}>
           <Table aria-label="simple table" size={"medium"}>
-            <TableHead style={{ backgroundColor: "#43C17A" }}>
+            <TableHead style={{ backgroundColor: "#426d52" }}>
               <TableRow>
                 {headCells.map((headCell, index) => (
                   <StyledTableCell
