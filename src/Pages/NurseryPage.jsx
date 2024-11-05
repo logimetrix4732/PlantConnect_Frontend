@@ -1,15 +1,16 @@
 import { Button, Grid } from "@mui/material";
-import { getFetch } from "../Components/API/Api";
+import { getFetch, postFetch } from "../Components/API/Api";
 import CloseIcon from "@mui/icons-material/Close";
 import { UserContext } from "../context/UserContext";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import React, { useContext, useEffect, useState } from "react";
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
-import HMTModal from "../Components/PlantModals/HMTModal";
 import SecureLS from "secure-ls";
 import MapBox from "../Home/MapContent/MapBox";
 import NurseryTable from "../Components/Nursery/NurseryTable";
 import NurseryTableContainer from "../Components/Nursery/NurseryTableContainer";
+import NurseryModal from "../Components/Nursery/NurseryModal";
+// import HMTModal from "../Components1/PlantModals/HMTModal";
 
 const NurseryPage = () => {
   const { selectedState, selectedDistrict } = useContext(UserContext);
@@ -119,6 +120,12 @@ const NurseryPage = () => {
     division: "Kumaon",
     district: "All",
   });
+  const [nurseryFormData, setNurseryFormData] = useState({
+    plant_name: "",
+    category: "",
+    quantity: "",
+    unit_price: "",
+  });
   const mapCard = [
     {
       bg: "#FFD7F0",
@@ -156,11 +163,24 @@ const NurseryPage = () => {
   };
 
   const tokenData = fetchToken()?.data;
-  const handleClickHMTModalOpen = () => {
+  console.log(tokenData, "TOKEN DATA ");
+  const handleClickNurseryModalOpen = () => {
+    setNurseryFormData({
+      plant_name: "",
+      category: "",
+      quantity: "",
+      unit_price: "",
+    });
     setHMTModalOpen(true);
   };
 
   const handleHMTModalClose = () => {
+    setNurseryFormData({
+      plant_name: "",
+      category: "",
+      quantity: "",
+      unit_price: "",
+    });
     setHMTModalOpen(false);
   };
 
@@ -256,12 +276,13 @@ const NurseryPage = () => {
   };
 
   //nursery according Plants comes
-  const fetchPlants = async (nurseryId) => {
-    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/plantName?nurseryId=${nurseryId}`;
+  const fetchPlantsData = async (nurseryId) => {
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/${nurseryId}/plants/status`;
     try {
       const response = await getFetch(url);
+      console.log(response, "Respomsne283");
       if (response.status === 200) {
-        setPlantWiseData(response.data.data);
+        setPlantWiseData(response.data.plants);
       }
     } catch (error) {
       enqueueSnackbar(error?.response?.data?.message || "Server Error", {
@@ -276,6 +297,9 @@ const NurseryPage = () => {
       });
     }
   };
+  useEffect(() => {
+    fetchPlantsData(tokenData?.id);
+  }, []);
 
   //Plant Name according Plant Variety comes
   const fetchPlantVariety = async (plantName) => {
@@ -298,13 +322,56 @@ const NurseryPage = () => {
       });
     }
   };
+  const handleDataSubmit = async () => {
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/plants`;
+    const data = {
+      ...nurseryFormData,
+      nursery_id: tokenData?.id,
+      quantity: parseInt(nurseryFormData.quantity),
+      unit_price: parseFloat(nurseryFormData.unit_price),
+    };
+    try {
+      const response = await postFetch(url, data);
+      console.log(response, "RESPONSEEEE");
+
+      // setPlantVarietiesData(response.data.data);
+      enqueueSnackbar(response?.message || "Server Error", {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+        iconVariant: "success",
+        autoHideDuration: 2000,
+      });
+      handleHMTModalClose();
+      fetchPlantsData(tokenData?.id);
+    } catch (error) {
+      console.log(error, "ERRORRR");
+      enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+        variant: "warning",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+        iconVariant: "success",
+        autoHideDuration: 2000,
+      });
+      handleHMTModalClose();
+    }
+  };
 
   return (
     <React.Fragment>
-      {/* <HMTModal
+      <NurseryModal
+        nurseryFormData={nurseryFormData}
+        setNurseryFormData={setNurseryFormData}
         HMTModalopen={HMTModalopen}
         handleHMTModalClose={handleHMTModalClose}
-      /> */}
+        onSubmit={handleDataSubmit}
+      />
       <Grid
         style={{
           marginTop: "3rem",
@@ -317,7 +384,7 @@ const NurseryPage = () => {
           height: "3rem",
         }}
       >
-        <Grid
+        {/* <Grid
           container
           sx={{
             display: "flex",
@@ -328,14 +395,14 @@ const NurseryPage = () => {
           }}
           spacing={2}
         >
-          {/* <Grid item>
+          <Grid item>
             <AutocompleteSelect
               label={"Select Year"}
               items={["2022", "2023", "2024"]}
               handleChange={(newValue) => handleStates(newValue, "year")}
               selectedItem={selectedValue.year}
             />
-          </Grid> */}
+          </Grid>
 
           <Grid item>
             <AutocompleteSelect
@@ -363,7 +430,7 @@ const NurseryPage = () => {
               selectedItem={selectedValue.district}
             />
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
       <MapBox
         mapCard={mapCard}
@@ -382,7 +449,7 @@ const NurseryPage = () => {
           padding: "20px 33px 20px 33px",
         }}
       >
-        {tokenData?.user_role === "HMT" && (
+        {tokenData?.user_role === "nursery" && (
           <Grid
             item
             xs={12}
@@ -392,7 +459,7 @@ const NurseryPage = () => {
             sx={{
               display: "flex",
               justifyContent: "end",
-              marginBottom: "-60px",
+              marginBottom: "-20px",
             }}
           >
             <Button
@@ -403,14 +470,14 @@ const NurseryPage = () => {
                 color: "white",
                 backgroundColor: "#426d52",
               }}
-              onClick={handleClickHMTModalOpen}
+              onClick={handleClickNurseryModalOpen}
             >
-              Place Order
+              Add Plants
             </Button>
           </Grid>
         )}
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <NurseryTableContainer data={plantTableData} />
+          <NurseryTableContainer data={plantWiseData} />
         </Grid>
       </Grid>
     </React.Fragment>

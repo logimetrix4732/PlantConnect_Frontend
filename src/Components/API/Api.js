@@ -1,251 +1,105 @@
 import axios from "axios";
 
+// GET request
 export const getFetch = async (url) => {
   try {
-    // const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "get",
-      url: url,
+    const response = await axios.get(url, {
       headers: {
-        // Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      withCredentials: true,
     });
-    if (response.status === 200) {
-      return response;
-    }
+    return response;
   } catch (error) {
-    console.log(error);
-    return error;
+    console.error("GET request error:", error);
+    return error.response;
   }
 };
 
+// GET request with limit and pagination
 export const getFetchByLimit = async (url, limit, page) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "GET",
-      url: `${url}/${limit}/${page}`,
+    const response = await axios.get(`${url}/${limit}/${page}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-      withCredentials: true,
     });
-    if (response.status === 200) {
-      return response.data;
-    }
+    return response.data;
   } catch (error) {
-    console.log(error);
-    return error;
+    console.error("GET request with limit error:", error);
+    return error.response;
   }
 };
 
-export const getOneFetch = async (url, id) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "GET",
-      url: `${url}/${id}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true,
-    });
-    if (response.status === 200) {
-      return response.data;
-    }
-  } catch (error) {
-    console.log(error);
-    if (error?.response?.status === 401) {
-      return 401;
-    }
-    return error;
-  }
-};
-
+// POST request
 export const postFetch = async (url, data) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "post",
-      url,
+    const response = await axios.post(url, data, {
       headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type":
-          "multipart/form-data; boundary=<calculated when request is sent>",
+        "Content-Type": "application/json",
       },
-      data,
-      withCredentials: true,
     });
-    if (response) {
-      return response.data;
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    console.error("POST request error:", error);
+    return error.response;
   }
 };
 
-export const postFetchUser = async (url, data) => {
+// PATCH request
+export const patchFetch = async (url, data) => {
   try {
-    const response = await axios({
-      method: "post",
-      url,
+    const response = await axios.patch(url, data, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
-      data,
-      withCredentials: true,
     });
-    if (response) {
-      return response.data;
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    console.error("PATCH request error:", error);
+    return error.response;
   }
 };
 
-export const patchFetch = async (url, id, data) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "patch",
-      url: `${url}/${id}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data,
-      withCredentials: true,
-    });
-    if (response.status === 200) {
-      return response;
-    }
-  } catch (error) {
-    if (error?.response?.status === 401) {
-      return 401;
-    } else {
-      return error.response;
-    }
-  }
-};
-
+// PUT request
 export const putFetch = async (url, data) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "put",
-      url,
+    const response = await axios.put(url, data, {
       headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type":
-          "multipart/form-data; boundary=<calculated when request is sent>",
-      },
-      data,
-      withCredentials: true,
-    });
-    if (response.status === 200) {
-      return response;
-    }
-  } catch (error) {
-    if (error) {
-      return 401;
-    } else {
-      return error.response;
-    }
-  }
-};
-
-export const putFetchById = async (url) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "put",
-      url,
-      headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      withCredentials: true,
     });
-    if (response.status === 200) {
-      return response;
-    }
+    return response.data;
   } catch (error) {
-    if (error) {
-      return 401;
-    } else {
-      return error.response;
-    }
-  }
-};
-
-export const putFetchData = async (url, data) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "put",
-      url,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      data,
-      withCredentials: true,
-    });
-    if (response) {
-      return response;
-    }
-  } catch (error) {
-    if (error?.response?.status === 401) {
-      return 401;
-    } else {
-      return error.response;
-    }
-  }
-};
-
-export const deleteFetch = async (url, id) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "delete",
-      url: `${url}/${id}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true,
-    });
-    if (response.status === 200) {
-      return response;
-    }
-  } catch (error) {
-    if (error?.response?.status === 401) {
-      return 401;
-    }
+    console.error("PUT request error:", error);
+    return error.response;
   }
 };
 
 export const postFetchData = async (url, data) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios({
-      method: "post",
-      url,
+    const response = await axios.post(url, data, {
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      data,
-      withCredentials: true,
     });
-    if (response) {
-      return response.data;
-    }
+    return response.data;
   } catch (error) {
-    if (error?.response?.status === 401) {
-      return 401;
-    } else {
-      return error; // Return the error
-    }
+    console.error("POST request error:", error);
+    return error.response;
+  }
+};
+
+// DELETE request
+export const deleteFetch = async (url) => {
+  try {
+    const response = await axios.delete(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("DELETE request error:", error);
+    return error.response;
   }
 };

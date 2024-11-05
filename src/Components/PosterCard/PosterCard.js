@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./PosterCard.css";
 import SecureLS from "secure-ls";
+import HMTImage from "../../assets/images/HMTImage.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import plantNursery from "../../assets/images/plantNursery.png";
+import nursery from "../../assets/images/nurserylogin.png";
+import jdposter from "../../assets/images/jdposter.png";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import {
@@ -13,7 +16,9 @@ import {
   Typography,
   CardContent,
 } from "@mui/material";
+import { UserContext } from "../../context/UserContext";
 export default function PosterCard() {
+  const { handleNurseryRegistrationModalOpen } = useContext(UserContext);
   const ls = new SecureLS({ encodingType: "aes" });
   const fetchToken = () => {
     let token = null;
@@ -29,20 +34,20 @@ export default function PosterCard() {
   const postSideCard = (() => {
     const commonItems = [
       {
-        path: "/cropWise",
+        path: "/",
         title: "Nursery Registration",
-        openModal: false,
+        openModal: true,
       },
     ];
-    if (userDetails?.user_role === "DHO/CHO") {
+    if (userDetails?.user_role === "CHO") {
       return [
         {
-          path: "/spAppraisal",
+          path: "/Approval",
           title: "Visit Approval",
           openModal: false,
         },
         {
-          path: "/spAppraisal",
+          path: "/regisNurseries",
           title: "Registered Nurseries",
           openModal: false,
         },
@@ -68,14 +73,26 @@ export default function PosterCard() {
           openModal: false,
         },
       ];
-    } else if (userDetails?.user_role === "SLA") {
+    } else if (userDetails?.user_role === "JD") {
       return [
         {
-          path: "/requestSla",
-          title: "Request for Approval",
+          path: "/approvalRequest",
+          title: "Approval Request",
           openModal: false,
         },
-        ...commonItems,
+        {
+          path: "/forwardedOrderList",
+          title: "Forwarded Order List",
+          openModal: false,
+        },
+      ];
+    } else if (userDetails?.user_role === "nursery") {
+      return [
+        {
+          path: "/nurseryorderlist",
+          title: "Nursery Order List",
+          openModal: false,
+        },
       ];
     } else {
       return [...commonItems];
@@ -85,7 +102,11 @@ export default function PosterCard() {
   const navigate = useNavigate();
   const isActive = (path) => location.pathname === path;
   const handleCardClick = (card) => {
-    navigate(card.path);
+    if (card.title === "Nursery Registration" && card.openModal) {
+      handleNurseryRegistrationModalOpen();
+    } else {
+      navigate(card.path);
+    }
   };
   return (
     <Stack className="poster-container">
@@ -93,7 +114,7 @@ export default function PosterCard() {
         container
         sx={{
           display: "flex",
-          height: { xs: "auto", sm: "300px", lg: "250px" }, // Responsive height
+          height: { xs: "auto", sm: "300px", lg: "250px" },
         }}
       >
         <Grid
@@ -107,7 +128,15 @@ export default function PosterCard() {
           }}
         >
           <img
-            src={plantNursery}
+            src={
+              userDetails?.user_role === "HMT"
+                ? HMTImage
+                : userDetails?.user_role === "JD"
+                ? jdposter
+                : userDetails?.user_role === "nursery"
+                ? nursery
+                : plantNursery
+            }
             alt="movcd-nerlogo"
             loading="lazy"
             style={{

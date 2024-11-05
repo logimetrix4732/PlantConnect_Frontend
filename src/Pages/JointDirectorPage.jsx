@@ -8,9 +8,11 @@ import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
 import MapBox from "../Home/MapContent/MapBox";
 import HMTModal from "../Components1/PlantModals/HMTModal";
 import PlantTableContainer from "../Components1/PlantTables/PlantTableContainer";
+import JointDirectorContainer from "../Components1/JointDirecComponent/JointDirectorContainer";
 
-const JDPage = () => {
-  const { selectedState, selectedDistrict,tokenData } = useContext(UserContext);
+const JointDirectorPage = () => {
+  const { selectedState, selectedDistrict, tokenData } =
+    useContext(UserContext);
   const [level, setLevel] = useState(0);
   const [mainMapCard, setMainMapCard] = useState({});
   const [plantWiseData, setPlantWiseData] = useState([]);
@@ -31,7 +33,27 @@ const JDPage = () => {
     division: "Kumaon",
     district: "All",
   });
-
+  const mapCard = [
+    {
+      bg: "#FFD7F0",
+      // highlight: "#426d52",
+      highlight: "#FC97D6",
+      tag: "Total Number of HMT's",
+      value: mainMapCard.totalHmts || 0,
+    },
+    {
+      bg: "#FDF9D6",
+      highlight: "#FFE731",
+      tag: "Total Number of Nurseries",
+      value: mainMapCard.totalplantNames || 0,
+    },
+    {
+      bg: "#d4ecde",
+      highlight: "#426d52",
+      tag: "Total Number of Plants",
+      value: mainMapCard.totalNurseries || 0,
+    },
+  ];
   const handleClickHMTModalOpen = () => {
     setHMTModalOpen(true);
   };
@@ -204,14 +226,14 @@ const JDPage = () => {
           }}
           spacing={2}
         >
-          <Grid item>
+          {/* <Grid item>
             <AutocompleteSelect
               label={"Select Year"}
               items={["2022", "2023", "2024"]}
               handleChange={(newValue) => handleStates(newValue, "year")}
               selectedItem={selectedValue.year}
             />
-          </Grid>
+          </Grid> */}
 
           <Grid item>
             <AutocompleteSelect
@@ -243,6 +265,7 @@ const JDPage = () => {
       </Grid>
       <MapBox
         // userRole={userRole}
+        mapCard={mapCard}
         mainMapCard={mainMapCard}
         districtList={stateDropDown}
         LegendList={uniqueDistricts}
@@ -257,35 +280,8 @@ const JDPage = () => {
           padding: "20px 33px 20px 33px",
         }}
       >
-        {tokenData?.user_role === "HMT" && (
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            sx={{
-              display: "flex",
-              justifyContent: "end",
-              marginBottom: "-60px",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              style={{
-                borderRadius: "20px",
-                color: "white",
-                backgroundColor: "#426d52",
-              }}
-              onClick={handleClickHMTModalOpen}
-            >
-              Place Order
-            </Button>
-          </Grid>
-        )}
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <PlantTableContainer
+          <JointDirectorContainer
             level={level}
             setLevel={setLevel}
             tokenData={tokenData}
@@ -305,4 +301,4 @@ const JDPage = () => {
     </React.Fragment>
   );
 };
-export default JDPage;
+export default JointDirectorPage;

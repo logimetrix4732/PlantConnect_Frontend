@@ -158,8 +158,20 @@ export default function Login() {
         } else {
           navigate("/home");
         }
+      } else {
+        enqueueSnackbar(response?.data?.message || "Server Error", {
+          variant: "warning",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
       }
     } catch (error) {
+      console.log(error, "ERROR");
       enqueueSnackbar(error?.response?.data?.message || "Server Error", {
         variant: "warning",
         anchorOrigin: {

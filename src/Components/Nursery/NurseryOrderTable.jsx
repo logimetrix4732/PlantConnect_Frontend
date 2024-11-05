@@ -16,18 +16,19 @@ import {
   Pagination,
 } from "@mui/material";
 import "../../style.css";
+import actionbtn from "../../assets/images/nurseryactionbtn.png";
 
 const headCells = [
   { id: "id", label: "S.No" },
   { id: "district", label: "Plant Name" },
   { id: "hmt", label: "Variety of Plants" },
   { id: "nursery", label: "Quantity" },
-  { id: "varietyPlants", label: "Requirement" },
-  { id: "varietyPlants", label: "HMT Name" },
-  { id: "varietyPlants", label: "HMT Address" },
-  { id: "varietyPlants", label: "HMT Email" },
-  { id: "varietyPlants", label: "HMT Contact" },
-  { id: "varietyPlants", label: "Action" },
+  { id: "varietyPlants1", label: "Requirement" },
+  { id: "varietyPlants2", label: "HMT Name" },
+  { id: "varietyPlants3", label: "HMT Address" },
+  { id: "varietyPlants4", label: "HMT Email" },
+  { id: "varietyPlants5", label: "HMT Contact" },
+  { id: "varietyPlants6", label: "Action" },
 ];
 
 export default function NurseryOrderTable({ loading, handleClickParent }) {
@@ -355,7 +356,7 @@ export default function NurseryOrderTable({ loading, handleClickParent }) {
                           align="center"
                           className="colorCodeTable"
                         >
-                          "View"
+                          <img src={actionbtn} alt="actionbtn" />
                         </StyledTableCell>
                       </StyledTableRow>
                     );

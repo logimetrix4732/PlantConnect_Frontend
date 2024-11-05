@@ -1,59 +1,57 @@
-import React, { useEffect, useState } from "react";
+import { styled } from "@mui/system";
 import Table from "@mui/material/Table";
+import Paper from "@mui/material/Paper";
+import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/system";
+import React, { useEffect, useState } from "react";
+import TableContainer from "@mui/material/TableContainer";
 import {
   Box,
-  Card,
   Grid,
+  Card,
   Skeleton,
-  TextField,
-  Pagination,
   Typography,
+  Pagination,
 } from "@mui/material";
+import "../../style.css";
 
 const headCells = [
   { id: "id", label: "S.No" },
-  { id: "PlantsName", label: "Plants Name" },
-  { id: "plantVariety", label: "Plant Variety" },
-  { id: "Plant Count", label: "Plant Count" },
+  { id: "district", label: "District" },
+  { id: "hmt", label: "HMT" },
+  { id: "nursery", label: "Nursery" },
+  { id: "varietyPlants", label: "Variety Plants" },
 ];
 
-export default function PlantVarietyTable({
-  data,
-  handleClickParent,
-  loading,
-}) {
+export default function JDDistrictTable({ data, loading, handleClickParent }) {
+  console.log(data);
+  const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    const filtered = data.filter((item) =>
-      item?.plantName?.toLowerCase()?.includes(search.toLowerCase())
-    );
-    setFilteredData(filtered);
-    setPageIndex(0);
+    if (data?.length) {
+      const filtered = data.filter((item) =>
+        item.districtName?.toLowerCase()?.includes(search?.toLowerCase())
+      );
+      setFilteredData(filtered);
+      setPageIndex(0);
+    }
   }, [search, data]);
 
   const handlePageChange = (event, value) => {
     setPageIndex(value - 1);
   };
 
-  const handleEntriesPerPageChange = (event, value) => {
-    setPageSize(event.target.value);
-  };
-
   const entriesStart = pageIndex * pageSize + 1;
   const entriesEnd = Math.min((pageIndex + 1) * pageSize, filteredData.length);
+
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     borderBottom: 0,
+    minHeight: { xs: "400px", md: "400px", lg: "500px" },
     borderRight: "1px solid rgba(224, 224, 224, 1)",
     [theme.breakpoints.down("sm")]: {
       padding: "4px",
@@ -63,7 +61,6 @@ export default function PlantVarietyTable({
 
   const StyledTableContainer = styled(TableContainer)({
     borderRadius: 12,
-
     width: "100%",
     minHeight: { xs: "300px", md: "400px", lg: "628px" },
     boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.15)",
@@ -74,21 +71,26 @@ export default function PlantVarietyTable({
       backgroundColor: "#d4ecde",
     },
   });
-
   const calculateTotals = (data) => {
     return data.reduce(
       (totals, row) => {
-        totals.quantity += Number(row.quantity);
+        totals.hmtCount += Number(row.hmtCount);
+        totals.nurseryCount += Number(row.nurseryCount);
+        totals.plantCount += Number(row.plantCount);
+        for (let key in totals) {
+          totals[key] = Math.round((totals[key] + Number.EPSILON) * 100) / 100;
+        }
         return totals;
       },
       {
-        quantity: 0,
+        hmtCount: 0,
+        nurseryCount: 0,
+        plantCount: 0,
       }
     );
   };
 
   const totals = calculateTotals(filteredData);
-
   const renderSkeletonRows = (numRows) => {
     return Array.from({ length: numRows }).map((_, index) => (
       <StyledTableRow key={index}>
@@ -100,6 +102,7 @@ export default function PlantVarietyTable({
       </StyledTableRow>
     ));
   };
+
   const renderPlaceholderRows = (numRows) => {
     return Array.from({ length: numRows }).map((_, index) => (
       <StyledTableRow key={`placeholder-${index}`}>
@@ -111,8 +114,9 @@ export default function PlantVarietyTable({
       </StyledTableRow>
     ));
   };
+
   return (
-    <>
+    <React.Fragment>
       <Card
         style={{
           padding: "12px 12px 12px 12px",
@@ -134,23 +138,14 @@ export default function PlantVarietyTable({
                 fontSize: "20px",
                 fontWeight: 700,
               }}
-            ></Typography>
-          </Grid>
-          <Grid item>
-            <TextField
-              label="Search"
-              placeholder="Search District"
-              autoComplete="false"
-              value={search}
-              size="small"
-              onChange={(e) => setSearch(e.target.value)}
-              sx={{ ml: 2 }}
-            />
+            >
+              District
+            </Typography>
           </Grid>
         </Box>
 
         <StyledTableContainer component={Paper}>
-          <Table aria-label="simple table">
+          <Table aria-label="simple table" size={"medium"}>
             <TableHead style={{ backgroundColor: "#426d52" }}>
               <TableRow>
                 {headCells.map((headCell, index) => (
@@ -173,7 +168,14 @@ export default function PlantVarietyTable({
                   .map((row, ind) => {
                     const isEvenRow = ind % 2 === 1;
                     return (
-                      <StyledTableRow key={ind}>
+                      <StyledTableRow
+                        key={ind}
+                        sx={{
+                          backgroundColor: isEvenRow
+                            ? "#BEFCE8 "
+                            : "transparent",
+                        }}
+                      >
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable tableRowNumberWidth"
@@ -182,22 +184,38 @@ export default function PlantVarietyTable({
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
+                          style={{ whiteSpace: "nowrap" }}
                           className="colorCodeTable"
                         >
-                          {row.plantName}
+                          {row.districtName}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.hmtCount}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          style={{
+                            color: row.nurseryCount === 0 ? "#808080" : "blue",
+                            textDecoration:
+                              row.nurseryCount === 0 ? "none" : "underline",
+                            cursor:
+                              row.nurseryCount === 0 ? "default" : "pointer",
+                          }}
+                          onClick={() =>
+                            row.nurseryCount !== 0 && handleClickParent(row)
+                          }
+                          align="center"
+                        >
+                          {row.nurseryCount}
                         </StyledTableCell>
 
                         <StyledTableCell
-                          className="colorCodeTable"
-                          align="center"
-                        >
-                          {row.plantVariety}
-                        </StyledTableCell>
-                        <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.quantity}
+                          {row.plantCount}
                         </StyledTableCell>
                       </StyledTableRow>
                     );
@@ -205,16 +223,18 @@ export default function PlantVarietyTable({
               ) : (
                 <TableRow>
                   <StyledTableCell
+                    style={{
+                      height: "571px",
+                    }}
                     colSpan={headCells.length}
                     align="center"
-                    className="colorCodeTable"
-                    style={{ height: "500px" }}
                   >
                     No data available
                   </StyledTableCell>
                 </TableRow>
               )}
               {!loading &&
+                filteredData.length < pageSize &&
                 filteredData.length > 0 &&
                 renderPlaceholderRows(
                   Math.max(
@@ -227,13 +247,12 @@ export default function PlantVarietyTable({
                   )
                 )}
               {!loading && filteredData.length > 0 && (
-                <StyledTableRow key={"totals-dist"}>
+                <StyledTableRow key={"totals-state"}>
                   <StyledTableCell
                     align="center"
-                    className="colorCodeTable"
                     component="th"
                     scope="row"
-                    // colSpan={2}
+                    className="colorCodeTable"
                   >
                     Total
                   </StyledTableCell>
@@ -241,13 +260,14 @@ export default function PlantVarietyTable({
                     align="center"
                     className="colorCodeTable"
                   ></StyledTableCell>
-
-                  <StyledTableCell
-                    align="center"
-                    className="colorCodeTable"
-                  ></StyledTableCell>
                   <StyledTableCell align="center" className="colorCodeTable">
-                    {totals.quantity}
+                    {totals.hmtCount}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" className="colorCodeTable">
+                    {totals.nurseryCount}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" className="colorCodeTable">
+                    {totals.plantCount}
                   </StyledTableCell>
                 </StyledTableRow>
               )}
@@ -276,6 +296,6 @@ export default function PlantVarietyTable({
           </Grid>
         </Box>
       </Card>
-    </>
+    </React.Fragment>
   );
 }

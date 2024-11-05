@@ -14,7 +14,6 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import PlantModalTable from "../../Home/PlantTables/PlantModalTable";
 import EnterOTPForm from "../EnterOTPForm";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -104,7 +103,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2} mt={0.1}>
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Farmer Name
               </Typography>
@@ -116,7 +115,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 className="textfield-form"
               />
             </Grid>
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Mobile Number
               </Typography>
@@ -128,7 +127,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 className="textfield-form"
               />
             </Grid>
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Aadhaar Number
               </Typography>
@@ -140,7 +139,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 className="textfield-form"
               />
             </Grid>
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Farmer Latitude
               </Typography>
@@ -152,7 +151,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 className="textfield-form"
               />
             </Grid>
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Farmer Longitude
               </Typography>
@@ -164,7 +163,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 className="textfield-form"
               />
             </Grid>
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Farmer Address
               </Typography>
@@ -176,7 +175,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 className="textfield-form"
               />
             </Grid>
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Farmer Pin code
               </Typography>
@@ -188,8 +187,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 className="textfield-form"
               />
             </Grid>
-
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Season
               </Typography>
@@ -211,7 +209,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 ))}
               </Select>
             </Grid>
-            <Grid item lg={4} xs={6}>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Scheme
               </Typography>
@@ -233,7 +231,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 ))}
               </Select>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} sm={6} xs={122}>
               <Typography component="div" className="label-Form">
                 Plant Category
               </Typography>
@@ -255,7 +253,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 ))}
               </Select>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} sm={6} xs={122}>
               <Typography component="div" className="label-Form">
                 Plant Name
               </Typography>
@@ -277,7 +275,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 ))}
               </Select>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} sm={6} xs={122}>
               <Typography component="div" className="label-Form">
                 Plant Quantity
               </Typography>
@@ -299,7 +297,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
                 ))}
               </Select>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} sm={6} xs={122}>
               <Typography component="div" className="label-Form">
                 Plant Category
               </Typography>
@@ -322,9 +320,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
               </Select>
             </Grid>
           </Grid>
-         
-      <EnterOTPForm open={openDialog} onClose={handleClose} />
-
+          <EnterOTPForm open={openDialog} onClose={handleClose} />
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center" }}>
           <Button
@@ -333,7 +329,7 @@ const HMTModal = ({ HMTModalopen, handleHMTModalClose }) => {
               width: "130px",
               height: "40px",
               color: "#2f73fa",
-              borderRadius:"8px",
+              borderRadius: "8px",
               boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.11)",
             }}
           >

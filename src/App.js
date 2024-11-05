@@ -15,7 +15,6 @@ import Unauthorized from "./Components/Auth/Unauthorize/Unauthorized";
 import AboutUs from "./Pages/AboutUs";
 import ContactUs from "./Pages/ContactUs";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import SPPage from "./Pages/DhoChoPage";
 import SecureLS from "secure-ls";
 import SLARequestApp from "./Pages/SLARequestApp";
 import SPAppraisal from "./Pages/SPAppraisal";
@@ -27,12 +26,16 @@ import NurseryPage from "./Pages/NurseryPage";
 import NurseryOrderTable from "./Components/Nursery/NurseryOrderTable";
 import NurseryOrderPage from "./Pages/NurseryOrderPage";
 
+import DhoChoPage from "./Pages/DhoChoPage";
+import VisitApproval from "./Components1/DHOComponents/VisitApproval/VisitApproval";
+import RegisteredNurseries from "./Components1/DHOComponents/RegisteredNurseries/RegisteredNurseries";
+import JointDirectorPage from "./Pages/JointDirectorPage";
 const ROLES = {
   HMT: "HMT",
   JD: "JD",
-  DHO: "DHO/CHO",
+  CHO: "CHO",
   Nodal: "Nodal",
-  Nursery: "Nursery",
+  Nursery: "nursery",
 };
 
 const theme = createTheme({
@@ -67,7 +70,7 @@ const App = () => {
   };
 
   const tokenData = fetchToken();
-  const userRole = tokenData?.data.user_role;
+  const userRole = tokenData?.data?.user_role;
   const isAuthenticated = !!tokenData;
   const roleBasedRedirect = (userRole) => {
     switch (userRole) {
@@ -75,8 +78,8 @@ const App = () => {
         return "/hmt";
       case ROLES.JD:
         return "/jd";
-      case ROLES.DHO:
-        return "/dho&cho";
+      case ROLES.CHO:
+        return "/cho";
       case ROLES.Nodal:
         return "/nodal";
       case ROLES.Nursery:
@@ -124,7 +127,6 @@ const App = () => {
                   {/* public routes */}
 
                   <Route path="unauthorized" element={<Unauthorized />} />
-                  <Route path="/orderList" element={<OrderList />} />
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/contact" element={<ContactUs />} />
                   {/* Nusery Login */}
@@ -133,6 +135,9 @@ const App = () => {
                     path="/nurseryorderlist"
                     element={<NurseryOrderPage />}
                   />
+                  <Route path="/jd" element={<JointDirectorPage />} />
+                  <Route path="/contact" element={<ContactUs />} />
+
                   {/* we want to protect these routes */}
                   <Route element={<PersistLogin />}>
                     <Route
@@ -144,13 +149,14 @@ const App = () => {
                     </Route>
                     <Route
                       element={
-                        <RequireAuth allowedRoles={[ROLES.DHO, ROLES.JD]} />
+                        <RequireAuth allowedRoles={[ROLES.CHO, ROLES.JD]} />
                       }
                     >
                       <Route path="/spAppraisal" element={<SPAppraisal />} />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={[ROLES.HMT]} />}>
                       <Route path="/hmt" element={<Home />} />
+                      <Route path="/orderList" element={<OrderList />} />
                     </Route>
                     <Route
                       element={<RequireAuth allowedRoles={[ROLES.Nursery]} />}
@@ -162,11 +168,17 @@ const App = () => {
                       />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={[ROLES.JD]} />}>
-                      <Route path="/jd" element={<JDPage />} />
+                      {/* <Route path="/jd" element={<JDPage />} /> */}
+                      <Route path="/jd" element={<JointDirectorPage />} />
                     </Route>
 
-                    <Route element={<RequireAuth allowedRoles={[ROLES.DHO]} />}>
-                      <Route path="/dho&cho" element={<SPPage />} />
+                    <Route element={<RequireAuth allowedRoles={[ROLES.CHO]} />}>
+                      <Route path="/cho" element={<DhoChoPage />} />
+                      <Route path="/approval" element={<VisitApproval />} />
+                      <Route
+                        path="/regisNurseries"
+                        element={<RegisteredNurseries />}
+                      />
                     </Route>
                     <Route
                       element={<RequireAuth allowedRoles={[ROLES.Nodal]} />}

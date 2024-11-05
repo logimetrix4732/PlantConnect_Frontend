@@ -35,11 +35,23 @@ export const UserContextProvider = (props) => {
     }
     return token;
   };
+  const tokenData = fetchToken();
+
   const checkTokenValidity = () => {
     const token = fetchToken();
     // if (!token) {
     //   handleLogout();
     // }
+  };
+
+  //Nursery Registration
+  const [NurseryRegistrationModalopen, setNurseryRegistrationModalopen] =
+    useState(false);
+  const handleNurseryRegistrationModalOpen = () => {
+    setNurseryRegistrationModalopen(true);
+  };
+  const handleNurseryRegistrationModalClose = () => {
+    setNurseryRegistrationModalopen(false);
   };
 
   const handleLogout = () => {
@@ -174,6 +186,7 @@ export const UserContextProvider = (props) => {
     <UserContext.Provider
       value={{
         contextData: [userData, setUserData],
+        tokenData,
         loading,
         getLogin,
         getTableData,
@@ -197,6 +210,9 @@ export const UserContextProvider = (props) => {
         setFormListData,
         dragAndDropEditData,
         setDragAndDropEditData,
+        NurseryRegistrationModalopen,
+        handleNurseryRegistrationModalOpen,
+        handleNurseryRegistrationModalClose,
       }}
     >
       {/* {loading && <Loader />} */}

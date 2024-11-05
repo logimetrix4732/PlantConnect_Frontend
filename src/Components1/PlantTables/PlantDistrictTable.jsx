@@ -19,15 +19,18 @@ import "../../style.css";
 
 const headCells = [
   { id: "id", label: "S.No" },
-  { id: "district", label: "Plant Name" },
-  { id: "hmt", label: "Variety of Plants" },
-  { id: "nursery", label: "Quantity Entered" },
-  { id: "varietyPlants", label: "Quantity Approved" },
-  { id: "varietyPlants", label: "Physical Verification Status" },
-  { id: "varietyPlants", label: "Order Received" },
+  { id: "district", label: "District" },
+  { id: "hmt", label: "HMT" },
+  { id: "nursery", label: "Nursery" },
+  { id: "varietyPlants", label: "Variety Plants" },
 ];
 
-export default function NurseryTable({ data, loading, handleClickParent }) {
+export default function PlantDistrictTable({
+  data,
+  loading,
+  handleClickParent,
+}) {
+  console.log(data);
   const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -36,7 +39,7 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
   useEffect(() => {
     if (data?.length) {
       const filtered = data.filter((item) =>
-        item.plantName?.toLowerCase()?.includes(search?.toLowerCase())
+        item.districtName?.toLowerCase()?.includes(search?.toLowerCase())
       );
       setFilteredData(filtered);
       setPageIndex(0);
@@ -115,20 +118,7 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
       </StyledTableRow>
     ));
   };
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Approved":
-        return "#59c88a";
-      case "Pending":
-        return "#fabe5e";
-      case "Processing":
-        return "#feba55";
-      case "Rejected":
-        return "#f12e00";
-      default:
-        return "#000000";
-    }
-  };
+
   return (
     <React.Fragment>
       <Card
@@ -201,58 +191,35 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
                           style={{ whiteSpace: "nowrap" }}
                           className="colorCodeTable"
                         >
-                          {row.plantName}
+                          {row.districtName}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.varietyOfPlants}
+                          {row.hmtCount}
                         </StyledTableCell>
                         <StyledTableCell
-                          className="colorCodeTable"
-                          // style={{
-                          //   color:
-                          //     row.quantityEntered === 0 ? "#808080" : "blue",
-                          //   textDecoration:
-                          //     row.nurseryCount === 0 ? "none" : "underline",
-                          //   cursor:
-                          //     row.nurseryCount === 0 ? "default" : "pointer",
-                          // }}
-                          // onClick={() =>
-                          //   row.nurseryCount !== 0 && handleClickParent(row)
-                          // }
+                          style={{
+                            color: row.nurseryCount === 0 ? "#808080" : "blue",
+                            textDecoration:
+                              row.nurseryCount === 0 ? "none" : "underline",
+                            cursor:
+                              row.nurseryCount === 0 ? "default" : "pointer",
+                          }}
+                          onClick={() =>
+                            row.nurseryCount !== 0 && handleClickParent(row)
+                          }
                           align="center"
                         >
-                          {row.quantityEntered}
+                          {row.nurseryCount}
                         </StyledTableCell>
 
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.quantityApproved}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          align="center"
-                          // className="colorCodeTable"
-                          style={{
-                            color: getStatusColor(row.verificationStatus),
-                          }}
-                        >
-                          {row.verificationStatus}
-                        </StyledTableCell>
-                        {/* <StyledTableCell
-                          align="center"
-                          className="colorCodeTable"
-                        >
-                          {row.ordered}
-                        </StyledTableCell> */}
-                        <StyledTableCell
-                          align="center"
-                          className="colorCodeTable"
-                        >
-                          {row.received}
+                          {row.plantCount}
                         </StyledTableCell>
                       </StyledTableRow>
                     );
