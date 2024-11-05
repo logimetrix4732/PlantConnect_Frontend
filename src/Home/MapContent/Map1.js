@@ -9,11 +9,7 @@ import React, {
 import Legend from "./Legend";
 import SecureLS from "secure-ls";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  GoogleMap,
-  Polygon,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import { GoogleMap, Polygon, useJsApiLoader } from "@react-google-maps/api";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./Map1.css";
@@ -204,16 +200,6 @@ export default function Map1({
         }
       }
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message || "Server Error", {
-        variant: "warning",
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "left",
-        },
-        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
-        iconVariant: "success",
-        autoHideDuration: 2000,
-      });
     } finally {
       setMapLoading(false); // Stop loading indicator
     }

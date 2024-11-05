@@ -31,12 +31,20 @@ const NurseryRegistrationModal = ({
   handleNurseryRegistrationSubmit,
   handleNurseryRegistrationModalClose,
 }) => {
-  console.log(stateDropDown, "==stateDropDown");
   const field = {
     name: "fieldName",
     options: stateDropDown,
     options1: divisionDropdown,
-    options2: stateDropDown,
+    options2: [
+      "Chamoli",
+      "Dehradun",
+      "Haridwar",
+      "Pauri Garhwal",
+      "Rudraprayag",
+      "Tehri Garhwal",
+      "Uttarkashi"
+    ]
+    ,
   };
 
   return (

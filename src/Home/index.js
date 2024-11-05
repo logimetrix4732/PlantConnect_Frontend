@@ -251,19 +251,19 @@ const Home = () => {
       "owner_name",
       "owner_mobile",
       "district",
-      "plant_category",
     ];
-
     requiredFields.forEach((field) => {
       if (!nurseryRegistration[field]) {
         newErrors[field] = `${field.replace(/_/g, " ")} is required`;
       }
     });
-
+    
+    console.log(newErrors,"=newErrors")
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
   const handleNurseryRegistrationSubmit = async () => {
+    console.log("testwrok")
     if (!validateNurseryRegistration()) {
       return;
     }
@@ -274,7 +274,7 @@ const Home = () => {
         nurseryRegistration
       );
 
-      if (response && response.status === 200) {
+      handleNurseryRegistrationModalClose()
         enqueueSnackbar("Nursery Registration successful", {
           variant: "success",
           anchorOrigin: {
@@ -285,7 +285,19 @@ const Home = () => {
           iconVariant: "success",
           autoHideDuration: 2000,
         });
+      if (response && response.status === 404) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "warning",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
       }
+
     } catch (error) {
       enqueueSnackbar("Nursery Registration failed", {
         variant: "error",
