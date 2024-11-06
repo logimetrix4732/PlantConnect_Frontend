@@ -201,16 +201,6 @@ export default function Map1({
         }
       }
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message || "Server Error", {
-        variant: "warning",
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "left",
-        },
-        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
-        iconVariant: "success",
-        autoHideDuration: 2000,
-      });
     } finally {
       setMapLoading(false); // Stop loading indicator
     }

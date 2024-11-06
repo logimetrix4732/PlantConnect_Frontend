@@ -77,15 +77,14 @@ export default function PlantTableContainer({
 
       {level === 0 && (
         <PlantDistrictTable
-          data={districtData}
-          // loading={PlantDistrictTableLoder}
+          data={districtWisePlantData}
+          loading={PlantDistrictTableLoder}
           handleClickParent={handleClickParent}
         />
       )}
       {level === 1 && (
         <PlantNurseryTable
-          data={nurseryData}
-          // data={nurseryWiseData}
+          data={nurseryWiseData}
           loading={false}
           handleClickParent={handleClickParent}
         />

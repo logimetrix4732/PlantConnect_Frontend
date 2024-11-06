@@ -72,8 +72,7 @@ export default function PlanttblContainerNur({
 
       {level === 0 && (
         <PlantNurseryTable
-          data={nurseryData}
-          // data={nurseryWiseData}
+          data={nurseryWiseData}
           loading={false}
           handleClickParent={handleClickParent}
         />

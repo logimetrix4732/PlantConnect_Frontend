@@ -270,7 +270,7 @@ const Home = () => {
           zIndex: 1000,
           borderBottomLeftRadius: "53px",
           borderBottomRightRadius: "53px",
-          backgroundColor: "#16b566",
+          backgroundColor: "#426d52",
           height: "3rem",
         }}
       >
@@ -285,42 +285,8 @@ const Home = () => {
           }}
           spacing={2}
         >
-          <Grid item>
-            <MultipleSelect
-              label="Select Phase"
-              items={phaseWiseArr}
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              selectedItems={selectedPhases}
-            />
-          </Grid>
-          <Grid item>
-            <AutocompleteSelect
-              label={"Select Year"}
-              items={["2023-2024", "2024-2025", "2025-2026"]}
-              handleChange={handleYearChange}
-              selectedItem={selectedYear}
-            />
-          </Grid>
         </Grid>
       </Grid>
-      <SPAppraisalFormTable
-        data={getActivity}
-        loading={false}
-        userRole={userRole}
-        headCells={headCells}
-        fileUpload={fileUpload}
-        handleChange={handleChange}
-        handleRemoveFile={handleRemoveFile}
-        handleFileChange={handleFileChange}
-        selectedDistrict={selectedDistrict}
-        handleInputChange={handleInputChange}
-        activityTableData={activityTableData}
-        handleSelectChange={handleSelectChange}
-        handleSubmitFPOForm={handleSubmitFPOForm}
-        openSPAppraisalForm={openSPAppraisalForm}
-        handleCloseSPAppraisalForm={handleCloseSPAppraisalForm}
-      />
       <div className="map-container">
         <Grid container spacing={4} className="map-con">
           <Grid item lg={12} xs={12} sm={12}>

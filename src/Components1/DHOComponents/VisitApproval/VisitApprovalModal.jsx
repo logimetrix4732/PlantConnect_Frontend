@@ -61,7 +61,7 @@ const VisitApprovalModal = ({ open, handleClose }) => {
         <DialogContent>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Grid container spacing={1} mt={1}>
-              <Grid item lg={6}>
+              <Grid item lg={6} sm={6} xs={12}>
                 <DesktopDatePicker
                   label="Date"
                   inputFormat="MM/dd/yyyy"
@@ -71,7 +71,7 @@ const VisitApprovalModal = ({ open, handleClose }) => {
                   renderInput={(params) => <TextField {...params} fullWidth />}
                 />
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} sm={6} xs={12}>
                 <TextField
                   label="Visit Status"
                   variant="outlined"
@@ -81,7 +81,7 @@ const VisitApprovalModal = ({ open, handleClose }) => {
                   fullWidth
                 />
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} sm={6} xs={12}>
                 <DesktopDatePicker
                   label="Nursery Quantity"
                   inputFormat="MM/dd/yyyy"
@@ -91,7 +91,7 @@ const VisitApprovalModal = ({ open, handleClose }) => {
                   renderInput={(params) => <TextField {...params} fullWidth />}
                 />
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} sm={6} xs={12}>
                 <TextField
                   label="DHO Approved Quantity"
                   variant="outlined"
@@ -101,7 +101,7 @@ const VisitApprovalModal = ({ open, handleClose }) => {
                   fullWidth
                 />
               </Grid>
-              <Grid item lg={12}>
+              <Grid item lg={12} sm={12} xs={12}>
                 <TextField
                   label="Remarks"
                   variant="outlined"
