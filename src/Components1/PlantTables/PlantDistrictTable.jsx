@@ -129,7 +129,7 @@ export default function PlantDistrictTable({
         }}
         elevation={6}
       >
-        {/* <Box
+        <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
@@ -146,7 +146,7 @@ export default function PlantDistrictTable({
               District
             </Typography>
           </Grid>
-        </Box> */}
+        </Box>
 
         <StyledTableContainer component={Paper}>
           <Table aria-label="simple table" size={"medium"}>

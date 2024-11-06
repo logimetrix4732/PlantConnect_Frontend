@@ -7,9 +7,9 @@ import HMTModal from "../Components1/PlantModals/HMTModal";
 import { getFetch, postFetch } from "../Components/API/Api";
 import React, { useContext, useEffect, useState } from "react";
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
-import NurseryRegistrationModal from "../Components1/PlantModals/NurseryRegistrationModal";
 import PlantTableContainer from "../Components1/PlantTables/PlantTableContainer";
 import PlanttblContainerNur from "../Components1/PlantTables/PlanttblContainerNur";
+import NurseryRegistrationModal from "../Components1/PlantModals/NurseryRegistrationModal";
 
 const Home = () => {
   const {
@@ -24,23 +24,39 @@ const Home = () => {
   const [plantWiseData, setPlantWiseData] = useState([]);
   const [stateDropDown, SetStateDropDown] = useState([]);
   const [HMTModalopen, setHMTModalOpen] = useState(false);
+  const [divisionDropdown, setDivisionDropdown] = useState([]);
   const [nurseryWiseData, setNurseryWiseData] = useState([]);
   const [uniqueDistricts, setUniqueDistricts] = useState([]);
-  const [districtDropdown, setDistrictDropdown] = useState([]);
   const [plantVarietiesData, setPlantVarietiesData] = useState([]);
   const [districtWisePlantData, setDistrictWisePlantData] = useState([]);
   const [PlantNurseryTableLoder, setPlantNurseryTableLoder] = useState(false);
   const [PlantVarietyTableLoder, setPlantVarietyTableLoder] = useState(false);
   const [PlantDistrictTableLoder, setPlantDistrictTableLoder] = useState(false);
+  const [nurseryRegistration, setNurseryRegistration] = useState({
+    nursery_name: "",
+    license_no: "",
+    latitude: "",
+    longitude: "",
+    state: "",
+    division: "",
+    pin_code: "",
+    address: "",
+    area: "",
+    owner_name: "",
+    owner_mobile: "",
+    district: "",
+    plant_category: "",
+  });
   const [breadcrumbData, setBreadcrumbData] = useState(
     tokenData?.data?.user_role === "HMT" ? ["Nurseries"] : ["District"]
-  );  
+  );
   const [selectedValue, setSelectedValue] = useState({
     year: "2024",
     state: "Uttarakhand",
     division: "Kumaon",
     district: "All",
   });
+
   //HMT Form Modal
   const handleClickHMTModalOpen = () => {
     setHMTModalOpen(true);
@@ -57,17 +73,69 @@ const Home = () => {
       [key]: newValue,
     }));
   };
-  //Division and dristrict according data comes
+  //state Dropdowns Api
   useEffect(() => {
-    const fetchUser = async () => {
-      setPlantDistrictTableLoder(true);
-      const url = `${process.env.REACT_APP_API_URL_LOCAL}/districts?divisionName=${selectedValue.division}&districtName=${selectedValue.district}`;
+    const fetchStateDropdownData = async () => {
+      const url = `${process.env.REACT_APP_API_URL_LOCAL}/location/states`;
       try {
         const response = await getFetch(url);
         if (response.status === 200) {
+          SetStateDropDown(response?.data?.states);
+        }
+      } catch (error) {
+        enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+          variant: "warning",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+      }
+    };
+
+    fetchStateDropdownData();
+  }, []);
+  //Division Dropdowns Api
+  useEffect(() => {
+    const fetchDivisionDropdownData = async () => {
+      const url = `${process.env.REACT_APP_API_URL_LOCAL}/location/divisions?state=${selectedValue.state}`;
+      try {
+        const response = await getFetch(url);
+        if (response.status === 200) {
+          setDivisionDropdown(response?.data?.divisions);
+        }
+      } catch (error) {
+        enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+          variant: "warning",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+      }
+    };
+    if (nurseryRegistration?.state?.length || selectedValue?.state) {
+      fetchDivisionDropdownData();
+    }
+  }, [nurseryRegistration.state.length, selectedValue?.state]);
+  //Fetch table data according to state and division dropdown
+  useEffect(() => {
+    const fetchUser = async () => {
+      setPlantDistrictTableLoder(true);
+      const url = `${process.env.REACT_APP_API_URL_LOCAL}/location/states/Uttarakhand/divisions/Garhwal/hmt-count?state=${selectedValue.state}&division=${selectedValue.division}`;
+      try {
+        const response = await getFetch(url);
+        if (response.status === 200) {
+          console.log(response.data.data);
           setPlantDistrictTableLoder(false);
-          setMainMapCard(response?.data);
-          setDistrictWisePlantData(response?.data?.data);
+          setMainMapCard(response?.data?.data);
+          setDistrictWisePlantData(response?.data?.data?.collectiveData);
         }
       } catch (error) {
         setPlantDistrictTableLoder(false);
@@ -85,43 +153,20 @@ const Home = () => {
     };
 
     fetchUser();
-  }, [selectedValue.district, selectedValue.division]);
-  //Division according district dropdown comes
-  useEffect(() => {
-    const fetchUser = async () => {
-      const url = `${process.env.REACT_APP_API_URL_LOCAL}/district/division?division=${selectedValue.division}`;
-      try {
-        const response = await getFetch(url);
-        if (response.status === 200) {
-          setPlantDistrictTableLoder(false);
-          setDistrictDropdown(["All", ...response?.data?.data]);
-        }
-      } catch (error) {
-        enqueueSnackbar(error?.response?.data?.message || "Server Error", {
-          variant: "warning",
-          anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "left",
-          },
-          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
-          iconVariant: "success",
-          autoHideDuration: 2000,
-        });
-      }
-    };
-
-    fetchUser();
   }, [selectedValue.division]);
-  //district according numrserys comes
+
+  //district according nursery table data comes.
   const fetchNurserys = async (district) => {
     setPlantNurseryTableLoder(true);
-    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/district?district=${district}`;
+    let data = {
+      district: district,
+    };
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/by-district`;
     try {
-      const response = await getFetch(url);
-      if (response.status === 200) {
-        setPlantNurseryTableLoder(false);
-        setNurseryWiseData(response.data);
-      }
+      const response = await postFetch(url, data);
+      setPlantNurseryTableLoder(false);
+      console.log(response);
+      setNurseryWiseData(response);
     } catch (error) {
       enqueueSnackbar(error?.response?.data?.message || "Server Error", {
         variant: "warning",
@@ -135,6 +180,9 @@ const Home = () => {
       });
     }
   };
+  useEffect(()=>{
+    fetchNurserys("All")
+  },[])
   //nursery according Plants comes
   const fetchPlants = async (nurseryId) => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/plantName?nurseryId=${nurseryId}`;
@@ -177,23 +225,10 @@ const Home = () => {
       });
     }
   };
+
   //nursery registration
   const [errors, setErrors] = useState({});
-  const [nurseryRegistration, setNurseryRegistration] = useState({
-    nursery_name: "",
-    license_no: "",
-    latitude: "",
-    longitude: "",
-    state: "",
-    division: "",
-    pin_code: "",
-    address: "",
-    area: "",
-    owner_name: "",
-    owner_mobile: "",
-    district: "",
-    plant_category: "",
-  });
+
   const handleChangeNurseryRegistration = (event) => {
     const { name, value } = event.target;
     setNurseryRegistration((prevFormData) => ({
@@ -216,32 +251,136 @@ const Home = () => {
       "owner_name",
       "owner_mobile",
       "district",
-      "plant_category",
     ];
-
     requiredFields.forEach((field) => {
       if (!nurseryRegistration[field]) {
         newErrors[field] = `${field.replace(/_/g, " ")} is required`;
       }
     });
-
-    // Additional validations (e.g., mobile number format, latitude/longitude range) can be added here
-
+    
+    console.log(newErrors,"=newErrors")
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+    return Object.keys(newErrors).length === 0;
   };
   const handleNurseryRegistrationSubmit = async () => {
+    console.log("testwrok")
     if (!validateNurseryRegistration()) {
-      return; // Return if validation fails
+      return;
     }
 
     try {
       const response = await postFetch(
-        `${process.env.REACT_APP_API_URL_LOCAL}/api/nurseries/register`,
+        `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/register`,
         nurseryRegistration
       );
 
-      // Check if response has a status code
+      handleNurseryRegistrationModalClose()
+        enqueueSnackbar("Nursery Registration successful", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+      if (response && response.status === 404) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "warning",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+      }
+
+    } catch (error) {
+      enqueueSnackbar("Nursery Registration failed", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+        iconVariant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
+
+  //HMT Place Order
+  const [OTPModal, setOTPModal] = useState(false);
+  const [HMTOrder, setHMTOder] = useState({
+    farmer_name: "",
+    mobile_number: "",
+    aadhaar_number: "",
+    latitude: "",
+    longitude: "",
+    address: "",
+    pin_code: "",
+    plant_category: "",
+    plant_name: "",
+    plant_quantity: "",
+    season: "",
+    scheme: "",
+  });
+  const handleOpenOTPModal = () => {
+    setOTPModal(true);
+  };
+
+  const handleCloseOTPModal = () => {
+    setOTPModal(false);
+  };
+  const handleChangeHMTOder = (event) => {
+    const { name, value } = event.target;
+    setHMTOder((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+  const validateHMTOrder = () => {
+    const newErrors = {};
+    const requiredFields = [
+      "farmer_name",
+      "mobile_number",
+      "aadhaar_number",
+      "latitude",
+      "longitude",
+      "address",
+      "pin_code",
+      "plant_category",
+      "plant_name",
+      "plant_quantity",
+      "season",
+      "scheme",
+    ];
+
+    requiredFields.forEach((field) => {
+      if (!HMTOrder[field]) {
+        newErrors[field] = `${field.replace(/_/g, " ")} is required`;
+      }
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleHMTOrderSubmit = async () => {
+    handleOpenOTPModal();
+    if (!validateHMTOrder()) {
+      return;
+    }
+
+    try {
+      const response = await postFetch(
+        `${process.env.REACT_APP_API_URL_LOCAL}/hmt/submit-demand`,
+        nurseryRegistration
+      );
+
       if (response && response.status === 200) {
         enqueueSnackbar("Nursery Registration successful", {
           variant: "success",
@@ -255,9 +394,6 @@ const Home = () => {
         });
       }
     } catch (error) {
-      console.error("Registration error:", error);
-
-      // Show error notification
       enqueueSnackbar("Nursery Registration failed", {
         variant: "error",
         anchorOrigin: {
@@ -273,11 +409,18 @@ const Home = () => {
   return (
     <React.Fragment>
       <HMTModal
+        OTPModal={OTPModal}
+        HMTOrder={HMTOrder}
         HMTModalopen={HMTModalopen}
+        handleCloseOTPModal={handleCloseOTPModal}
+        handleChangeHMTOder={handleChangeHMTOder}
         handleHMTModalClose={handleHMTModalClose}
+        handleHMTOrderSubmit={handleHMTOrderSubmit}
       />
       <NurseryRegistrationModal
         errors={errors}
+        stateDropDown={stateDropDown}
+        divisionDropdown={divisionDropdown}
         nurseryRegistration={nurseryRegistration}
         NurseryRegistrationModalopen={NurseryRegistrationModalopen}
         handleChangeNurseryRegistration={handleChangeNurseryRegistration}
@@ -312,7 +455,7 @@ const Home = () => {
           {/* <Grid item>
             <AutocompleteSelect
               label={"Select Year"}
-              items={["2022", "2023", "2024"]}
+              items={["2024", "2025", "2026"]}
               handleChange={(newValue) => handleStates(newValue, "year")}
               selectedItem={selectedValue.year}
             />
@@ -321,7 +464,7 @@ const Home = () => {
           <Grid item>
             <AutocompleteSelect
               label={"Select State"}
-              items={["Uttarakhand"]}
+              items={stateDropDown}
               handleChange={(newValue) => handleStates(newValue, "state")}
               selectedItem={selectedValue.state}
             />
@@ -330,18 +473,9 @@ const Home = () => {
           <Grid item>
             <AutocompleteSelect
               label={"Select Division"}
-              items={["Kumaon", "Garhwal"]}
+              items={divisionDropdown}
               handleChange={(newValue) => handleStates(newValue, "division")}
               selectedItem={selectedValue.division}
-            />
-          </Grid>
-
-          <Grid item>
-            <AutocompleteSelect
-              label={"Select District"}
-              items={districtDropdown}
-              handleChange={(newValue) => handleStates(newValue, "district")}
-              selectedItem={selectedValue.district}
             />
           </Grid>
         </Grid>

@@ -38,7 +38,7 @@ export default function PlantNurseryTable({
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    const filtered = data.filter((item) =>
+    const filtered = data?.filter((item) =>
       item?.nurseryName?.toLowerCase()?.includes(search.toLowerCase())
     );
     setFilteredData(filtered);
@@ -54,7 +54,7 @@ export default function PlantNurseryTable({
   };
 
   const entriesStart = pageIndex * pageSize + 1;
-  const entriesEnd = Math.min((pageIndex + 1) * pageSize, filteredData.length);
+  const entriesEnd = Math.min((pageIndex + 1) * pageSize, filteredData?.length);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     borderBottom: 0,
     borderRight: "1px solid rgba(224, 224, 224, 1)",

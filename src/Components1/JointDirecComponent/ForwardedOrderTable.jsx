@@ -7,6 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/system";
+import actionBtn from "../../assets/images/jdactionbtn.png";
+
 import {
   Box,
   Grid,
@@ -15,36 +17,128 @@ import {
   Typography,
   Pagination,
   Button,
-  Stack,
+  IconButton,
 } from "@mui/material";
+// import NotificationLoder from "../../Home/NotificationLoder";
+
 const headCells = [
   { id: "id", label: "S.No" },
-  { id: "HMTName", label: "HMT Name" },
-  { id: "HMT Address", label: "HMT Address" },
-  { id: "Plants Varity", label: "Plants Varity" },
-  { id: "Plant Name", label: "Plant Name" },
-  { id: "Plant Quantity", label: "Plant Quantity" },
-  { id: "Action", label: "Action" },
+  { id: "district", label: "District" },
+  { id: "dhoName", label: "DHO Name" },
+
+  { id: "hmtName", label: "HMT Name" },
+  { id: "plantName", label: "Plant Name" },
+  { id: "plantVariety", label: "Plant Variety" },
+  { id: "plantRequire", label: "Plant Requirement" },
+  { id: "action", label: "Action" },
 ];
-export default function SPAppraisalTable({
-  data,
+
+const data = [
+  {
+    sNo: 1,
+    district: "Arunachal Pradesh",
+    dhoName: "A",
+    hmtName: "A",
+    plantName: "A",
+    plantVariety: "A",
+    plantsRequirement: 46,
+  },
+  {
+    sNo: 2,
+    district: "Assam",
+    dhoName: "B",
+    hmtName: "B",
+    plantName: "B",
+    plantVariety: "B",
+    plantsRequirement: 16,
+  },
+  {
+    sNo: 3,
+    district: "Manipur",
+    dhoName: "C",
+    hmtName: "C",
+    plantName: "C",
+    plantVariety: "C",
+    plantsRequirement: 65,
+  },
+  {
+    sNo: 4,
+    district: "Meghalaya",
+    dhoName: "D",
+    hmtName: "D",
+    plantName: "D",
+    plantVariety: "D",
+    plantsRequirement: 28,
+  },
+  {
+    sNo: 5,
+    district: "Mizoram",
+    dhoName: "E",
+    hmtName: "E",
+    plantName: "E",
+    plantVariety: "E",
+    plantsRequirement: 56,
+  },
+  {
+    sNo: 6,
+    district: "Nagaland",
+    dhoName: "F",
+    hmtName: "F",
+    plantName: "F",
+    plantVariety: "F",
+    plantsRequirement: 38,
+  },
+  {
+    sNo: 7,
+    district: "Tripura",
+    dhoName: "G",
+    hmtName: "G",
+    plantName: "G",
+    plantVariety: "G",
+    plantsRequirement: 42,
+  },
+  {
+    sNo: 8,
+    district: "Sikkim",
+    dhoName: "H",
+    hmtName: "H",
+    plantName: "H",
+    plantVariety: "H",
+    plantsRequirement: 56,
+  },
+];
+
+export default function ForwardedOrderTable({
+  //   data,
   loading,
-  userRole,
+  handleClickParent,
+  slaTrue = false,
   onEditForm,
-  handleClickOpenSPAppraisalForm,
 }) {
   const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [filteredData, setFilteredData] = useState([]);
 
+  //   useEffect(() => {
+  //     if (data?.length) {
+  //       const filtered = data.filter((item) =>
+  //         item.spName?.toLowerCase()?.includes(search?.toLowerCase())
+  //       );
+  //       setFilteredData(filtered);
+  //       setPageIndex(0);
+  //     }
+  //   }, [search, data]);
+
   useEffect(() => {
-    if (data?.length) {
-      const filtered = data.filter((item) =>
-        item.Quarter?.toLowerCase()?.includes(search?.toLowerCase())
+    if (data) {
+      setFilteredData(
+        data.filter((project) =>
+          Object.values(project).some((value) =>
+            value.toString().toLowerCase().includes(search?.toLowerCase())
+          )
+        )
       );
-      setFilteredData(filtered);
-      setPageIndex(0);
     }
   }, [search, data]);
 
@@ -73,34 +167,35 @@ export default function SPAppraisalTable({
     boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.15)",
     overflowX: "auto", // Enable horizontal scrolling if needed
   });
-
   const StyledTableRow = styled(TableRow)({
     "&:nth-of-type(even)": {
-      backgroundColor: "#d4ecde",
+      backgroundColor: "#BEFCE8",
     },
   });
   const calculateTotals = (data) => {
     return data.reduce(
       (totals, row) => {
         const parseNumber = (value) => Number(value?.replace(/,/g, ""));
-        totals.stateCount += parseNumber(row.stateCount);
-        totals.districtCount += parseNumber(row.districtCount);
-        totals.fpoCount += parseNumber(row.fpoCount);
+        // totals.stateCount += parseNumber(row.stateCount);
+        // totals.districtCount += parseNumber(row.districtCount);
         totals.figCount += parseNumber(row.figCount);
         totals.landArea += parseNumber(row.landArea);
         totals.farmerCount += parseNumber(row.farmerCount);
+
+        // totals.fpoCount += parseNumber(row.fpoCount);
+
         for (let key in totals) {
           totals[key] = Math.round((totals[key] + Number.EPSILON) * 100) / 100;
         }
         return totals;
       },
       {
-        stateCount: 0,
-        districtCount: 0,
-        fpoCount: 0,
+        // stateCount: 0,
+        // districtCount: 0,
         figCount: 0,
         landArea: 0,
         farmerCount: 0,
+        // fpoCount: 0,
       }
     );
   };
@@ -110,7 +205,7 @@ export default function SPAppraisalTable({
     return Array.from({ length: numRows }).map((_, index) => (
       <StyledTableRow key={index}>
         {headCells.map((headCell) => (
-          <StyledTableCell key={headCell.id} align="center">
+          <StyledTableCell key={headCell.label} align="center">
             <Skeleton variant="text" />
           </StyledTableCell>
         ))}
@@ -129,58 +224,38 @@ export default function SPAppraisalTable({
       </StyledTableRow>
     ));
   };
+  function formatDate(isoDate) {
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Approved":
-        return "#59c88a";
-      case "Under Progress":
-        return "#feba55";
-      case "Rejected":
-        return "#f12e00";
-      default:
-        return "#000000";
-    }
-  };
-
+    return `${day}/${month}/${year},${hours}:${minutes}`;
+  }
   return (
     <>
-      <Stack flexDirection="row" justifyContent="space-between" mb={1}>
-        <Typography
-          color="text.secondary"
-          sx={{
-            fontSize: "20px",
-            fontWeight: 700,
-            display: "flex",
-            alignItems: "flex-end",
-          }}
-        >
-          Phase IV
-        </Typography>
-        {userRole == "SP" && (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleClickOpenSPAppraisalForm}
-            style={{
-              borderRadius: "20px",
-              color: "#FFFFFF",
-              marginLeft: "10px",
-            }}
-          >
-            Create New
-          </Button>
-        )}
-      </Stack>
       <Card
         style={{
+          padding: "12px 12px 12px 12px",
           borderRadius: "12px",
         }}
         elevation={6}
       >
+        {/* <Typography
+          color="text.secondary"
+          sx={{
+            fontSize: "20px",
+            fontWeight: 700,
+            paddingBottom: "12px",
+          }}
+        >
+          SP
+        </Typography> */}
         <StyledTableContainer component={Paper}>
           <Table aria-label="simple table" size={"medium"}>
-            <TableHead style={{ backgroundColor: "#426d52" }}>
+            <TableHead style={{ backgroundColor: "#426D52" }}>
               <TableRow>
                 {headCells.map((headCell, index) => (
                   <StyledTableCell
@@ -201,6 +276,20 @@ export default function SPAppraisalTable({
                   .slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)
                   .map((row, ind) => {
                     const isEvenRow = ind % 2 === 1;
+                    const originalTimestamp = row?.createdAt;
+                    const originalDate = new Date(originalTimestamp);
+                    const options = {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    };
+                    const convertedTimestamp = originalDate?.toLocaleString(
+                      "en-GB",
+                      options
+                    );
                     return (
                       <StyledTableRow
                         key={ind}
@@ -219,62 +308,84 @@ export default function SPAppraisalTable({
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
+                          // style={{
+                          //   color: "blue",
+                          //   textDecoration: "underline",
+                          //   cursor: "pointer",
+                          // }}
+                          // onClick={() => handleClickParent(row)}
                         >
-                          {row.Quarter}
+                          {row.district}
+                        </StyledTableCell>
+                        {/* <StyledTableCell
+                          style={{
+                            color: "blue",
+                            textDecoration: "underline",
+                            cursor: "pointer",
+                          }}
+                          onClick={() =>
+                            row.fpoCount !== 0 && handleClickParent(row)
+                          }
+                          align="center"
+                        >
+                          {row.fpoCount}
+                        </StyledTableCell> */}
+
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.dhoName}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row["Created On"]}
+                          {row.hmtName}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.Year}
+                          {row.plantName}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          // style={{
+                          //   color:
+                          //     row.Status === "Approved"
+                          //       ? "var(--green,#43C17A)"
+                          //       : row.Status === "Pending"
+                          //       ? "var(--yellow, #FEBA55)"
+                          //       : "#F12E00",
+                          // }}
+                          className="colorCodeTable"
+                        >
+                          {row.plantVariety}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row["Requisition Amount"]}
+                          {row.plantsRequirement}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
-                          className="colorCodeTable"
+                          // className="colorCodeTable"
                         >
-                          {row["Requisition Date"]}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          align="center"
-                          className="colorCodeTable"
-                        >
-                          {row["Approved Amount"]}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          align="center"
-                          className="tableRowNameWidth"
-                          style={{ color: getStatusColor(row.Status) }}
-                        >
-                          {row.Status}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          align="center"
-                          className="colorCodeTable"
-                        >
-                          {row["Remarks by DLMC"]}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          align="center"
-                          className="colorCodeTable"
-                        >
-                          <Button
-                            className="SP-table-Button"
-                            onClick={() => onEditForm(row.Quarter)}
-                          >
-                            View
-                          </Button>
+                          <IconButton onClick={() => handleClickParent(row)}>
+                            <img
+                              style={{
+                                height: "auto",
+                                objectFit: "contain",
+                                // backgroundColor: "red",
+                              }}
+                              src={actionBtn}
+                              alt="actionbtn"
+                              key="jdactionbtn"
+                              // key={row.plantName}
+                            />
+                          </IconButton>
                         </StyledTableCell>
                       </StyledTableRow>
                     );
@@ -288,12 +399,12 @@ export default function SPAppraisalTable({
                     colSpan={headCells.length}
                     align="center"
                   >
+                    {/* <NotificationLoder /> */}
                     No data available
                   </StyledTableCell>
                 </TableRow>
               )}
               {!loading &&
-                filteredData.length < pageSize &&
                 filteredData.length > 0 &&
                 renderPlaceholderRows(
                   Math.max(
@@ -305,6 +416,19 @@ export default function SPAppraisalTable({
                       ).length
                   )
                 )}
+              {/* {!loading &&
+                filteredData.length < pageSize &&
+                filteredData.length > 0 &&
+                renderPlaceholderRows(
+                  Math.max(
+                    0,
+                    pageSize -
+                      filteredData.slice(
+                        pageIndex * pageSize,
+                        (pageIndex + 1) * pageSize
+                      ).length
+                  )
+                )} */}
               {!loading && filteredData.length > 0 && (
                 <StyledTableRow key={"totals-state"}>
                   <StyledTableCell
@@ -319,28 +443,21 @@ export default function SPAppraisalTable({
                     align="center"
                     className="colorCodeTable"
                   ></StyledTableCell>
-                  <StyledTableCell
-                    align="center"
-                    className="colorCodeTable"
-                  ></StyledTableCell>
-                  <StyledTableCell
-                    align="center"
-                    className="colorCodeTable"
-                  ></StyledTableCell>
+                  {/* <StyledTableCell align="center" className="colorCodeTable">
+                    {totals.districtCount}
+                  </StyledTableCell> */}
+                  {/* <StyledTableCell align="center" className="colorCodeTable">
+                    {totals.fpoCount}
+                  </StyledTableCell> */}
                   <StyledTableCell align="center" className="colorCodeTable">
-                    0
+                    {totals.figCount}
                   </StyledTableCell>
-                  <StyledTableCell
-                    align="center"
-                    className="colorCodeTable"
-                  ></StyledTableCell>
                   <StyledTableCell align="center" className="colorCodeTable">
-                    0
+                    {totals.landArea}
                   </StyledTableCell>
-                  <StyledTableCell
-                    align="center"
-                    className="colorCodeTable"
-                  ></StyledTableCell>
+                  <StyledTableCell align="center" className="colorCodeTable">
+                    {totals.farmerCount}
+                  </StyledTableCell>
                 </StyledTableRow>
               )}
             </TableBody>

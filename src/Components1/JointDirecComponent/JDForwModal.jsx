@@ -14,19 +14,21 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import EnterOTPForm from "../EnterOTPForm";
+import PlantModalTable from "../PlantTables/PlantModalTable";
+// import EnterOTPForm from "../EnterOTPForm";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const HMTModal = ({
+const JDForwModal = ({
   OTPModal,
   HMTOrder,
-  HMTModalopen,
+  tableData,
+  jdModalOpen,
   handleCloseOTPModal,
   handleChangeHMTOder,
-  handleHMTModalClose,
+  handleJDModalClose,
   handleHMTOrderSubmit,
 }) => {
   const field = [
@@ -35,14 +37,13 @@ const HMTModal = ({
     },
   ];
 
-
   return (
     <React.Fragment>
       <Dialog
-        open={HMTModalopen}
+        open={jdModalOpen}
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleHMTModalClose}
+        onClose={handleJDModalClose}
         aria-describedby="alert-dialog-slide-description"
         maxWidth="lg"
         fullWidth
@@ -57,10 +58,10 @@ const HMTModal = ({
           }}
           id="customized-dialog-title"
         >
-          <span>Form</span>
+          <span className="colorCodeTable">Near By Nurseries</span>
           <IconButton
             aria-label="close"
-            onClick={handleHMTModalClose}
+            onClick={handleJDModalClose}
             sx={{
               position: "absolute",
               right: 8,
@@ -72,7 +73,7 @@ const HMTModal = ({
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <Grid container spacing={2} mt={0.1}>
+          {/* <Grid container spacing={2} mt={0.1}>
             <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
                 Farmer Name
@@ -301,7 +302,10 @@ const HMTModal = ({
               </Select>
             </Grid>
           </Grid>
-          <EnterOTPForm open={OTPModal} onClose={handleCloseOTPModal} />
+          <EnterOTPForm open={OTPModal} onClose={handleCloseOTPModal} /> */}
+          <Grid container spacing={2} mt={0.1}>
+            <PlantModalTable tableData={tableData} />
+          </Grid>
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center" }}>
           <Button
@@ -314,7 +318,7 @@ const HMTModal = ({
               boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.11)",
             }}
           >
-            Send OTP
+            Submit
           </Button>
         </DialogActions>
       </Dialog>
@@ -322,4 +326,4 @@ const HMTModal = ({
   );
 };
 
-export default HMTModal;
+export default JDForwModal;

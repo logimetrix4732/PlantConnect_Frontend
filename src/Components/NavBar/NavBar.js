@@ -253,7 +253,7 @@ export default function NavBar(props) {
                           ? userDetails.user_role === "HMT"
                             ? "HMT"
                             : userDetails.user_role === "JD"
-                            ? "JD"
+                            ? userDetails.username
                             : userDetails.user_role === "CHO"
                             ? "DHO & CHO"
                             : userDetails.user_role === "nursery"

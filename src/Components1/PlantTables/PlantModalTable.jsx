@@ -18,21 +18,38 @@ import {
   Pagination,
   IconButton,
   Button,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
 import NotificationLoder from "../../Home/NotificationLoder";
-export default function PlantModalTable({ loading, tableData, headCells }) {
+import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
+import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
+const headCells = [
+  { id: "number", label: "No." },
+  { id: "hmtName", label: "HMT Name" },
+  { id: "plantVariety", label: "Plant Variety" },
+  { id: "plantQuantity", label: "Plant Quantity" },
+  { id: "hmtAddress", label: "HMT Address" },
+  { id: "contactDetail", label: "Contact Detail" },
+  { id: "distance", label: "Distance" },
+  { id: "requirement", label: "Requirement" },
+  { id: "action", label: "Action" },
+];
+export default function PlantModalTable({ loading, tableData }) {
   const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    if (tableData?.length) {
-      const filtered = tableData.filter((item) =>
-        item.name?.toLowerCase()?.includes(search?.toLowerCase())
+    if (tableData) {
+      setFilteredData(
+        tableData.filter((project) =>
+          Object.values(project).some((value) =>
+            value.toString().toLowerCase().includes(search?.toLowerCase())
+          )
+        )
       );
-      setFilteredData(filtered);
-      setPageIndex(0);
     }
   }, [search, tableData]);
 
@@ -161,19 +178,25 @@ export default function PlantModalTable({ loading, tableData, headCells }) {
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.name}
+                          {row.hmtName}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable tableRowNameWidth"
                         >
-                          {row.availability}
+                          {row.plantVariety}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable tableRowNumberWidth"
                         >
-                          {row.address}
+                          {row.plantQuantity}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable tableRowNumberWidth"
+                        >
+                          {row.hmtAddress}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
@@ -206,7 +229,7 @@ export default function PlantModalTable({ loading, tableData, headCells }) {
                           >
                             <input
                               type="number"
-                              defaultValue={0}
+                              defaultValue={row.requirement}
                               style={{
                                 width: "60px",
                                 height: "25px",
@@ -229,14 +252,27 @@ export default function PlantModalTable({ loading, tableData, headCells }) {
                           <Button
                             style={{
                               color: "#fff",
-                              width: "89px",
+                              width: "80px",
+                              marginRight: "10px",
                               height: "30px",
                               background: "#808080",
                               boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.13)",
                               borderRadius: "4px",
                             }}
                           >
-                            ADD
+                            Approval
+                          </Button>
+                          <Button
+                            style={{
+                              color: "#fff",
+                              width: "80px",
+                              height: "30px",
+                              background: "#E2C800",
+                              boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.13)",
+                              borderRadius: "4px",
+                            }}
+                          >
+                            Onward
                           </Button>
                         </StyledTableCell>
                       </StyledTableRow>
