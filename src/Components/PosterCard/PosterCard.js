@@ -4,6 +4,8 @@ import SecureLS from "secure-ls";
 import HMTImage from "../../assets/images/HMTImage.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import plantNursery from "../../assets/images/plantNursery.png";
+import nursery from "../../assets/images/nurserylogin.png";
+import jdposter from "../../assets/images/jdposter.png";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import {
@@ -31,13 +33,11 @@ export default function PosterCard() {
   let userDetails = fetchToken()?.data;
   const postSideCard = (() => {
     const commonItems = [
-     
       {
         path: "/",
         title: "Nursery Registration",
         openModal: true,
       },
-    
     ];
     if (userDetails?.user_role === "CHO") {
       return [
@@ -65,14 +65,34 @@ export default function PosterCard() {
           openModal: false,
         },
       ];
-    } else if (userDetails?.user_role === "SLA") {
+    } else if (userDetails?.user_role === "NURSERY") {
       return [
         {
-          path: "/requestSla",
-          title: "Request for Approval",
+          path: "/nurseryOrderList",
+          title: "Nursery Order List",
           openModal: false,
         },
-        ...commonItems,
+      ];
+    } else if (userDetails?.user_role === "JD") {
+      return [
+        {
+          path: "/approvalRequest",
+          title: "Approval Request",
+          openModal: false,
+        },
+        {
+          path: "/forwardedOrderList",
+          title: "Forwarded Order List",
+          openModal: false,
+        },
+      ];
+    } else if (userDetails?.user_role === "nursery") {
+      return [
+        {
+          path: "/nurseryorderlist",
+          title: "Nursery Order List",
+          openModal: false,
+        },
       ];
     } else {
       return [...commonItems];
@@ -112,7 +132,9 @@ export default function PosterCard() {
               userDetails?.user_role === "HMT"
                 ? HMTImage
                 : userDetails?.user_role === "JD"
-                ? "jdImage"
+                ? jdposter
+                : userDetails?.user_role === "nursery"
+                ? nursery
                 : plantNursery
             }
             alt="movcd-nerlogo"

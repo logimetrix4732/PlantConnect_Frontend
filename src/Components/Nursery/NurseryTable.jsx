@@ -19,17 +19,15 @@ import "../../style.css";
 
 const headCells = [
   { id: "id", label: "S.No" },
-  { id: "district", label: "District" },
-  { id: "hmt", label: "HMT" },
-  { id: "nursery", label: "Nursery" },
-  { id: "varietyPlants", label: "Variety Plants" },
+  { id: "district", label: "Plant Name" },
+  { id: "hmt", label: "Variety of Plants" },
+  { id: "nursery", label: "Quantity Entered" },
+  { id: "varietyPlants", label: "Quantity Approved" },
+  { id: "varietyPlants", label: "Physical Verification Status" },
+  { id: "varietyPlants", label: "Order Received" },
 ];
 
-export default function PlantDistrictTable({
-  data,
-  loading,
-  handleClickParent,
-}) {
+export default function NurseryTable({ data, loading, handleClickParent }) {
   const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -38,7 +36,7 @@ export default function PlantDistrictTable({
   useEffect(() => {
     if (data?.length) {
       const filtered = data.filter((item) =>
-        item.districtName?.toLowerCase()?.includes(search?.toLowerCase())
+        item.plantName?.toLowerCase()?.includes(search?.toLowerCase())
       );
       setFilteredData(filtered);
       setPageIndex(0);
@@ -117,7 +115,20 @@ export default function PlantDistrictTable({
       </StyledTableRow>
     ));
   };
-
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Approved":
+        return "#59c88a";
+      case "Pending":
+        return "#fabe5e";
+      case "Processing":
+        return "#feba55";
+      case "Rejected":
+        return "#f12e00";
+      default:
+        return "#000000";
+    }
+  };
   return (
     <React.Fragment>
       <Card
@@ -190,35 +201,58 @@ export default function PlantDistrictTable({
                           style={{ whiteSpace: "nowrap" }}
                           className="colorCodeTable"
                         >
-                          {row.districtName}
+                          {row.plantName}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.total_no_of_hmts}
+                          {row.varietyOfPlants}
                         </StyledTableCell>
                         <StyledTableCell
-                          style={{
-                            color: row.total_no_of_nurseries == 0 ? "#808080" : "blue",
-                            textDecoration:
-                              row.total_no_of_nurseries == 0 ? "none" : "underline",
-                            cursor:
-                              row.total_no_of_nurseries == 0 ? "default" : "pointer",
-                          }}
-                          onClick={() =>
-                            row.total_no_of_nurseries !== 0 && handleClickParent(row)
-                          }
+                          className="colorCodeTable"
+                          // style={{
+                          //   color:
+                          //     row.quantityEntered === 0 ? "#808080" : "blue",
+                          //   textDecoration:
+                          //     row.nurseryCount === 0 ? "none" : "underline",
+                          //   cursor:
+                          //     row.nurseryCount === 0 ? "default" : "pointer",
+                          // }}
+                          // onClick={() =>
+                          //   row.nurseryCount !== 0 && handleClickParent(row)
+                          // }
                           align="center"
                         >
-                          {row.total_no_of_nurseries}
+                          {row.quantityEntered}
                         </StyledTableCell>
 
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.plantCount}
+                          {row.quantityApproved}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          // className="colorCodeTable"
+                          style={{
+                            color: getStatusColor(row.verificationStatus),
+                          }}
+                        >
+                          {row.verificationStatus}
+                        </StyledTableCell>
+                        {/* <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.ordered}
+                        </StyledTableCell> */}
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.received}
                         </StyledTableCell>
                       </StyledTableRow>
                     );

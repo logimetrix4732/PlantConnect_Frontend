@@ -452,14 +452,14 @@ const Home = () => {
           }}
           spacing={2}
         >
-          <Grid item>
+          {/* <Grid item>
             <AutocompleteSelect
               label={"Select Year"}
               items={["2024", "2025", "2026"]}
               handleChange={(newValue) => handleStates(newValue, "year")}
               selectedItem={selectedValue.year}
             />
-          </Grid>
+          </Grid> */}
 
           <Grid item>
             <AutocompleteSelect

@@ -76,7 +76,7 @@ export default function NavBar(props) {
     return token;
   };
   let userDetails = fetchToken()?.data;
-console.log(userDetails,"==userDetails")
+  console.log(userDetails, "==userDetails");
   const handleLogout = () => {
     ls.removeAll();
     setAuth(null);
@@ -127,7 +127,7 @@ console.log(userDetails,"==userDetails")
         ]
       : userDetails && userDetails.user_role === "JD"
       ? [
-          { text: "Home", path: "/dc" },
+          { text: "Home", path: "/jd" },
           { text: "About The Scheme", path: "/about" },
           { text: "Contact Us", path: "/contact" },
         ]
@@ -137,12 +137,12 @@ console.log(userDetails,"==userDetails")
           { text: "About The Scheme", path: "/about" },
           { text: "Contact Us", path: "/contact" },
         ]
-      : userDetails && userDetails.user_role === "SLA"
+      : userDetails && userDetails.user_role === "nursery"
       ? [
-          { text: "Home", path: "/sla" },
+          { text: "Home", path: "/nursery" },
           { text: "About The Scheme", path: "/about" },
           { text: "Contact Us", path: "/contact" },
-          { text: "Notification", path: "/notification" },
+          // { text: "Notification", path: "/notification" },
         ]
       : [
           { text: "Home", path: "/home" },
@@ -174,12 +174,11 @@ console.log(userDetails,"==userDetails")
                         alt="emblem"
                       />
                     </Grid>
-                    <Grid item  m={1}>
+                    <Grid item m={1}>
                       <Typography
                         className="ministry-text"
                         fontSize={13}
                         color="text.secondary"
-                       
                       >
                         Government of India <br />
                         Ministry of Agriculture and Farmers Welfare
@@ -257,8 +256,8 @@ console.log(userDetails,"==userDetails")
                             ? "JD"
                             : userDetails.user_role === "CHO"
                             ? "DHO & CHO"
-                            : userDetails.user_role === "SLA"
-                            ? "SLA"
+                            : userDetails.user_role === "nursery"
+                            ? userDetails.username
                             : "Login"
                           : "Login"}
                       </Typography>

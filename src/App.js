@@ -22,14 +22,20 @@ import CookieConsent from "react-cookie-consent";
 import JDPage from "./Pages/JDPage";
 import NodalDir from "./Pages/NodalDir";
 import OrderList from "./Pages/OrderList";
+import NurseryPage from "./Pages/NurseryPage";
+import NurseryOrderTable from "./Components/Nursery/NurseryOrderTable";
+import NurseryOrderPage from "./Pages/NurseryOrderPage";
+
 import DhoChoPage from "./Pages/DhoChoPage";
 import VisitApproval from "./Components1/DHOComponents/VisitApproval/VisitApproval";
 import RegisteredNurseries from "./Components1/DHOComponents/RegisteredNurseries/RegisteredNurseries";
+import JointDirectorPage from "./Pages/JointDirectorPage";
 const ROLES = {
   HMT: "HMT",
   JD: "JD",
   CHO: "CHO",
   Nodal: "Nodal",
+  Nursery: "nursery",
 };
 
 const theme = createTheme({
@@ -76,6 +82,8 @@ const App = () => {
         return "/cho";
       case ROLES.Nodal:
         return "/nodal";
+      case ROLES.Nursery:
+        return "/nursery";
       default:
         return "/home";
     }
@@ -121,6 +129,13 @@ const App = () => {
                   <Route path="unauthorized" element={<Unauthorized />} />
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/contact" element={<ContactUs />} />
+                  {/* Nusery Login */}
+                  <Route path="/nursery" element={<NurseryPage />} />
+                  <Route
+                    path="/nurseryorderlist"
+                    element={<NurseryOrderPage />}
+                  />
+                  <Route path="/jd" element={<JointDirectorPage />} />
                   <Route path="/contact" element={<ContactUs />} />
 
                   {/* we want to protect these routes */}
@@ -143,9 +158,18 @@ const App = () => {
                       <Route path="/hmt" element={<Home />} />
                       <Route path="/orderList" element={<OrderList />} />
                     </Route>
-
+                    <Route
+                      element={<RequireAuth allowedRoles={[ROLES.Nursery]} />}
+                    >
+                      <Route path="/nursery" element={<NurseryPage />} />
+                      <Route
+                        path="/nurseryorderlist"
+                        element={<NurseryOrderPage />}
+                      />
+                    </Route>
                     <Route element={<RequireAuth allowedRoles={[ROLES.JD]} />}>
-                      <Route path="/jd" element={<JDPage />} />
+                      {/* <Route path="/jd" element={<JDPage />} /> */}
+                      <Route path="/jd" element={<JointDirectorPage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[ROLES.CHO]} />}>

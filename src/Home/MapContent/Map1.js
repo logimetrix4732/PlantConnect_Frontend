@@ -52,7 +52,8 @@ export default function Map1({
     id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_API_GOOGLE_MAP,
   });
-  const [mapCenter, setMapCenter] = useState({ lat: 26.2006, lng: 92.9376 });
+  // const [mapCenter, setMapCenter] = useState({ lat: 26.2006, lng: 92.9376 });
+  const [mapCenter, setMapCenter] = useState({ lat: 30.0668, lng: 79.0193 });
   const [mapZoom, setMapZoom] = useState(7);
   const [highlightedColor, setHighlightedColor] = useState(null);
 

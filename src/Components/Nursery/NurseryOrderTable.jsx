@@ -16,20 +16,121 @@ import {
   Pagination,
 } from "@mui/material";
 import "../../style.css";
+import actionbtn from "../../assets/images/nurseryactionbtn.png";
 
 const headCells = [
   { id: "id", label: "S.No" },
-  { id: "district", label: "District" },
-  { id: "hmt", label: "HMT" },
-  { id: "nursery", label: "Nursery" },
-  { id: "varietyPlants", label: "Variety Plants" },
+  { id: "district", label: "Plant Name" },
+  { id: "hmt", label: "Variety of Plants" },
+  { id: "nursery", label: "Quantity" },
+  { id: "varietyPlants1", label: "Requirement" },
+  { id: "varietyPlants2", label: "HMT Name" },
+  { id: "varietyPlants3", label: "HMT Address" },
+  { id: "varietyPlants4", label: "HMT Email" },
+  { id: "varietyPlants5", label: "HMT Contact" },
+  { id: "varietyPlants6", label: "Action" },
 ];
 
-export default function PlantDistrictTable({
-  data,
-  loading,
-  handleClickParent,
-}) {
+export default function NurseryOrderTable({ loading, handleClickParent }) {
+  const data = [
+    {
+      id: 1,
+      district: "A",
+      hmt: "80",
+      nursery: "80",
+      varietyPlantsRequirement: "80",
+      hmtName: "HMT 1",
+      hmtAddress: "123 Green St",
+      hmtEmail: "hmt1@example.com",
+      hmtContact: "1234567890",
+      action: "View",
+    },
+    {
+      id: 2,
+      district: "B",
+      hmt: "45",
+      nursery: "45",
+      varietyPlantsRequirement: "45",
+      hmtName: "HMT 2",
+      hmtAddress: "456 Forest Rd",
+      hmtEmail: "hmt2@example.com",
+      hmtContact: "0987654321",
+      action: "View",
+    },
+    {
+      id: 3,
+      district: "C",
+      hmt: "33",
+      nursery: "33",
+      varietyPlantsRequirement: "33",
+      hmtName: "HMT 3",
+      hmtAddress: "789 Plant Ave",
+      hmtEmail: "hmt3@example.com",
+      hmtContact: "1122334455",
+      action: "View",
+    },
+    {
+      id: 4,
+      district: "D",
+      hmt: "66",
+      nursery: "66",
+      varietyPlantsRequirement: "66",
+      hmtName: "HMT 4",
+      hmtAddress: "321 Farm Ln",
+      hmtEmail: "hmt4@example.com",
+      hmtContact: "2233445566",
+      action: "View",
+    },
+    {
+      id: 5,
+      district: "E",
+      hmt: "12",
+      nursery: "12",
+      varietyPlantsRequirement: "12",
+      hmtName: "HMT 5",
+      hmtAddress: "654 Meadow Blvd",
+      hmtEmail: "hmt5@example.com",
+      hmtContact: "3344556677",
+      action: "View",
+    },
+    {
+      id: 6,
+      district: "F",
+      hmt: "55",
+      nursery: "55",
+      varietyPlantsRequirement: "55",
+      hmtName: "HMT 6",
+      hmtAddress: "987 Greenbelt Cir",
+      hmtEmail: "hmt6@example.com",
+      hmtContact: "4455667788",
+      action: "View",
+    },
+    {
+      id: 7,
+      district: "G",
+      hmt: "3",
+      nursery: "3",
+      varietyPlantsRequirement: "3",
+      hmtName: "HMT 7",
+      hmtAddress: "111 Rural Rd",
+      hmtEmail: "hmt7@example.com",
+      hmtContact: "5566778899",
+      action: "View",
+    },
+    {
+      id: 8,
+      district: "H",
+      hmt: "2",
+      nursery: "2",
+      varietyPlantsRequirement: "2",
+      hmtName: "HMT 8",
+      hmtAddress: "222 Orchard St",
+      hmtEmail: "hmt8@example.com",
+      hmtContact: "6677889900",
+      action: "View",
+    },
+  ];
+
   const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -38,7 +139,7 @@ export default function PlantDistrictTable({
   useEffect(() => {
     if (data?.length) {
       const filtered = data.filter((item) =>
-        item.districtName?.toLowerCase()?.includes(search?.toLowerCase())
+        item.district?.toLowerCase()?.includes(search?.toLowerCase())
       );
       setFilteredData(filtered);
       setPageIndex(0);
@@ -190,35 +291,72 @@ export default function PlantDistrictTable({
                           style={{ whiteSpace: "nowrap" }}
                           className="colorCodeTable"
                         >
-                          {row.districtName}
+                          {row.district}
                         </StyledTableCell>
-                        <StyledTableCell
+                        {/* <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.total_no_of_hmts}
-                        </StyledTableCell>
+                          {row.hmt}
+                        </StyledTableCell> */}
                         <StyledTableCell
-                          style={{
-                            color: row.total_no_of_nurseries == 0 ? "#808080" : "blue",
-                            textDecoration:
-                              row.total_no_of_nurseries == 0 ? "none" : "underline",
-                            cursor:
-                              row.total_no_of_nurseries == 0 ? "default" : "pointer",
-                          }}
-                          onClick={() =>
-                            row.total_no_of_nurseries !== 0 && handleClickParent(row)
-                          }
+                          className="colorCodeTable"
+                          // style={{
+                          //   color: row.nurseryCount === 0 ? "#808080" : "blue",
+                          //   textDecoration:
+                          //     row.nurseryCount === 0 ? "none" : "underline",
+                          //   cursor:
+                          //     row.nurseryCount === 0 ? "default" : "pointer",
+                          // }}
+                          // onClick={() =>
+                          //   row.nurseryCount !== 0 && handleClickParent(row)
+                          // }
                           align="center"
                         >
-                          {row.total_no_of_nurseries}
+                          {row.nursery}
                         </StyledTableCell>
 
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.plantCount}
+                          {row.varietyPlantsRequirement}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.varietyPlantsRequirement}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.hmtName}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.hmtAddress}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.hmtEmail}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.hmtContact}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          <img src={actionbtn} alt="actionbtn" />
                         </StyledTableCell>
                       </StyledTableRow>
                     );

@@ -84,6 +84,7 @@ export default function Login() {
             roles: [data.data.user_role],
           });
           ls.set("authToken", JSON.stringify(data.data));
+          console.log(data.data, "========");
           if (data.data.user_role === "JS") {
             navigate("/da&fw", { replace: true });
             window.history.replaceState("/da&fw");
@@ -136,12 +137,13 @@ export default function Login() {
     };
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/login`;
     try {
-      const response = await postFetchData(url,data);
-      console.log(response)
+      const response = await postFetchData(url, data);
+      console.log(response);
       ls.set("authToken", JSON.stringify(response));
       if (response.success === true) {
-        console.log(response)
+        console.log(response);
         if (response.data.user_role === "HMT") {
+          console.log("hfkjdshfkshdf");
           navigate("/da&fw", { replace: true });
           window.history.replaceState("/da&fw");
         } else if (response.data.user_role === "DC") {
@@ -155,9 +157,21 @@ export default function Login() {
           window.history.replaceState("/sla");
         } else {
           navigate("/home");
-      }
+        }
+      } else {
+        enqueueSnackbar(response?.data?.message || "Server Error", {
+          variant: "warning",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
       }
     } catch (error) {
+      console.log(error, "ERROR");
       enqueueSnackbar(error?.response?.data?.message || "Server Error", {
         variant: "warning",
         anchorOrigin: {
@@ -170,7 +184,6 @@ export default function Login() {
       });
     }
   };
-
 
   const [formErrors, setFormErrors] = useState({});
   const handleChange = (event) => {

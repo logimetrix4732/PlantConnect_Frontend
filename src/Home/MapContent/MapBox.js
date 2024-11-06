@@ -9,11 +9,11 @@ import exportBtn from "../../assets/images/exportBtn.png";
 export default function MapBox({
   LegendList,
   mainMapCard,
+  mapCard,
   districtList,
   selectedState,
   selectedDistrict,
 }) {
-
   return (
     <div className="map-container">
       <Grid container spacing={4} className="map-con">
@@ -34,7 +34,7 @@ export default function MapBox({
           className="map-cards-grid-item"
         >
           <Grid item lg={12} sm={12} xs={12} className="map-grid-item">
-            <MapCards mainMapCard={mainMapCard} />
+            <MapCards mainMapCard={mainMapCard} mapCard={mapCard} />
           </Grid>
         </Grid>
       </Grid>
