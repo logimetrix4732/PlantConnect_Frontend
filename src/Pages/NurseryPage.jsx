@@ -120,12 +120,14 @@ const NurseryPage = () => {
     division: "Kumaon",
     district: "All",
   });
-  const [nurseryFormData, setNurseryFormData] = useState({
-    plant_name: "",
-    category: "",
-    quantity: "",
-    unit_price: "",
-  });
+  const [nurseryFormData, setNurseryFormData] = useState([
+    {
+      plant_name: "",
+      category: "",
+      quantity: "",
+      unit_price: "",
+    },
+  ]);
   const mapCard = [
     {
       bg: "#FFD7F0",
@@ -165,22 +167,27 @@ const NurseryPage = () => {
   const tokenData = fetchToken()?.data;
   console.log(tokenData, "TOKEN DATA ");
   const handleClickNurseryModalOpen = () => {
-    setNurseryFormData({
-      plant_name: "",
-      category: "",
-      quantity: "",
-      unit_price: "",
-    });
+    setNurseryFormData([
+      {
+        plant_name: "",
+        category: "",
+        quantity: "",
+        unit_price: "",
+        nursery_id: tokenData?.id,
+      },
+    ]);
     setHMTModalOpen(true);
   };
 
   const handleHMTModalClose = () => {
-    setNurseryFormData({
-      plant_name: "",
-      category: "",
-      quantity: "",
-      unit_price: "",
-    });
+    setNurseryFormData([
+      {
+        plant_name: "",
+        category: "",
+        quantity: "",
+        unit_price: "",
+      },
+    ]);
     setHMTModalOpen(false);
   };
 
@@ -277,7 +284,7 @@ const NurseryPage = () => {
 
   //nursery according Plants comes
   const fetchPlantsData = async (nurseryId) => {
-    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/${nurseryId}/plants/status`;
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/plants/status?nursery_id=${nurseryId}`;
     try {
       const response = await getFetch(url);
       console.log(response, "Respomsne283");
@@ -324,12 +331,12 @@ const NurseryPage = () => {
   };
   const handleDataSubmit = async () => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/plants`;
-    const data = {
+    const data = [
       ...nurseryFormData,
-      nursery_id: tokenData?.id,
-      quantity: parseInt(nurseryFormData.quantity),
-      unit_price: parseFloat(nurseryFormData.unit_price),
-    };
+
+      // quantity: parseInt(nurseryFormData.quantity),
+      // unit_price: parseFloat(nurseryFormData.unit_price),
+    ];
     try {
       const response = await postFetch(url, data);
       console.log(response, "RESPONSEEEE");
@@ -371,10 +378,11 @@ const NurseryPage = () => {
         HMTModalopen={HMTModalopen}
         handleHMTModalClose={handleHMTModalClose}
         onSubmit={handleDataSubmit}
+        nurseryId={tokenData?.id}
       />
       <Grid
         style={{
-          marginTop: "3rem",
+          // marginTop: "3rem",
           position: "sticky",
           top: -0.1,
           zIndex: 1000,

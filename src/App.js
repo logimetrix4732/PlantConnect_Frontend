@@ -30,6 +30,7 @@ import DhoChoPage from "./Pages/DhoChoPage";
 import VisitApproval from "./Components1/DHOComponents/VisitApproval/VisitApproval";
 import RegisteredNurseries from "./Components1/DHOComponents/RegisteredNurseries/RegisteredNurseries";
 import JointDirectorPage from "./Pages/JointDirectorPage";
+import ForwardedOrderPage from "./Pages/ForwardedOrderPage";
 const ROLES = {
   HMT: "HMT",
   JD: "JD",
@@ -41,7 +42,8 @@ const ROLES = {
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#16b566",
+      main: "#426D52",
+      // main: "#16b566",
     },
   },
   typography: {
@@ -170,6 +172,10 @@ const App = () => {
                     <Route element={<RequireAuth allowedRoles={[ROLES.JD]} />}>
                       {/* <Route path="/jd" element={<JDPage />} /> */}
                       <Route path="/jd" element={<JointDirectorPage />} />
+                      <Route
+                        path="/forwardedOrderList"
+                        element={<ForwardedOrderPage />}
+                      />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[ROLES.CHO]} />}>

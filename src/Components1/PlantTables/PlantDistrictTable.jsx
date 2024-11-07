@@ -30,6 +30,7 @@ export default function PlantDistrictTable({
   loading,
   handleClickParent,
 }) {
+  // console.log(data);
   const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -128,7 +129,7 @@ export default function PlantDistrictTable({
         }}
         elevation={6}
       >
-        {/* <Box
+        <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
@@ -145,7 +146,7 @@ export default function PlantDistrictTable({
               District
             </Typography>
           </Grid>
-        </Box> */}
+        </Box>
 
         <StyledTableContainer component={Paper}>
           <Table aria-label="simple table" size={"medium"}>
@@ -196,22 +197,22 @@ export default function PlantDistrictTable({
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.total_no_of_hmts}
+                          {row.hmtCount}
                         </StyledTableCell>
                         <StyledTableCell
                           style={{
-                            color: row.total_no_of_nurseries == 0 ? "#808080" : "blue",
+                            color: row.nurseryCount === 0 ? "#808080" : "blue",
                             textDecoration:
-                              row.total_no_of_nurseries == 0 ? "none" : "underline",
+                              row.nurseryCount === 0 ? "none" : "underline",
                             cursor:
-                              row.total_no_of_nurseries == 0 ? "default" : "pointer",
+                              row.nurseryCount === 0 ? "default" : "pointer",
                           }}
                           onClick={() =>
-                            row.total_no_of_nurseries !== 0 && handleClickParent(row)
+                            row.nurseryCount !== 0 && handleClickParent(row)
                           }
                           align="center"
                         >
-                          {row.total_no_of_nurseries}
+                          {row.nurseryCount}
                         </StyledTableCell>
 
                         <StyledTableCell

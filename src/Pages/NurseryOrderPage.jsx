@@ -59,7 +59,7 @@ export default function NurseryOrderPage() {
     <>
       <Grid
         style={{
-          marginTop: "3rem",
+          // marginTop: "3rem",
           position: "sticky",
           top: -0.1,
           zIndex: 1000,
@@ -69,7 +69,7 @@ export default function NurseryOrderPage() {
           height: "3rem",
         }}
       >
-        <Grid
+        {/* <Grid
           container
           sx={{
             display: "flex",
@@ -80,14 +80,14 @@ export default function NurseryOrderPage() {
           }}
           spacing={2}
         >
-          {/* <Grid item>
+          <Grid item>
             <AutocompleteSelect
               label={"Select Year"}
               items={["2022", "2023", "2024"]}
               handleChange={(newValue) => handleStates(newValue, "year")}
               selectedItem={selectedValue.year}
             />
-          </Grid> */}
+          </Grid>
 
           <Grid item>
             <AutocompleteSelect
@@ -115,9 +115,9 @@ export default function NurseryOrderPage() {
               selectedItem={selectedValue.district}
             />
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
-      <MapBox
+      {/* <MapBox
         mapCard={mapCard}
         // userRole={userRole}
         mainMapCard={mainMapCard}
@@ -125,7 +125,7 @@ export default function NurseryOrderPage() {
         LegendList={uniqueDistricts}
         selectedState={selectedState}
         selectedDistrict={selectedDistrict}
-      />
+      /> */}
       <Grid
         container
         spacing={4}

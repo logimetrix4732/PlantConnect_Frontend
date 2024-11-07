@@ -206,53 +206,53 @@ export default function Map1({
     }
   };
 
-  useEffect(() => {
-    // fetchData({ stateName: selectedState });
-    if (userRole !== "DC") {
-      if (selectedState === "All" && districtList.length > 0) {
-        let filteredStates = districtList.filter((state) => state !== "All");
-        setHighlightedColor(null);
-        fetchData({ stateName: filteredStates });
-      } else if (
-        selectedState !== "All" &&
-        !selectedDistrict &&
-        districtList.length > 0
-      ) {
-        setHighlightedColor(null);
-        fetchData({
-          districtName: LegendList[selectedState]?.districts.map(
-            (district) => district.name
-          ),
-        });
-      }
-    }
-  }, [districtList, selectedState]);
+  // useEffect(() => {
+  //   // fetchData({ stateName: selectedState });
+  //   if (userRole !== "DC") {
+  //     if (selectedState === "All" && districtList.length > 0) {
+  //       let filteredStates = districtList.filter((state) => state !== "All");
+  //       setHighlightedColor(null);
+  //       fetchData({ stateName: filteredStates });
+  //     } else if (
+  //       selectedState !== "All" &&
+  //       !selectedDistrict &&
+  //       districtList.length > 0
+  //     ) {
+  //       setHighlightedColor(null);
+  //       fetchData({
+  //         districtName: LegendList[selectedState]?.districts.map(
+  //           (district) => district.name
+  //         ),
+  //       });
+  //     }
+  //   }
+  // }, [districtList, selectedState]);
 
-  useEffect(() => {
-    if (selectedDistrict?.name === "All" && districtList.length > 0) {
-      setHighlightedColor(
-        districtList.indexOf(selectedDistrict.name) > 0
-          ? getColor(districtList.indexOf(selectedDistrict.name))
-          : selectedDistrict.color
-      );
-      fetchData({
-        districtName: districtList,
-      });
-    } else if (
-      selectedDistrict?.name !== "All" &&
-      districtList.length > 0 &&
-      selectedDistrict?.name
-    ) {
-      setHighlightedColor(
-        districtList.indexOf(selectedDistrict.name) > 0
-          ? getColor(districtList.indexOf(selectedDistrict.name))
-          : selectedDistrict.color
-      );
-      fetchData({
-        districtName: [selectedDistrict?.name],
-      });
-    }
-  }, [selectedDistrict]);
+  // useEffect(() => {
+  //   if (selectedDistrict?.name === "All" && districtList.length > 0) {
+  //     setHighlightedColor(
+  //       districtList.indexOf(selectedDistrict.name) > 0
+  //         ? getColor(districtList.indexOf(selectedDistrict.name))
+  //         : selectedDistrict.color
+  //     );
+  //     fetchData({
+  //       districtName: districtList,
+  //     });
+  //   } else if (
+  //     selectedDistrict?.name !== "All" &&
+  //     districtList.length > 0 &&
+  //     selectedDistrict?.name
+  //   ) {
+  //     setHighlightedColor(
+  //       districtList.indexOf(selectedDistrict.name) > 0
+  //         ? getColor(districtList.indexOf(selectedDistrict.name))
+  //         : selectedDistrict.color
+  //     );
+  //     fetchData({
+  //       districtName: [selectedDistrict?.name],
+  //     });
+  //   }
+  // }, [selectedDistrict]);
 
   const onUnmount = React.useCallback(function callback(map) {}, []);
 
