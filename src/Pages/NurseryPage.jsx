@@ -284,7 +284,7 @@ const NurseryPage = () => {
 
   //nursery according Plants comes
   const fetchPlantsData = async (nurseryId) => {
-    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/${nurseryId}/plants/status`;
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/plants/status?nursery_id=${nurseryId}`;
     try {
       const response = await getFetch(url);
       console.log(response, "Respomsne283");
