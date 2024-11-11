@@ -197,30 +197,38 @@ export default function PlantDistrictTable({
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.hmtCount}
+                          {row.total_no_of_hmts}
                         </StyledTableCell>
                         <StyledTableCell
                           style={{
-                            color: row.nurseryCount === 0 ? "#808080" : "blue",
+                            color:
+                              row.total_no_of_nurseries === 0
+                                ? "#808080"
+                                : "blue",
                             textDecoration:
-                              row.nurseryCount === 0 ? "none" : "underline",
+                              row.total_no_of_nurseries === 0
+                                ? "none"
+                                : "underline",
                             cursor:
-                              row.nurseryCount === 0 ? "default" : "pointer",
+                              row.total_no_of_nurseries === 0
+                                ? "default"
+                                : "pointer",
                           }}
                           onClick={() =>
-                            row.nurseryCount !== 0 && handleClickParent(row)
+                            row.total_no_of_nurseries !== 0 &&
+                            handleClickParent(row)
                           }
                           align="center"
                         >
-                          {row.nurseryCount}
+                          {row.total_no_of_nurseries}
                         </StyledTableCell>
 
-                        <StyledTableCell
+                        {/* <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
                           {row.plantCount}
-                        </StyledTableCell>
+                        </StyledTableCell> */}
                       </StyledTableRow>
                     );
                   })

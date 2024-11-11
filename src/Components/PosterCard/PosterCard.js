@@ -39,7 +39,7 @@ export default function PosterCard() {
         openModal: true,
       },
     ];
-    if (userDetails?.user_role === "CHO") {
+    if (userDetails?.user_role === "CHO" || userDetails?.user_role === "DHO") {
       return [
         {
           path: "/Approval",
@@ -52,7 +52,7 @@ export default function PosterCard() {
           openModal: false,
         },
         {
-          path: "/spAppraisal",
+          path: "/hmtOrder",
           title: "HMT Order",
           openModal: false,
         },

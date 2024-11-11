@@ -12,6 +12,8 @@ export default function JointDirectorContainer({
   level,
   setLevel,
   tokenData,
+  setSelectedDistrict,
+  selectedDistrict,
   fetchPlants,
   fetchNurserys,
   plantWiseData,
@@ -27,6 +29,7 @@ export default function JointDirectorContainer({
     if (level === 0) {
       setLevel(1);
       fetchNurserys(row?.districtName);
+
       setBreadcrumbData([...breadcrumbData, row.districtName]);
     } else if (level === 1) {
       setLevel(2);
@@ -34,7 +37,7 @@ export default function JointDirectorContainer({
       setBreadcrumbData([...breadcrumbData, row.nurseryName]);
     } else if (level === 2) {
       setLevel(3);
-      fetchPlantVariety(row?.plantName);
+      fetchPlantVariety(row.nursery_id, row?.plantName);
       setBreadcrumbData([...breadcrumbData, row.plantName]);
     } else if (level === 2) {
       setLevel(3);
@@ -43,6 +46,9 @@ export default function JointDirectorContainer({
   };
 
   const handleBreadcrumbClick = (index) => {
+    if (index === 0) {
+      setSelectedDistrict({ ...selectedDistrict, district_name: "All" });
+    }
     setLevel(index);
     setBreadcrumbData(breadcrumbData.slice(0, index + 1));
   };
@@ -76,23 +82,24 @@ export default function JointDirectorContainer({
 
       {level === 0 && (
         <PlantDistrictTable
-          data={districtData}
+          // data={districtData}
+          data={districtWisePlantData}
           // loading={PlantDistrictTableLoder}
           handleClickParent={handleClickParent}
         />
       )}
       {level === 1 && (
         <PlantNurseryTable
-          data={nurseryData}
-          // data={nurseryWiseData}
+          // data={nurseryData}
+          data={nurseryWiseData}
           loading={false}
           handleClickParent={handleClickParent}
         />
       )}
       {level === 2 && (
         <PlantNameTable
-          data={plantData}
-          // data={plantWiseData}
+          // data={plantData}
+          data={plantWiseData}
           loading={false}
           handleClickParent={handleClickParent}
         />

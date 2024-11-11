@@ -138,28 +138,31 @@ export default function Login() {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/login`;
     try {
       const response = await postFetchData(url, data);
-      console.log(response);
-      ls.set("authToken", JSON.stringify(response));
-      if (response.success === true) {
+      console.log(response, "141===>");
+      ls.set("authToken", JSON.stringify(response.data));
+      if (response.status === 200) {
         console.log(response);
-        if (response.data.user_role === "HMT") {
-          console.log("hfkjdshfkshdf");
-          navigate("/da&fw", { replace: true });
-          window.history.replaceState("/da&fw");
-        } else if (response.data.user_role === "DC") {
-          navigate("/dc", { replace: true });
-          window.history.replaceState("/dc");
-        } else if (response.data.user_role === "SP") {
-          navigate("/spPage", { replace: true });
-          window.history.replaceState("/spPage");
-        } else if (response.data.user_role === "SLA") {
-          navigate("/sla", { replace: true });
-          window.history.replaceState("/sla");
+        if (response.data.data.user_role === "HMT") {
+          // console.log("hfkjdshfkshdf");
+          navigate("/hmt", { replace: true });
+          // window.history.replaceState("/hmt");
+        } else if (response.data.data.user_role === "nursery") {
+          navigate("/nursery", { replace: true });
+          // window.history.replaceState("/dc");
+        } else if (response.data.data.user_role === "DHO") {
+          navigate("/dho", { replace: true });
+          // window.history.replaceState("/dho");
+        } else if (response.data.data.user_role === "CHO") {
+          navigate("/cho", { replace: true });
+          // window.history.replaceState("/cho");
+        } else if (response.data.data.user_role === "JD") {
+          navigate("/jd", { replace: true });
+          // window.history.replaceState("/jd");
         } else {
           navigate("/home");
         }
       } else {
-        enqueueSnackbar(response?.data?.message || "Server Error", {
+        enqueueSnackbar(response?.response.data?.message || "Server Error", {
           variant: "warning",
           anchorOrigin: {
             vertical: "bottom",
@@ -172,7 +175,7 @@ export default function Login() {
       }
     } catch (error) {
       console.log(error, "ERROR");
-      enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+      enqueueSnackbar(error.message || "Server Error11", {
         variant: "warning",
         anchorOrigin: {
           vertical: "bottom",

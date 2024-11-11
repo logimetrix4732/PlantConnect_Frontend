@@ -112,114 +112,116 @@ const NurseryModal = ({
             (plant) => plant.name === data.plant_name
           );
           return (
-            <Grid
-              container
-              spacing={2}
-              key={index}
-              sx={{ display: "flex", alignItems: "end" }}
-            >
-              <Grid item lg={3} sm={4} xs={12}>
-                <Typography component="div" className="label-Form">
-                  Plant Name
-                </Typography>
-                <Autocomplete
-                  freeSolo
-                  options={plantOptions.map((option) => option.name)}
-                  value={data.plant_name || ""}
-                  onChange={(event, value) =>
-                    handlePlantNameChange(index, event, value)
-                  }
-                  onInputChange={(event, value) =>
-                    handlePlantNameChange(index, event, value)
-                  }
-                  loading={loading}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      placeholder="Select Plant Name"
-                      size="small"
-                      variant="outlined"
-                      className="textfield-form"
-                      InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                          <>
-                            {loading ? (
-                              <CircularProgress color="inherit" size={20} />
-                            ) : null}
-                            {params.InputProps.endAdornment}
-                          </>
-                        ),
-                      }}
-                    />
-                  )}
-                />
+            <>
+              <Grid
+                container
+                spacing={2}
+                key={index}
+                sx={{ display: "flex", alignItems: "end" }}
+              >
+                <Grid item lg={3} sm={4} xs={12}>
+                  <Typography component="div" className="label-Form">
+                    Plant Name
+                  </Typography>
+                  <Autocomplete
+                    freeSolo
+                    options={plantOptions.map((option) => option.name)}
+                    value={data.plant_name || ""}
+                    onChange={(event, value) =>
+                      handlePlantNameChange(index, event, value)
+                    }
+                    onInputChange={(event, value) =>
+                      handlePlantNameChange(index, event, value)
+                    }
+                    loading={loading}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        placeholder="Select Plant Name"
+                        size="small"
+                        variant="outlined"
+                        className="textfield-form"
+                        InputProps={{
+                          ...params.InputProps,
+                          endAdornment: (
+                            <>
+                              {loading ? (
+                                <CircularProgress color="inherit" size={20} />
+                              ) : null}
+                              {params.InputProps.endAdornment}
+                            </>
+                          ),
+                        }}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item lg={3} sm={4} xs={12}>
+                  <Typography component="div" className="label-Form">
+                    Variety of Plant
+                  </Typography>
+                  <Autocomplete
+                    freeSolo
+                    options={selectedPlant ? selectedPlant.varieties : []}
+                    value={data.category || ""}
+                    onChange={(event, value) =>
+                      handleCategoryChange(index, event, value)
+                    }
+                    onInputChange={(event, value) =>
+                      handleCategoryChange(index, event, value)
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        placeholder="Select Variety"
+                        size="small"
+                        variant="outlined"
+                        className="textfield-form"
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item lg={3} sm={4} xs={12}>
+                  <Typography component="div" className="label-Form">
+                    Quantity
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="Enter Quantity"
+                    name="quantity"
+                    type="number"
+                    size="small"
+                    variant="outlined"
+                    value={data.quantity}
+                    onChange={(e) => handleQuantityAndPriceChange(index, e)}
+                    className="textfield-form"
+                  />
+                </Grid>
+                <Grid item lg={2} sm={4} xs={12}>
+                  <Typography component="div" className="label-Form">
+                    Price
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    placeholder="Enter Price"
+                    name="unit_price"
+                    size="small"
+                    variant="outlined"
+                    value={data.unit_price}
+                    onChange={(e) => handleQuantityAndPriceChange(index, e)}
+                    className="textfield-form"
+                  />
+                </Grid>
+                <Grid item lg={1} sm={1} xs={12}>
+                  <IconButton onClick={handleAddRow} color="primary">
+                    <AddCircleOutlineIcon />
+                  </IconButton>
+                </Grid>
               </Grid>
-              <Grid item lg={3} sm={4} xs={12}>
-                <Typography component="div" className="label-Form">
-                  Variety of Plant
-                </Typography>
-                <Autocomplete
-                  freeSolo
-                  options={selectedPlant ? selectedPlant.varieties : []}
-                  value={data.category || ""}
-                  onChange={(event, value) =>
-                    handleCategoryChange(index, event, value)
-                  }
-                  onInputChange={(event, value) =>
-                    handleCategoryChange(index, event, value)
-                  }
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      placeholder="Select Variety"
-                      size="small"
-                      variant="outlined"
-                      className="textfield-form"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item lg={3} sm={4} xs={12}>
-                <Typography component="div" className="label-Form">
-                  Quantity
-                </Typography>
-                <TextField
-                  fullWidth
-                  placeholder="Enter Quantity"
-                  name="quantity"
-                  type="number"
-                  size="small"
-                  variant="outlined"
-                  value={data.quantity}
-                  onChange={(e) => handleQuantityAndPriceChange(index, e)}
-                  className="textfield-form"
-                />
-              </Grid>
-              <Grid item lg={2} sm={4} xs={12}>
-                <Typography component="div" className="label-Form">
-                  Price
-                </Typography>
-                <TextField
-                  fullWidth
-                  type="number"
-                  placeholder="Enter Price"
-                  name="unit_price"
-                  size="small"
-                  variant="outlined"
-                  value={data.unit_price}
-                  onChange={(e) => handleQuantityAndPriceChange(index, e)}
-                  className="textfield-form"
-                />
-              </Grid>
-              <Grid item lg={1} sm={1} xs={12}>
-                <IconButton onClick={handleAddRow} color="primary">
-                  <AddCircleOutlineIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
+            </>
           );
         })}
       </DialogContent>

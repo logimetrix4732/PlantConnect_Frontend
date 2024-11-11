@@ -184,15 +184,9 @@ export default function PlantVarietyTable({
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.plantName}
+                          {row.category}
                         </StyledTableCell>
 
-                        <StyledTableCell
-                          className="colorCodeTable"
-                          align="center"
-                        >
-                          {row.plantVariety}
-                        </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
@@ -237,10 +231,6 @@ export default function PlantVarietyTable({
                   >
                     Total
                   </StyledTableCell>
-                  <StyledTableCell
-                    align="center"
-                    className="colorCodeTable"
-                  ></StyledTableCell>
 
                   <StyledTableCell
                     align="center"

@@ -35,7 +35,39 @@ const headCells = [
   { id: "requirement", label: "Requirement" },
   { id: "action", label: "Action" },
 ];
-export default function PlantModalTable({ loading, tableData }) {
+const tableDataStatic = [
+  {
+    hmtId: 1,
+    hmtName: "Plant A",
+    plantVariety: "red",
+    plantQuantity: "5",
+    hmtAddress: "123 Solar Rd, Sunnyville",
+    contact: "123-456-7890",
+    distance: "5 km",
+    requirement: 5,
+    nearest: true,
+    approvalActvBtn: true,
+  },
+  {
+    hmtId: 2,
+    hmtName: "Plant B",
+    plantVariety: "green",
+    plantQuantity: "5",
+    hmtAddress: "123 Solar Rd, Sunnyville",
+    contact: "123-456-7890",
+    distance: "10 km",
+    requirement: 5,
+    nearest: false,
+    approvalActvBtn: false,
+  },
+
+  // Additional rows as needed...
+];
+export default function PlantModalTable({
+  loading,
+  //  tableData
+}) {
+  const [tableData, setTableData] = useState(tableDataStatic);
   const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -133,7 +165,29 @@ export default function PlantModalTable({ loading, tableData }) {
       </StyledTableRow>
     ));
   };
-
+  const handleChangeRequirement = (row, value) => {
+    const updatedRows = tableData.map((r) =>
+      r.hmtId === row.hmtId
+        ? { ...r, requirement: value } // Update the 'requirement' field
+        : r
+    );
+    setTableData(updatedRows); // Update the state with new rows
+  };
+  const handleApproval = (row) => {
+    console.log(row, "HANDLE APPPROVAL");
+    // Clone the row and add an 'approved' key
+    // const updatedRow = { ...row, approved: true };
+    // console.log("Approved Row:", updatedRow);
+    // Send updatedRow to the backend or update state as needed
+  };
+  const handleOnward = (clickedRow) => {
+    const updatedData = tableData.map((row) => ({
+      ...row,
+      nearest: row.hmtId === clickedRow.hmtId ? true : false,
+      approvalActvBtn: row.hmtId === clickedRow.hmtId ? true : false,
+    }));
+    setTableData(updatedData);
+  };
   return (
     <React.Fragment>
       <Card
@@ -229,6 +283,15 @@ export default function PlantModalTable({ loading, tableData }) {
                           >
                             <input
                               type="number"
+                              name="requirement"
+                              onChange={(e) =>
+                                handleChangeRequirement(
+                                  row,
+                                  Number(e.target.value)
+                                )
+                              }
+                              min={0}
+                              disabled={!row.approvalActvBtn}
                               defaultValue={row.requirement}
                               style={{
                                 width: "60px",
@@ -249,31 +312,41 @@ export default function PlantModalTable({ loading, tableData }) {
                           align="center"
                           className="colorCodeTable tableRowNumberWidth"
                         >
-                          <Button
-                            style={{
-                              color: "#fff",
-                              width: "80px",
-                              marginRight: "10px",
-                              height: "30px",
-                              background: "#808080",
-                              boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.13)",
-                              borderRadius: "4px",
-                            }}
-                          >
-                            Approval
-                          </Button>
-                          <Button
-                            style={{
-                              color: "#fff",
-                              width: "80px",
-                              height: "30px",
-                              background: "#E2C800",
-                              boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.13)",
-                              borderRadius: "4px",
-                            }}
-                          >
-                            Onward
-                          </Button>
+                          {row.nearest ? (
+                            <Button
+                              onClick={() => handleApproval(row)}
+                              disabled={!row.approvalActvBtn}
+                              style={{
+                                color: "#fff",
+                                width: "80px",
+                                marginRight: "10px",
+
+                                height: "30px",
+                                background: row.approvalActvBtn
+                                  ? "#426D52"
+                                  : "#808080",
+                                boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.13)",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              Approval
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={() => handleOnward(row)}
+                              disabled={row.approvalActvBtn}
+                              style={{
+                                color: "#fff",
+                                width: "80px",
+                                height: "30px",
+                                background: "#E2C800",
+                                boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.13)",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              Onward
+                            </Button>
+                          )}
                         </StyledTableCell>
                       </StyledTableRow>
                     );

@@ -18,12 +18,12 @@ import {
 
 const headCells = [
   { id: "id", label: "S.No" },
-  { id: "nursery_name", label: "Nursery Name" },
-  { id: "plant_varity", label: "Plant Varity" },
-  { id: "place_quantity", label: "Place Quantity" },
-  { id: "farmer_name", label: "Farmer Name" },
-  { id: "farm_address", label: "Farm Address" },
-  { id: "FarmerMobileNo", label: "Farmer Mobile No" },
+  { id: "nursery_name", label: "Farmer Name" },
+  { id: "plant_varity", label: "Farmer Mobile No" },
+  { id: "place_quantity", label: "Farmer Address" },
+  { id: "farmer_name", label: "Plant Name" },
+  { id: "farm_address", label: "Plant Quantity" },
+  // { id: "FarmerMobileNo", label: "Plant Quantity" },
   { id: "Status", label: "Status" },
 ];
 export default function CropTable({ data, loading, handleClickCrop }) {
@@ -35,7 +35,7 @@ export default function CropTable({ data, loading, handleClickCrop }) {
   useEffect(() => {
     if (data?.length) {
       const filtered = data?.filter((item) =>
-        item?.nursery_name?.toLowerCase()?.includes(search?.toLowerCase())
+        item?.plantName?.toLowerCase()?.includes(search?.toLowerCase())
       );
       setFilteredData(filtered);
       setPageIndex(0);
@@ -125,7 +125,7 @@ export default function CropTable({ data, loading, handleClickCrop }) {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "Approved":
+      case "Assigned":
         return "#59c88a";
       case "Pending":
         return "#fabe5e";
@@ -187,45 +187,45 @@ export default function CropTable({ data, loading, handleClickCrop }) {
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.nursery_name}
+                          {row.farmerName}
                         </StyledTableCell>
                         <StyledTableCell
                           className="colorCodeTable"
                           align="center"
                         >
-                          {row.plant_varity}
+                          {row.farmerMobile}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.place_quantity}
+                          {row.farmerAddress}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.farmer_name}
+                          {row.plantName}
                         </StyledTableCell>
-                        <StyledTableCell
+                        {/* <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
                           {row.farm_address}
-                        </StyledTableCell>
+                        </StyledTableCell> */}
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.FarmerMobileNo}
+                          {row.plantQuantity}
                         </StyledTableCell>
                         <StyledTableCell
-                        align="center"
-                        className="tableRowNameWidth"
-                        style={{ color: getStatusColor(row.Status) }}
-                      >
-                        {row.Status}
-                      </StyledTableCell>
+                          align="center"
+                          className="tableRowNameWidth"
+                          style={{ color: getStatusColor(row.status) }}
+                        >
+                          {row.status}
+                        </StyledTableCell>
                       </StyledTableRow>
                     );
                   })

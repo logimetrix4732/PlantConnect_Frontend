@@ -23,93 +23,97 @@ import {
 
 const headCells = [
   { id: "id", label: "S.No" },
-  { id: "district", label: "District" },
-  { id: "dhoName", label: "DHO Name" },
+  // { id: "district", label: "District" },
+  // { id: "dhoName", label: "DHO Name" },
 
   { id: "hmtName", label: "HMT Name" },
+  { id: "farmerName", label: "Farmer Name" },
+  { id: "mobName", label: "Mobile No." },
+  { id: "seasonName", label: "Season" },
   { id: "plantName", label: "Plant Name" },
   { id: "plantVariety", label: "Plant Variety" },
   { id: "plantRequire", label: "Plant Requirement" },
+  { id: "scheme", label: "Scheme" },
   { id: "action", label: "Action" },
 ];
 
-const data = [
-  {
-    sNo: 1,
-    district: "Arunachal Pradesh",
-    dhoName: "A",
-    hmtName: "A",
-    plantName: "A",
-    plantVariety: "A",
-    plantsRequirement: 46,
-  },
-  {
-    sNo: 2,
-    district: "Assam",
-    dhoName: "B",
-    hmtName: "B",
-    plantName: "B",
-    plantVariety: "B",
-    plantsRequirement: 16,
-  },
-  {
-    sNo: 3,
-    district: "Manipur",
-    dhoName: "C",
-    hmtName: "C",
-    plantName: "C",
-    plantVariety: "C",
-    plantsRequirement: 65,
-  },
-  {
-    sNo: 4,
-    district: "Meghalaya",
-    dhoName: "D",
-    hmtName: "D",
-    plantName: "D",
-    plantVariety: "D",
-    plantsRequirement: 28,
-  },
-  {
-    sNo: 5,
-    district: "Mizoram",
-    dhoName: "E",
-    hmtName: "E",
-    plantName: "E",
-    plantVariety: "E",
-    plantsRequirement: 56,
-  },
-  {
-    sNo: 6,
-    district: "Nagaland",
-    dhoName: "F",
-    hmtName: "F",
-    plantName: "F",
-    plantVariety: "F",
-    plantsRequirement: 38,
-  },
-  {
-    sNo: 7,
-    district: "Tripura",
-    dhoName: "G",
-    hmtName: "G",
-    plantName: "G",
-    plantVariety: "G",
-    plantsRequirement: 42,
-  },
-  {
-    sNo: 8,
-    district: "Sikkim",
-    dhoName: "H",
-    hmtName: "H",
-    plantName: "H",
-    plantVariety: "H",
-    plantsRequirement: 56,
-  },
-];
+// const data = [
+//   {
+//     sNo: 1,
+//     district: "Arunachal Pradesh",
+//     dhoName: "A",
+//     hmtName: "A",
+//     plantName: "A",
+//     plantVariety: "A",
+//     plantsRequirement: 46,
+//   },
+//   {
+//     sNo: 2,
+//     district: "Assam",
+//     dhoName: "B",
+//     hmtName: "B",
+//     plantName: "B",
+//     plantVariety: "B",
+//     plantsRequirement: 16,
+//   },
+//   {
+//     sNo: 3,
+//     district: "Manipur",
+//     dhoName: "C",
+//     hmtName: "C",
+//     plantName: "C",
+//     plantVariety: "C",
+//     plantsRequirement: 65,
+//   },
+//   {
+//     sNo: 4,
+//     district: "Meghalaya",
+//     dhoName: "D",
+//     hmtName: "D",
+//     plantName: "D",
+//     plantVariety: "D",
+//     plantsRequirement: 28,
+//   },
+//   {
+//     sNo: 5,
+//     district: "Mizoram",
+//     dhoName: "E",
+//     hmtName: "E",
+//     plantName: "E",
+//     plantVariety: "E",
+//     plantsRequirement: 56,
+//   },
+//   {
+//     sNo: 6,
+//     district: "Nagaland",
+//     dhoName: "F",
+//     hmtName: "F",
+//     plantName: "F",
+//     plantVariety: "F",
+//     plantsRequirement: 38,
+//   },
+//   {
+//     sNo: 7,
+//     district: "Tripura",
+//     dhoName: "G",
+//     hmtName: "G",
+//     plantName: "G",
+//     plantVariety: "G",
+//     plantsRequirement: 42,
+//   },
+//   {
+//     sNo: 8,
+//     district: "Sikkim",
+//     dhoName: "H",
+//     hmtName: "H",
+//     plantName: "H",
+//     plantVariety: "H",
+//     plantsRequirement: 56,
+//   },
+// ];
 
 export default function ForwardedOrderTable({
-  //   data,
+  data,
   loading,
   handleClickParent,
   slaTrue = false,
@@ -315,8 +319,27 @@ export default function ForwardedOrderTable({
                           // }}
                           // onClick={() => handleClickParent(row)}
                         >
-                          {row.district}
+                          {row.hmt_name}
                         </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.farmer_name}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.mobile_number}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.season}
+                        </StyledTableCell>
+
                         {/* <StyledTableCell
                           style={{
                             color: "blue",
@@ -335,20 +358,20 @@ export default function ForwardedOrderTable({
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.dhoName}
+                          {row.plant_name}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.hmtName}
+                          {row.plant_category}
                         </StyledTableCell>
-                        <StyledTableCell
+                        {/* <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.plantName}
-                        </StyledTableCell>
+                          {row.plant_category}
+                        </StyledTableCell> */}
                         <StyledTableCell
                           align="center"
                           // style={{
@@ -361,13 +384,13 @@ export default function ForwardedOrderTable({
                           // }}
                           className="colorCodeTable"
                         >
-                          {row.plantVariety}
+                          {row.plant_quantity}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.plantsRequirement}
+                          {row.scheme}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"

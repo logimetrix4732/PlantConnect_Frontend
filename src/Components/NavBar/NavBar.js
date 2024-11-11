@@ -121,33 +121,39 @@ export default function NavBar(props) {
     userDetails && userDetails.user_role === "HMT"
       ? [
           { text: "Home", path: "/hmt" },
-          { text: "About The Scheme", path: "/about" },
-          { text: "Contact Us", path: "/contact" },
-          { text: "Notification", path: "/notification" },
+          // { text: "About The Scheme", path: "/about" },
+          // { text: "Contact Us", path: "/contact" },
+          // { text: "Notification", path: "/notification" },
         ]
       : userDetails && userDetails.user_role === "JD"
       ? [
           { text: "Home", path: "/jd" },
-          { text: "About The Scheme", path: "/about" },
-          { text: "Contact Us", path: "/contact" },
+          // { text: "About The Scheme", path: "/about" },
+          // { text: "Contact Us", path: "/contact" },
         ]
       : userDetails && userDetails.user_role === "CHO"
       ? [
           { text: "Home", path: "/cho" },
-          { text: "About The Scheme", path: "/about" },
-          { text: "Contact Us", path: "/contact" },
+          // { text: "About The Scheme", path: "/about" },
+          // { text: "Contact Us", path: "/contact" },
+        ]
+      : userDetails && userDetails.user_role === "DHO"
+      ? [
+          { text: "Home", path: "/dho" },
+          // { text: "About The Scheme", path: "/about" },
+          // { text: "Contact Us", path: "/contact" },
         ]
       : userDetails && userDetails.user_role === "nursery"
       ? [
           { text: "Home", path: "/nursery" },
-          { text: "About The Scheme", path: "/about" },
-          { text: "Contact Us", path: "/contact" },
+          // { text: "About The Scheme", path: "/about" },
+          // { text: "Contact Us", path: "/contact" },
           // { text: "Notification", path: "/notification" },
         ]
       : [
           { text: "Home", path: "/home" },
-          { text: "About The Scheme", path: "/about" },
-          { text: "Contact Us", path: "/contact" },
+          // { text: "About The Scheme", path: "/about" },
+          // { text: "Contact Us", path: "/contact" },
         ];
 
   return (
@@ -180,10 +186,10 @@ export default function NavBar(props) {
                         fontSize={13}
                         color="text.secondary"
                       >
-                        Government of India <br />
-                        Ministry of Agriculture and Farmers Welfare
-                        <br />
-                        Department of Agriculture and Farmers Welfare
+                        Government of Uttarakhand <br />
+                        State Horticulture Mission
+                        {/* <br />
+                        Govt. of Uttarakhand */}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -251,11 +257,12 @@ export default function NavBar(props) {
                       <Typography style={{ color: "white" }}>
                         {userDetails
                           ? userDetails.user_role === "HMT"
-                            ? "HMT"
+                            ? userDetails.username
                             : userDetails.user_role === "JD"
                             ? userDetails.username
-                            : userDetails.user_role === "CHO"
-                            ? "DHO & CHO"
+                            : userDetails.user_role === "CHO" ||
+                              userDetails.user_role === "DHO"
+                            ? userDetails.username
                             : userDetails.user_role === "nursery"
                             ? userDetails.username
                             : "Login"

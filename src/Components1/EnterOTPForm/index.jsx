@@ -13,7 +13,7 @@ import "./EnterOTPForm.css"; // Import custom CSS for styling
 import CloseIcon from "@mui/icons-material/Close";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 
-const EnterOTPForm = ({ open, onClose }) => {
+const EnterOTPForm = ({ open, onClose, submitOtp }) => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [timer, setTimer] = useState(59); // Countdown timer starts from 59
   const [isResendDisabled, setIsResendDisabled] = useState(true);
@@ -55,69 +55,72 @@ const EnterOTPForm = ({ open, onClose }) => {
   }, [timer]);
 
   const handleResendOtp = () => {
-    setTimer(59); 
+    setTimer(59);
     setIsResendDisabled(true);
     enqueueSnackbar("OTP Resent", {
-        variant: "success",
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "left",
-        },
-        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
-        iconVariant: "success",
-        autoHideDuration: 2000,
-      });
+      variant: "success",
+      anchorOrigin: {
+        vertical: "bottom",
+        horizontal: "left",
+      },
+      action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+      iconVariant: "success",
+      autoHideDuration: 2000,
+    });
   };
 
   const handleSubmit = () => {
     const enteredOtp = otp.join("");
+    submitOtp(enteredOtp);
     console.log("Entered OTP: ", enteredOtp);
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
-    <DialogTitle
-    sx={{
-      display: "flex",
-      justifyContent: "space-between", 
-      alignItems: "center",
-      padding: "8px 16px",
-    }}
-    id="customized-dialog-title"
-  >
-    <Typography
-      variant="h6" 
-      sx={{
-        flexGrow: 1,
-        textAlign: "center", 
-      }}
-    >
-      Enter OTP
-    </Typography>
-    <IconButton
-      aria-label="close"
-      onClick={onClose}
-      sx={{
-        color: (theme) => theme.palette.grey[500],
-      }}
-    >
-      <CloseIcon />
-    </IconButton>
-  </DialogTitle>
-  
+      <DialogTitle
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 16px",
+        }}
+        id="customized-dialog-title"
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            flexGrow: 1,
+            textAlign: "center",
+          }}
+        >
+          Enter OTP
+        </Typography>
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+
       <DialogContent>
         <Box className="otp-container">
-        <p style={{
-            color: "#AFAFAF",
-            fontStyle: "normal",
-            fontWeight: 400,
-            fontSize: "15px",
-            lineHeight: "144.04%",
-            textAlign: "center"
-          }}>
+          <p
+            style={{
+              color: "#AFAFAF",
+              fontStyle: "normal",
+              fontWeight: 400,
+              fontSize: "15px",
+              lineHeight: "144.04%",
+              textAlign: "center",
+            }}
+          >
             OTP has been sent to the mobile number registered in your Aadhaar.
           </p>
-          
+
           <div className="otp-input">
             {otp.map((data, index) => (
               <input
@@ -135,19 +138,29 @@ const EnterOTPForm = ({ open, onClose }) => {
             {timer > 0 ? (
               <span>00:{timer < 10 ? `0${timer}` : timer}</span>
             ) : (
-                <span style={{
-                    fontStyle: "normal",
-                    fontWeight: 400,
-                    fontSize: "14px",
-                    lineHeight: "144.04%",
-                    textAlign: "center",
-                    color: "#AFAFAF"
-                  }}>
-                    Didn't receive?{" "}
-                    <span onClick={handleResendOtp} style={{ cursor: "pointer", color: isResendDisabled ? "#AFAFAF" : "#007BFF", textDecoration: isResendDisabled ? "none" : "underline" }} disabled={isResendDisabled}>
-                      Resend OTP
-                    </span>
-                  </span>
+              <span
+                style={{
+                  fontStyle: "normal",
+                  fontWeight: 400,
+                  fontSize: "14px",
+                  lineHeight: "144.04%",
+                  textAlign: "center",
+                  color: "#AFAFAF",
+                }}
+              >
+                Didn't receive?{" "}
+                <span
+                  onClick={handleResendOtp}
+                  style={{
+                    cursor: "pointer",
+                    color: isResendDisabled ? "#AFAFAF" : "#007BFF",
+                    textDecoration: isResendDisabled ? "none" : "underline",
+                  }}
+                  disabled={isResendDisabled}
+                >
+                  Resend OTP
+                </span>
+              </span>
             )}
           </p>
         </Box>
@@ -161,7 +174,7 @@ const EnterOTPForm = ({ open, onClose }) => {
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
-            width:"110px"
+            width: "110px",
           }}
         >
           Verify

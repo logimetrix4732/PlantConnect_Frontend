@@ -8,13 +8,13 @@ import PlantNameTable from "./PlantNameTable";
 import PlantVarietyTable from "./PlantVarietyTable";
 import PlantDistrictTable from "./PlantDistrictTable";
 
-
 export default function PlantTableContainer({
   level,
   setLevel,
   tokenData,
   fetchPlants,
   fetchNurserys,
+  setSelectedValue,
   plantWiseData,
   breadcrumbData,
   nurseryWiseData,
@@ -22,6 +22,7 @@ export default function PlantTableContainer({
   setBreadcrumbData,
   plantVarietiesData,
   districtWisePlantData,
+  selectedValue,
   PlantDistrictTableLoder,
 }) {
   const handleClickParent = (row) => {
@@ -35,7 +36,7 @@ export default function PlantTableContainer({
       setBreadcrumbData([...breadcrumbData, row.nurseryName]);
     } else if (level === 2) {
       setLevel(3);
-      fetchPlantVariety(row?.plantName);
+      fetchPlantVariety(row?.nursery_id, row?.plantName);
       setBreadcrumbData([...breadcrumbData, row.plantName]);
     } else if (level === 2) {
       setLevel(3);
@@ -44,6 +45,10 @@ export default function PlantTableContainer({
   };
 
   const handleBreadcrumbClick = (index) => {
+    if (index === 0) {
+      setSelectedValue({ ...selectedValue, district: "All" });
+    }
+
     setLevel(index);
     setBreadcrumbData(breadcrumbData.slice(0, index + 1));
   };
@@ -91,8 +96,8 @@ export default function PlantTableContainer({
       )}
       {level === 2 && (
         <PlantNameTable
-          data={plantData}
-          // data={plantWiseData}
+          // data={plantData}
+          data={plantWiseData}
           loading={false}
           handleClickParent={handleClickParent}
         />

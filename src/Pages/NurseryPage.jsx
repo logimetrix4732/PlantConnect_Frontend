@@ -134,19 +134,19 @@ const NurseryPage = () => {
       // highlight: "#426d52",
       highlight: "#FC97D6",
       tag: "Plant Varity",
-      value: mainMapCard.totalHmts || 0,
+      value: mainMapCard.overallCategoryCount || 0,
     },
     {
       bg: "#FDF9D6",
       highlight: "#FFE731",
       tag: "Plant Subcategory",
-      value: mainMapCard.totalplantNames || 0,
+      value: mainMapCard.uniquePlantNames || 0,
     },
     {
       bg: "#d4ecde",
       highlight: "#426d52",
       tag: "Total Number of Plants",
-      value: mainMapCard.totalNurseries || 0,
+      value: mainMapCard.overallPlantCount || 0,
     },
   ];
 
@@ -202,61 +202,61 @@ const NurseryPage = () => {
   };
 
   //Division and dristrict according data comes
-  useEffect(() => {
-    const fetchUser = async () => {
-      setPlantDistrictTableLoder(true);
-      const url = `${process.env.REACT_APP_API_URL_LOCAL}/districts?divisionName=${selectedValue.division}&districtName=${selectedValue.district}`;
-      try {
-        const response = await getFetch(url);
-        if (response.status === 200) {
-          setPlantDistrictTableLoder(false);
-          setMainMapCard(response?.data);
-          setDistrictWisePlantData(response?.data?.data);
-        }
-      } catch (error) {
-        setPlantDistrictTableLoder(false);
-        enqueueSnackbar(error?.response?.data?.message || "Server Error", {
-          variant: "warning",
-          anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "left",
-          },
-          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
-          iconVariant: "success",
-          autoHideDuration: 2000,
-        });
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     setPlantDistrictTableLoder(true);
+  //     const url = `${process.env.REACT_APP_API_URL_LOCAL}/districts?divisionName=${selectedValue.division}&districtName=${selectedValue.district}`;
+  //     try {
+  //       const response = await getFetch(url);
+  //       if (response.status === 200) {
+  //         setPlantDistrictTableLoder(false);
+  //         setMainMapCard(response?.data);
+  //         setDistrictWisePlantData(response?.data?.data);
+  //       }
+  //     } catch (error) {
+  //       setPlantDistrictTableLoder(false);
+  //       enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+  //         variant: "warning",
+  //         anchorOrigin: {
+  //           vertical: "bottom",
+  //           horizontal: "left",
+  //         },
+  //         action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+  //         iconVariant: "success",
+  //         autoHideDuration: 2000,
+  //       });
+  //     }
+  //   };
 
-    fetchUser();
-  }, [selectedValue.district, selectedValue.division]);
+  //   fetchUser();
+  // }, [selectedValue.district, selectedValue.division]);
 
   //Division according district dropdown comes
-  useEffect(() => {
-    const fetchUser = async () => {
-      const url = `${process.env.REACT_APP_API_URL_LOCAL}/district/division?division=${selectedValue.division}`;
-      try {
-        const response = await getFetch(url);
-        if (response.status === 200) {
-          setPlantDistrictTableLoder(false);
-          setDistrictDropdown(["All", ...response?.data?.data]);
-        }
-      } catch (error) {
-        enqueueSnackbar(error?.response?.data?.message || "Server Error", {
-          variant: "warning",
-          anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "left",
-          },
-          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
-          iconVariant: "success",
-          autoHideDuration: 2000,
-        });
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const url = `${process.env.REACT_APP_API_URL_LOCAL}/district/division?division=${selectedValue.division}`;
+  //     try {
+  //       const response = await getFetch(url);
+  //       if (response.status === 200) {
+  //         setPlantDistrictTableLoder(false);
+  //         setDistrictDropdown(["All", ...response?.data?.data]);
+  //       }
+  //     } catch (error) {
+  //       enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+  //         variant: "warning",
+  //         anchorOrigin: {
+  //           vertical: "bottom",
+  //           horizontal: "left",
+  //         },
+  //         action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+  //         iconVariant: "success",
+  //         autoHideDuration: 2000,
+  //       });
+  //     }
+  //   };
 
-    fetchUser();
-  }, [selectedValue.division]);
+  //   fetchUser();
+  // }, [selectedValue.division]);
 
   //district according numrserys comes
   const fetchNurserys = async (district) => {
@@ -289,7 +289,8 @@ const NurseryPage = () => {
       const response = await getFetch(url);
       console.log(response, "Respomsne283");
       if (response.status === 200) {
-        setPlantWiseData(response.data.plants);
+        setMainMapCard(response.data.data);
+        setPlantWiseData(response.data.plant);
       }
     } catch (error) {
       enqueueSnackbar(error?.response?.data?.message || "Server Error", {
@@ -355,7 +356,7 @@ const NurseryPage = () => {
       handleHMTModalClose();
       fetchPlantsData(tokenData?.id);
     } catch (error) {
-      console.log(error, "ERRORRR");
+      // console.log(error, "ERRORRR");
       enqueueSnackbar(error?.response?.data?.message || "Server Error", {
         variant: "warning",
         anchorOrigin: {
@@ -480,7 +481,7 @@ const NurseryPage = () => {
               }}
               onClick={handleClickNurseryModalOpen}
             >
-              Add Plants
+              Add Stock
             </Button>
           </Grid>
         )}

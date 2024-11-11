@@ -16,12 +16,27 @@ const fetchToken = () => {
   return token;
 };
 const token = fetchToken()?.token || "";
+console.log(token, "TOKEN====>");
 // GET request
 export const getFetch = async (url) => {
   try {
     const response = await axios.get(url, {
       headers: {
         "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("GET request error:", error);
+    return error.response;
+  }
+};
+export const getFetchWithToken = async (url) => {
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: fetchToken()?.token && `Bearer ${fetchToken()?.token}`,
       },
     });
     return response;
@@ -55,10 +70,10 @@ export const postFetch = async (url, data) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error("POST request error:", error);
-    return error.response;
+    return error;
   }
 };
 
@@ -99,10 +114,10 @@ export const postFetchData = async (url, data) => {
         "Content-Type": "application/json",
       },
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error("POST request error:", error);
-    return error.response;
+    return error;
   }
 };
 

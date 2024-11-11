@@ -28,13 +28,13 @@ const HMTModal = ({
   handleChangeHMTOder,
   handleHMTModalClose,
   handleHMTOrderSubmit,
+  submitOtp,
 }) => {
   const field = [
     {
       options: ["Option 1", "Option 2", "Option 3"],
     },
   ];
-
 
   return (
     <React.Fragment>
@@ -230,7 +230,7 @@ const HMTModal = ({
             </Grid>
             <Grid item lg={4} sm={6} xs={12}>
               <Typography component="div" className="label-Form">
-                Plant Category
+                Plant Variety
               </Typography>
               <Select
                 fullWidth
@@ -280,7 +280,18 @@ const HMTModal = ({
               <Typography component="div" className="label-Form">
                 Plant Quantity
               </Typography>
-              <Select
+              <TextField
+                fullWidth
+                type="number"
+                placeholder="Plant Quantity"
+                size="small"
+                variant="outlined"
+                className="textfield-form"
+                name="plant_quantity"
+                value={HMTOrder.plant_quantity}
+                onChange={handleChangeHMTOder}
+              />
+              {/* <Select
                 fullWidth
                 displayEmpty
                 className="textfield-form"
@@ -298,10 +309,14 @@ const HMTModal = ({
                     {option}
                   </MenuItem>
                 ))}
-              </Select>
+              </Select> */}
             </Grid>
           </Grid>
-          <EnterOTPForm open={OTPModal} onClose={handleCloseOTPModal} />
+          <EnterOTPForm
+            open={OTPModal}
+            onClose={handleCloseOTPModal}
+            submitOtp={submitOtp}
+          />
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center" }}>
           <Button

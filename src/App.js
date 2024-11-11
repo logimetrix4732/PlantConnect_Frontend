@@ -35,6 +35,7 @@ const ROLES = {
   HMT: "HMT",
   JD: "JD",
   CHO: "CHO",
+  DHO: "DHO",
   Nodal: "Nodal",
   Nursery: "nursery",
 };
@@ -82,6 +83,10 @@ const App = () => {
         return "/jd";
       case ROLES.CHO:
         return "/cho";
+
+      case ROLES.DHO:
+        return "/dho";
+
       case ROLES.Nodal:
         return "/nodal";
       case ROLES.Nursery:
@@ -144,10 +149,20 @@ const App = () => {
                   <Route element={<PersistLogin />}>
                     <Route
                       element={
-                        <RequireAuth allowedRoles={[ROLES.HMT, ROLES.Nodal]} />
+                        <RequireAuth allowedRoles={[ROLES.CHO, ROLES.DHO]} />
                       }
                     >
-                      <Route path="/notification" element={<Notification />} />
+                      <Route path="/approval" element={<VisitApproval />} />
+                      <Route
+                        path="/regisNurseries"
+                        element={<RegisteredNurseries />}
+                      />
+                      <Route
+                        path="/hmtOrder"
+                        element={<ForwardedOrderPage />}
+                      />
+
+                      {/* <Route path="/notification" element={<Notification />} /> */}
                     </Route>
                     <Route
                       element={
@@ -180,11 +195,21 @@ const App = () => {
 
                     <Route element={<RequireAuth allowedRoles={[ROLES.CHO]} />}>
                       <Route path="/cho" element={<DhoChoPage />} />
-                      <Route path="/approval" element={<VisitApproval />} />
+
+                      {/* <Route path="/approval" element={<VisitApproval />} />
                       <Route
                         path="/regisNurseries"
                         element={<RegisteredNurseries />}
-                      />
+                      /> */}
+                    </Route>
+                    <Route element={<RequireAuth allowedRoles={[ROLES.DHO]} />}>
+                      <Route path="/dho" element={<DhoChoPage />} />
+
+                      {/* <Route path="/approval" element={<VisitApproval />} /> */}
+                      {/* <Route
+                        path="/regisNurseries"
+                        element={<RegisteredNurseries />}
+                      /> */}
                     </Route>
                     <Route
                       element={<RequireAuth allowedRoles={[ROLES.Nodal]} />}

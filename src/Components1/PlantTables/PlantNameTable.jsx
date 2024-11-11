@@ -199,7 +199,7 @@ export default function PlantNameTable({ data, handleClickParent, loading }) {
                           }
                           align="center"
                         >
-                          {row.plantVariety}
+                          {row.varietyCount}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"

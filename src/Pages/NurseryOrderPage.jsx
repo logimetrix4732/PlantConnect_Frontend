@@ -1,12 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NurseryOrderTable from "../Components/Nursery/NurseryOrderTable";
 import { Grid } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
 import AutocompleteSelect from "../Components/Dropdown/AutocompleteSelect";
 import MapBox from "../Home/MapContent/MapBox";
 import { UserContext } from "../context/UserContext";
+import { closeSnackbar, enqueueSnackbar } from "notistack";
+
+import { getFetchWithToken, postFetch } from "../Components/API/Api";
 
 export default function NurseryOrderPage() {
   const [level, setLevel] = useState(0);
+  const [nurseryTableData, setNurseryTableData] = useState();
+
   const { selectedState, selectedDistrict } = useContext(UserContext);
 
   const [districtDropdown, setDistrictDropdown] = useState([]);
@@ -54,7 +61,75 @@ export default function NurseryOrderPage() {
       [key]: newValue,
     }));
   };
+  const fetchOrderData = async (nurseryId) => {
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/demands/view`;
+    try {
+      const response = await getFetchWithToken(url);
+      console.log(response, "ORDER DATA ");
+      setNurseryTableData(response.data.demands);
+      // if (response.status === 200) {
+      //   setMainMapCard(response.data.data);
+      //   setPlantWiseData(response.data.plant);
+      // }
+    } catch (error) {
+      enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+        variant: "warning",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+        iconVariant: "success",
+        autoHideDuration: 2000,
+      });
+    }
+  };
+  useEffect(() => {
+    fetchOrderData();
+  }, []);
+  const handleAppReject = async (row, btntype) => {
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/demands/assign-to-nursery`;
+    let data = {
+      demand_id: row.demand_id,
+      assigned_nursery_id: row.assigned_nursery_id,
+      required_quantity: row.required_quantity,
+      demand_status: btntype,
+    };
+    try {
+      const response = await postFetch(url, data);
+      console.log(response, "demands/assign-to-nursery");
+      if (response.status === 200) {
+        enqueueSnackbar(response?.data?.message || "Server Error", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+      }
 
+      fetchOrderData();
+      // setNurseryTableData(response.data.demands);
+      // if (response.status === 200) {
+      //   setMainMapCard(response.data.data);
+      //   setPlantWiseData(response.data.plant);
+      // }
+    } catch (error) {
+      enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+        variant: "warning",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+        iconVariant: "success",
+        autoHideDuration: 2000,
+      });
+    }
+  };
   return (
     <>
       <Grid
@@ -162,7 +237,10 @@ export default function NurseryOrderPage() {
           </Grid>
         )} */}
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <NurseryOrderTable />
+          <NurseryOrderTable
+            data={nurseryTableData}
+            handleAppReject={handleAppReject}
+          />
         </Grid>
       </Grid>
     </>

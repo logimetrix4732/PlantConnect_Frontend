@@ -23,14 +23,14 @@ export default function PlanttblContainerNur({
   PlantDistrictTableLoder,
 }) {
   const handleClickParent = (row) => {
-    console.log(row,"dfdfdfdf")
+    console.log(row, "dfdfdfdf");
     if (level === 0) {
       setLevel(1);
       fetchPlants(row?.nurseryId);
       setBreadcrumbData([...breadcrumbData, row.nurseryName]);
     } else if (level === 1) {
       setLevel(2);
-      fetchPlantVariety(row?.plantName);
+      fetchPlantVariety(row.nursery_id, row?.plantName);
       setBreadcrumbData([...breadcrumbData, row.plantName]);
     } else if (level === 2) {
       setLevel(3);
@@ -79,8 +79,8 @@ export default function PlanttblContainerNur({
       )}
       {level === 1 && (
         <PlantNameTable
-          data={plantData}
-          // data={plantWiseData}
+          // data={plantData}
+          data={plantWiseData}
           loading={false}
           handleClickParent={handleClickParent}
         />

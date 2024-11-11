@@ -33,13 +33,24 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
   const [pageSize, setPageSize] = useState(10);
   const [filteredData, setFilteredData] = useState([]);
 
+  // useEffect(() => {
+  //   if (data?.length) {
+  //     const filtered = data.filter((item) =>
+  //       item.plantName?.toLowerCase()?.includes(search?.toLowerCase())
+  //     );
+  //     setFilteredData(filtered);
+  //     setPageIndex(0);
+  //   }
+  // }, [search, data]);
   useEffect(() => {
-    if (data?.length) {
-      const filtered = data.filter((item) =>
-        item.plantName?.toLowerCase()?.includes(search?.toLowerCase())
+    if (data) {
+      setFilteredData(
+        data.filter((project) =>
+          Object.values(project).some((value) =>
+            value.toString().toLowerCase().includes(search?.toLowerCase())
+          )
+        )
       );
-      setFilteredData(filtered);
-      setPageIndex(0);
     }
   }, [search, data]);
 
@@ -75,18 +86,17 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
   const calculateTotals = (data) => {
     return data.reduce(
       (totals, row) => {
-        totals.hmtCount += Number(row.hmtCount);
-        totals.nurseryCount += Number(row.nurseryCount);
-        totals.plantCount += Number(row.plantCount);
+        totals.quantityEntered += Number(row.quantityEntered);
+        totals.quantityApproved += Number(row.quantityApproved);
+
         for (let key in totals) {
           totals[key] = Math.round((totals[key] + Number.EPSILON) * 100) / 100;
         }
         return totals;
       },
       {
-        hmtCount: 0,
-        nurseryCount: 0,
-        plantCount: 0,
+        quantityEntered: 0,
+        quantityApproved: 0,
       }
     );
   };
@@ -271,7 +281,7 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
                 </TableRow>
               )}
               {!loading &&
-                filteredData.length < pageSize &&
+                filteredData.length > pageSize &&
                 filteredData.length > 0 &&
                 renderPlaceholderRows(
                   Math.max(
@@ -283,7 +293,7 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
                       ).length
                   )
                 )}
-              {!loading && filteredData.length > 0 && (
+              {!loading && filteredData.length >= 0 && (
                 <StyledTableRow key={"totals-state"}>
                   <StyledTableCell
                     align="center"
@@ -297,15 +307,19 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
                     align="center"
                     className="colorCodeTable"
                   ></StyledTableCell>
+                  <StyledTableCell
+                    align="center"
+                    className="colorCodeTable"
+                  ></StyledTableCell>
                   <StyledTableCell align="center" className="colorCodeTable">
-                    {totals.hmtCount}
+                    {totals.quantityEntered}
                   </StyledTableCell>
                   <StyledTableCell align="center" className="colorCodeTable">
-                    {totals.nurseryCount}
+                    {totals.quantityApproved}
                   </StyledTableCell>
-                  <StyledTableCell align="center" className="colorCodeTable">
+                  {/* <StyledTableCell align="center" className="colorCodeTable">
                     {totals.plantCount}
-                  </StyledTableCell>
+                  </StyledTableCell> */}
                 </StyledTableRow>
               )}
             </TableBody>

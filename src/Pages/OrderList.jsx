@@ -4,6 +4,10 @@ import { Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import CropTable from "../Components/CropComponents/CropTable";
+import { getFetchWithToken } from "../Components/API/Api";
+import CloseIcon from "@mui/icons-material/Close";
+
+import { closeSnackbar, enqueueSnackbar } from "notistack";
 
 const OrderList = () => {
   const phaseWiseArr = [
@@ -11,6 +15,7 @@ const OrderList = () => {
     "Phase III Year (2020-2021 to 2022-2023)",
   ];
   const { getCropTblData } = useContext(UserContext);
+  const [orderListData, setOrderListData] = useState([]);
   const phases = ["Phase I", "Phase II", "Phase III", "Phase IV"];
   const [phaseFlag, setPhaseFlag] = useState(false);
   const [selectedState, setSelectedState] = useState("");
@@ -21,70 +26,70 @@ const OrderList = () => {
   const [phaseWiseCrop, setPhaseWiseCrop] = useState([]);
   const [selectedCrop, setSelectedCrop] = useState(null);
 
-  useEffect(() => {
-    if (phaseWiseCrop.length > 0 && selectedCrop === null) {
-      const firstCrop = phaseWiseCrop[0];
-      setSelectedCrop(firstCrop);
-      fetchCropData({
-        CropName: firstCrop,
-        Phase: "Phase IV",
-      });
-    }
-  }, [phaseWiseCrop, selectedCrop]);
+  // useEffect(() => {
+  //   if (phaseWiseCrop.length > 0 && selectedCrop === null) {
+  //     const firstCrop = phaseWiseCrop[0];
+  //     setSelectedCrop(firstCrop);
+  //     fetchCropData({
+  //       CropName: firstCrop,
+  //       Phase: "Phase IV",
+  //     });
+  //   }
+  // }, [phaseWiseCrop, selectedCrop]);
 
   // ----
   const [cropLevel, setCropLevel] = useState(0);
-  const [tableData, setTableData] = useState([]);
+  // const [tableData, setTableData] = useState([]);
   const [breadData, setBreadData] = useState([{}]);
   const [pieChartData, setPieChartData] = useState([]);
   const [phaseDropDown, SetPhaseDropDown] = useState([]);
   const [stateDropDown, SetStateDropDown] = useState(["All"]);
   const [districtTableData, setDistrictTableData] = useState([]);
   const [selectedPhases, setSelectedPhases] = useState([phaseWiseArr[0]]);
-  useEffect(() => {
-    getGroupWiseCrop();
-  }, [selectedGroupCrop]);
+  // useEffect(() => {
+  //   getGroupWiseCrop();
+  // }, [selectedGroupCrop]);
 
-  useEffect(() => {
-    fetchStates();
-  }, []);
- 
-  const getGroupWiseCrop = async () => {
-    const url = `${process.env.REACT_APP_API_URL_LOCAL}/groupWiseCrop`;
-    try {
-      const response = await axios.get(url);
-      const groupWiseCrop = response?.data?.data || [];
-      //groupWise
-      let groupWiseCropGroupName = [];
-      for (let i = 0; i < groupWiseCrop.length; i++) {
-        groupWiseCropGroupName.push(groupWiseCrop[i].CropGroupName);
-      }
-      setGroupWiseCrop(groupWiseCropGroupName);
+  // useEffect(() => {
+  //   fetchStates();
+  // }, []);
 
-      const selectedCropGroup = groupWiseCrop.find(
-        (group) => selectedGroupCrop === group.CropGroupName
-      );
-      setPhaseWiseCrop(selectedCropGroup.CropNames);
-    } catch (error) {}
-  };
-  const fetchCropData = (body) => {
-    let data;
-    if (body) {
-      data = body;
-    } else {
-      data = { CropName: selectedCrop, Phase: "Phase IV" };
-    }
+  // const getGroupWiseCrop = async () => {
+  //   const url = `${process.env.REACT_APP_API_URL_LOCAL}/groupWiseCrop`;
+  //   try {
+  //     const response = await axios.get(url);
+  //     const groupWiseCrop = response?.data?.data || [];
+  //     //groupWise
+  //     let groupWiseCropGroupName = [];
+  //     for (let i = 0; i < groupWiseCrop.length; i++) {
+  //       groupWiseCropGroupName.push(groupWiseCrop[i].CropGroupName);
+  //     }
+  //     setGroupWiseCrop(groupWiseCropGroupName);
 
-    getCropTblData(
-      data,
-      (apiRes) => {
-        setTableData(apiRes?.data?.data.allCropDetails);
-        setDistrictTableData(apiRes?.data?.data.allCropDetails);
-        setPieChartData(apiRes?.data?.data);
-      },
-      (apiErr) => {}
-    );
-  };
+  //     const selectedCropGroup = groupWiseCrop.find(
+  //       (group) => selectedGroupCrop === group.CropGroupName
+  //     );
+  //     setPhaseWiseCrop(selectedCropGroup.CropNames);
+  //   } catch (error) {}
+  // };
+  // const fetchCropData = (body) => {
+  //   let data;
+  //   if (body) {
+  //     data = body;
+  //   } else {
+  //     data = { CropName: selectedCrop, Phase: "Phase IV" };
+  //   }
+
+  //   getCropTblData(
+  //     data,
+  //     (apiRes) => {
+  //       setTableData(apiRes?.data?.data.allCropDetails);
+  //       setDistrictTableData(apiRes?.data?.data.allCropDetails);
+  //       setPieChartData(apiRes?.data?.data);
+  //     },
+  //     (apiErr) => {}
+  //   );
+  // };
 
   const handleChange = (event) => {
     const {
@@ -98,17 +103,17 @@ const OrderList = () => {
     setSelectedState(state);
     setBreadData([{ name: state }]);
     if (event.target.value === "All") {
-      fetchCropData({
-        CropName: selectedCrop,
-        Phase: "Phase IV",
-      });
+      // fetchCropData({
+      //   CropName: selectedCrop,
+      //   Phase: "Phase IV",
+      // });
       setCropLevel(0);
     } else {
-      fetchCropData({
-        StateName: state,
-        CropName: selectedCrop,
-        Phase: "Phase IV",
-      });
+      // fetchCropData({
+      //   StateName: state,
+      //   CropName: selectedCrop,
+      //   Phase: "Phase IV",
+      // });
       setCropLevel(1);
     }
   };
@@ -117,10 +122,10 @@ const OrderList = () => {
     setSelectedCrop(event.target.value);
     setCropLevel(0);
     setBreadData([{}]);
-    fetchCropData({
-      CropName: event?.target?.value,
-      Phase: "Phase IV",
-    });
+    // fetchCropData({
+    //   CropName: event?.target?.value,
+    //   Phase: "Phase IV",
+    // });
   };
 
   const handleGroupCrops = (event) => {
@@ -131,22 +136,22 @@ const OrderList = () => {
     setPhaseFlag(!phaseFlag);
   };
 
-  const fetchStates = async () => {
-    const url = `${process.env.REACT_APP_API_URL_LOCAL}/phaseWiseState`;
-    try {
-      const response = await axios.get(url);
-      if (phaseDropDown.length) {
-        setSelectedPhases([phaseDropDown[1]]);
-      }
-      let extractedDate = response?.data?.data || [];
-      let result = [];
-      for (let i = 0; i < extractedDate.length; i++) {
-        result = extractedDate[i].StateName;
-        result.unshift("All");
-      }
-      SetStateDropDown(result);
-    } catch (error) {}
-  };
+  // const fetchStates = async () => {
+  //   const url = `${process.env.REACT_APP_API_URL_LOCAL}/phaseWiseState`;
+  //   try {
+  //     const response = await axios.get(url);
+  //     if (phaseDropDown.length) {
+  //       setSelectedPhases([phaseDropDown[1]]);
+  //     }
+  //     let extractedDate = response?.data?.data || [];
+  //     let result = [];
+  //     for (let i = 0; i < extractedDate.length; i++) {
+  //       result = extractedDate[i].StateName;
+  //       result.unshift("All");
+  //     }
+  //     SetStateDropDown(result);
+  //   } catch (error) {}
+  // };
 
   const handleClickCrop = (row) => {
     if (row?.StateName) {
@@ -155,15 +160,15 @@ const OrderList = () => {
     if (cropLevel === 0) {
       setCropLevel(1);
       changeBreadcrumWithStates({ ...row, name: row.StateName }, 0);
-      fetchCropData({
-        StateName: row.StateName || row?.name,
-        Phase: "Phase IV",
-        CropName: selectedCrop,
-      });
+      // fetchCropData({
+      //   StateName: row.StateName || row?.name,
+      //   Phase: "Phase IV",
+      //   CropName: selectedCrop,
+      // });
     } else if (cropLevel === 1) {
       setCropLevel(2);
       changeBreadcrumWithStates({ ...row, name: row.DistrictName }, 1);
-      fetchCropData({ DistrictName: row.DistrictName, CropName: selectedCrop });
+      // fetchCropData({ DistrictName: row.DistrictName, CropName: selectedCrop });
     }
   };
 
@@ -188,14 +193,14 @@ const OrderList = () => {
     handleBreadcrum(level, row);
     if (level === 0) {
       setCropLevel(1);
-      fetchCropData({
-        StateName: row.StateName || row?.name,
-        Phase: "Phase IV",
-        CropName: selectedCrop,
-      });
+      // fetchCropData({
+      //   StateName: row.StateName || row?.name,
+      //   Phase: "Phase IV",
+      //   CropName: selectedCrop,
+      // });
     } else if (level === 1) {
       setCropLevel(2);
-      fetchCropData({ DistrictName: row.DistrictName, CropName: selectedCrop });
+      // fetchCropData({ DistrictName: row.DistrictName, CropName: selectedCrop });
     }
   };
 
@@ -261,7 +266,32 @@ const OrderList = () => {
       Status: "Approved",
     },
   ];
-  
+  useEffect(() => {
+    const fetchStateDropdownData = async () => {
+      const url = `${process.env.REACT_APP_API_URL_LOCAL}/hmt/data`;
+      try {
+        const response = await getFetchWithToken(url);
+        console.log(response, "ResponseDemands");
+        setOrderListData(response.data.recent_demands);
+        // if (response.status === 200) {
+        //   SetStateDropDown(response?.data?.states);
+        // }
+      } catch (error) {
+        enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+          variant: "warning",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+      }
+    };
+
+    fetchStateDropdownData();
+  }, []);
   return (
     <React.Fragment>
       <Grid
@@ -290,7 +320,7 @@ const OrderList = () => {
       </Grid>
       <Grid sx={{ padding: "25px" }}>
         <Grid item lg={12} sm={12} xs={12}>
-          <CropTable data={rows} handleClickCrop={handleClickCrop} />
+          <CropTable data={orderListData} handleClickCrop={handleClickCrop} />
         </Grid>
       </Grid>
     </React.Fragment>
