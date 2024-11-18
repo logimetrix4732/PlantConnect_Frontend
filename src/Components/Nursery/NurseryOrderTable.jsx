@@ -384,49 +384,51 @@ export default function NurseryOrderTable({
                           {row.status === null ? "Pending" : row.status}
                         </StyledTableCell>
                         <StyledTableCell
-                        // align="center"
-                        // className="colorCodeTable"
+                          align="center"
+                          sx={{
+                            padding: "8px",
+                            minWidth: "200px",
+                            "& > div": {
+                              display: "flex",
+                              justifyContent: "center",
+                              gap: "8px",
+                            },
+                          }}
                         >
-                          <Grid
-                            container
-                            justifyContent="center"
-                            alignItems="center"
-                            sx={{ flexDirection: "row" }}
-                          >
-                            <Grid item>
-                              <Button
-                                onClick={() => handleAppReject(row, "Approved")}
-                                disabled={row.status}
-                                style={{
-                                  color: "#fff",
-                                  width: "80px",
-                                  marginRight: "10px",
-                                  height: "30px",
-                                  background: "#426D52",
-                                  boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.13)",
-                                  borderRadius: "4px",
-                                }}
-                              >
-                                Approved
-                              </Button>
-                            </Grid>
-                            <Grid item>
-                              <Button
-                                onClick={() => handleAppReject(row, "Reject")}
-                                disabled={row.status}
-                                style={{
-                                  color: "#fff",
-                                  width: "80px",
-                                  height: "30px",
-                                  background: "#FF4545",
-                                  boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.13)",
-                                  borderRadius: "4px",
-                                }}
-                              >
-                                Reject
-                              </Button>
-                            </Grid>
-                          </Grid>
+                          <div>
+                            <Button
+                              onClick={() => handleAppReject(row, "Approved")}
+                              disabled={row.status}
+                              sx={{
+                                backgroundColor: "#426D52",
+                                color: "#fff",
+                                "&:hover": {
+                                  backgroundColor: "#35593f",
+                                },
+                                "&:disabled": {
+                                  backgroundColor: "#ccc",
+                                },
+                              }}
+                            >
+                              Approve
+                            </Button>
+                            <Button
+                              onClick={() => handleAppReject(row, "Reject")}
+                              disabled={row.status}
+                              sx={{
+                                backgroundColor: "#FF4545",
+                                color: "#fff",
+                                "&:hover": {
+                                  backgroundColor: "#ff2929",
+                                },
+                                "&:disabled": {
+                                  backgroundColor: "#ccc",
+                                },
+                              }}
+                            >
+                              Reject
+                            </Button>
+                          </div>
                         </StyledTableCell>
                       </StyledTableRow>
                     );
@@ -457,7 +459,7 @@ export default function NurseryOrderTable({
                       ).length
                   )
                 )}
-              {!loading && filteredData.length > 0 && (
+              {/* {!loading && filteredData.length > 0 && (
                 <StyledTableRow key={"totals-state"}>
                   <StyledTableCell
                     align="center"
@@ -481,7 +483,7 @@ export default function NurseryOrderTable({
                     {totals.plantCount}
                   </StyledTableCell>
                 </StyledTableRow>
-              )}
+              )} */}
             </TableBody>
           </Table>
         </StyledTableContainer>

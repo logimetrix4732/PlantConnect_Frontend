@@ -26,7 +26,7 @@ const headCells = [
 ];
 
 export default function JDDistrictTable({ data, loading, handleClickParent }) {
-  console.log(data);
+  // console.log(data);
   const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);

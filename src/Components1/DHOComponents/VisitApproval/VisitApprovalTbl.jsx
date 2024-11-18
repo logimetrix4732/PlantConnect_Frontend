@@ -7,7 +7,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableContainer from "@mui/material/TableContainer";
-import FieldVisitIcon from "../../../assets/images/FieldVisitIcon.png"
+import FieldVisitIcon from "../../../assets/images/FieldVisitIcon.png";
 import {
   Box,
   Card,
@@ -16,19 +16,27 @@ import {
   TextField,
   Pagination,
   Typography,
+  IconButton,
 } from "@mui/material";
 const headCells = [
   { id: "id", label: "S.No." },
   { id: "nursery", label: "Nursery" },
-  { id: "address", label: "Address" },
+  // { id: "address", label: "Address" },
   { id: "plantName", label: "Plant Name" },
   { id: "varietyOfPlants", label: "Variety of Plants" },
   { id: "plantsQuantity", label: "Plants Qun." },
+
+  { id: "stock", label: "Stock Updated Date" },
+  { id: "visit", label: "Visit Date" },
   { id: "status", label: "Status" },
   { id: "fieldVisit", label: "Field Visit" },
 ];
 
-export default function VisitApprovalTbl({ data, loading,handleVisitApprovalOpen }) {
+export default function VisitApprovalTbl({
+  data,
+  loading,
+  handleVisitApprovalOpen,
+}) {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [search, setSearch] = useState("");
@@ -36,7 +44,7 @@ export default function VisitApprovalTbl({ data, loading,handleVisitApprovalOpen
 
   useEffect(() => {
     const filtered = data.filter((item) =>
-      item?.nursery?.toLowerCase()?.includes(search.toLowerCase())
+      item?.nursery_name?.toLowerCase()?.includes(search.toLowerCase())
     );
     setFilteredData(filtered);
     setPageIndex(0);
@@ -114,8 +122,23 @@ export default function VisitApprovalTbl({ data, loading,handleVisitApprovalOpen
       </StyledTableRow>
     ));
   };
+  function formatTimestamp(timestamp) {
+    if (!timestamp) return null;
+
+    const date = new Date(timestamp);
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    };
+
+    return date.toLocaleString("en-GB", options);
+  }
   const getStatusColor = (status) => {
-    console.log(status);
+    // console.log(status);
     switch (status) {
       case "Approved":
         return "#59c88a";
@@ -204,32 +227,46 @@ export default function VisitApprovalTbl({ data, loading,handleVisitApprovalOpen
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.nursery}
+                          {row.nursery_name}
                         </StyledTableCell>
 
-                        <StyledTableCell
+                        {/* <StyledTableCell
                           className="colorCodeTable"
                           align="center"
                         >
                           {row.address}
-                        </StyledTableCell>
+                        </StyledTableCell> */}
                         <StyledTableCell
                           className="colorCodeTable"
                           align="center"
                         >
-                          {row.plantName}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          align="center"
-                          className="colorCodeTable"
-                        >
-                          {row.varietyOfPlants}
+                          {row.plant_name}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.plantsQuantity}
+                          {row.category}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.quantity}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                          // style={{ color: getStatusColor(row.status) }}
+                        >
+                          {formatTimestamp(row?.date_added)}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                          // style={{ color: getStatusColor(row.status) }}
+                        >
+                          {row.last_visit}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
@@ -241,12 +278,15 @@ export default function VisitApprovalTbl({ data, loading,handleVisitApprovalOpen
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable"
-                          style={{
-                            cursor: "pointer",
-                          }}
-                          onClick={handleVisitApprovalOpen}
+                          // style={{
+                          //   cursor: "pointer",
+                          // }}
                         >
-                          <img src={FieldVisitIcon} alt="Field Visit" />
+                          <IconButton
+                            onClick={() => handleVisitApprovalOpen(row)}
+                          >
+                            <img src={FieldVisitIcon} alt="Field Visit" />
+                          </IconButton>
                         </StyledTableCell>
                       </StyledTableRow>
                     );
@@ -275,7 +315,7 @@ export default function VisitApprovalTbl({ data, loading,handleVisitApprovalOpen
                       ).length
                   )
                 )}
-              {!loading && filteredData.length > 0 && (
+              {/* {!loading && filteredData.length > 0 && (
                 <StyledTableRow key={"totals-dist"}>
                   <StyledTableCell
                     align="center"
@@ -301,7 +341,7 @@ export default function VisitApprovalTbl({ data, loading,handleVisitApprovalOpen
                     {totals.totalPlant}
                   </StyledTableCell>
                 </StyledTableRow>
-              )}
+              )} */}
             </TableBody>
           </Table>
         </StyledTableContainer>

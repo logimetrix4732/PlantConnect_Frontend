@@ -76,7 +76,7 @@ export default function NavBar(props) {
     return token;
   };
   let userDetails = fetchToken()?.data;
-  console.log(userDetails, "==userDetails");
+  // console.log(userDetails, "==userDetails");
   const handleLogout = () => {
     ls.removeAll();
     setAuth(null);
@@ -121,6 +121,7 @@ export default function NavBar(props) {
     userDetails && userDetails.user_role === "HMT"
       ? [
           { text: "Home", path: "/hmt" },
+          // { text: "Notification", path: "/notification" },
           // { text: "About The Scheme", path: "/about" },
           // { text: "Contact Us", path: "/contact" },
           // { text: "Notification", path: "/notification" },
@@ -134,6 +135,8 @@ export default function NavBar(props) {
       : userDetails && userDetails.user_role === "CHO"
       ? [
           { text: "Home", path: "/cho" },
+          // { text: "Notification", path: "/notification" },
+
           // { text: "About The Scheme", path: "/about" },
           // { text: "Contact Us", path: "/contact" },
         ]

@@ -105,7 +105,7 @@ const JointDirectorPage = () => {
 
         if (response.status === 200) {
           let data = response?.data?.states;
-          console.log(data[0], "STATEDROPDOWNNS");
+          // console.log(data[0], "STATEDROPDOWNNS");
           SetStateDropDown(data);
           setSelectedState(data[0]);
         }
@@ -132,7 +132,7 @@ const JointDirectorPage = () => {
       const response = await getFetch(url);
       if (response.status === 200) {
         let data = response?.data?.divisions;
-        console.log(data, "REPONSE DISVISion");
+        // console.log(data, "REPONSE DISVISion");
         setDivisionDropdown(data);
         setSelectedDivision({ division: data[0] });
       }
@@ -163,7 +163,7 @@ const JointDirectorPage = () => {
         const response = await getFetch(url);
         if (response.status === 200) {
           let data = response?.data?.districts;
-          console.log(data[0].district_name, "REPONSE District");
+          // console.log(data[0].district_name, "REPONSE District");
           if (Array.isArray(data) && tokenData?.data?.user_role !== "HMT") {
             data.unshift({ district_name: "All" });
           }
@@ -195,7 +195,7 @@ const JointDirectorPage = () => {
     try {
       const response = await getFetch(url);
       if (response.status === 200) {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setPlantDistrictTableLoder(false);
         setMainMapCard(response?.data?.data);
         setDistrictWisePlantData(response?.data?.data?.collectiveData);
@@ -231,7 +231,7 @@ const JointDirectorPage = () => {
     try {
       const response = await postFetch(url, data);
       setPlantNurseryTableLoder(false);
-      console.log(response.data);
+      // console.log(response.data);
       if (district !== "All") {
         setBreadcrumbData([...breadcrumbData, district]);
         setLevel(1);
@@ -273,7 +273,7 @@ const JointDirectorPage = () => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/plantName`;
     try {
       const response = await postFetch(url, { nursery_id: nurseryId });
-      console.log(response, "FETCH PLANT NAME===>");
+      // console.log(response, "FETCH PLANT NAME===>");
       if (response.status === 200) {
         setPlantWiseData(response.data.nursery);
       }
@@ -296,7 +296,7 @@ const JointDirectorPage = () => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/plantVarieties?nursery_id=${nurseryId}&plant_name=${plantName}`;
     try {
       const response = await getFetch(url);
-      console.log(response, "RESPONSE PLANTS VARIETY DATA ");
+      // console.log(response, "RESPONSE PLANTS VARIETY DATA ");
       if (response.status === 200) {
         setPlantVarietiesData(response.data.plantVarieties);
       }

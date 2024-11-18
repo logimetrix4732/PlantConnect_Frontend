@@ -21,6 +21,7 @@ const Home = () => {
   } = useContext(UserContext);
   const [level, setLevel] = useState(0);
   const [farmerId, setFarmerId] = useState();
+
   const [mainMapCard, setMainMapCard] = useState({});
   const [plantWiseData, setPlantWiseData] = useState([]);
   const [stateDropDown, SetStateDropDown] = useState([]);
@@ -48,6 +49,8 @@ const Home = () => {
     district: "",
     plant_category: "",
   });
+  // OTP STATUS CHECK
+  const [oTPStatus, setOTPStatus] = useState(true);
   const [breadcrumbData, setBreadcrumbData] = useState(
     tokenData?.data?.user_role === "HMT" ? ["Nurseries"] : ["District"]
   );
@@ -66,6 +69,23 @@ const Home = () => {
   };
   const handleHMTModalClose = () => {
     setHMTModalOpen(false);
+    setHMTOder({
+      latitude: tokenData?.data.lat,
+      longitude: tokenData?.data.long,
+      address: "",
+      pin_code: "",
+      plant_category: "",
+      plant_name: "",
+      plant_quantity: "",
+      season: "Kharif",
+      scheme: "",
+      district: tokenData?.data.district,
+    });
+    setOtpOrder({
+      farmer_name: "",
+      mobile_number: "",
+      aadhaar_number: "",
+    });
   };
   //handlechange Dropdowns
   const handleStates = (newValue, key) => {
@@ -134,7 +154,7 @@ const Home = () => {
     if (nurseryRegistration?.state?.length || selectedValue?.state) {
       fetchDivisionDropdownData();
     }
-  }, [nurseryRegistration.state.length, selectedValue?.state]);
+  }, [nurseryRegistration?.state?.length, selectedValue?.state]);
   // District division api
   useEffect(() => {
     const fetchDistrictDropdownData = async () => {
@@ -143,7 +163,7 @@ const Home = () => {
         const response = await getFetchWithToken(url);
         if (response.status === 200) {
           let data = response?.data?.districts;
-          console.log(data[0].district_name, "REPONSE District");
+          // console.log(data[0].district_name, "REPONSE District");
           if (Array.isArray(data) && tokenData?.data?.user_role !== "HMT") {
             data.unshift({ district_name: "All" });
           }
@@ -180,7 +200,7 @@ const Home = () => {
       try {
         const response = await getFetch(url);
         if (response.status === 200) {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           setPlantDistrictTableLoder(false);
           setMainMapCard(response?.data?.data);
           setDistrictWisePlantData(response?.data?.data?.collectiveData);
@@ -213,7 +233,7 @@ const Home = () => {
     try {
       const response = await postFetch(url, data);
       setPlantNurseryTableLoder(false);
-      console.log(response.data);
+      // console.log(response.data);
       if (district !== "All" && tokenData?.data?.user_role !== "HMT") {
         setBreadcrumbData([...breadcrumbData, district]);
         setLevel(1);
@@ -243,7 +263,7 @@ const Home = () => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/plantName`;
     try {
       const response = await postFetch(url, { nursery_id: nurseryId });
-      console.log(response, "FETCH PLANT NAME===>");
+      // console.log(response, "FETCH PLANT NAME===>");
       if (response.status === 200) {
         setPlantWiseData(response.data.nursery);
       }
@@ -265,7 +285,7 @@ const Home = () => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/plantVarieties?nursery_id=${nurseryId}&plant_name=${plantName}`;
     try {
       const response = await getFetch(url);
-      console.log(response, "RESPONSE PLANTS VARIETY DATA ");
+      // console.log(response, "RESPONSE PLANTS VARIETY DATA ");
       if (response.status === 200) {
         setPlantVarietiesData(response.data.plantVarieties);
       }
@@ -285,14 +305,26 @@ const Home = () => {
 
   //nursery registration
   const [errors, setErrors] = useState({});
+  const [orderError, setOrderError] = useState({});
+  const [otpError, setOtpError] = useState({});
 
   const handleChangeNurseryRegistration = (event) => {
     const { name, value } = event.target;
+    // console.log(name, value, "NAME-Value", nurseryRegistration);
     setNurseryRegistration((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
   };
+  const handleChangeNurseryRegistrationDropdown = (name, value) => {
+    // console.log(name, value, "NAME-Value", nurseryRegistration);
+
+    setNurseryRegistration((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
   const validateNurseryRegistration = () => {
     const newErrors = {};
     const requiredFields = [
@@ -315,12 +347,12 @@ const Home = () => {
       }
     });
 
-    console.log(newErrors, "=newErrors");
+    // console.log(newErrors, "=newErrors");
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
   const handleNurseryRegistrationSubmit = async () => {
-    console.log("testwrok");
+    // console.log("testwrok");
     if (!validateNurseryRegistration()) {
       return;
     }
@@ -330,18 +362,47 @@ const Home = () => {
         `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/register`,
         nurseryRegistration
       );
-
+      // console.log(response, "REGISTER NURSERIESSSS");
       handleNurseryRegistrationModalClose();
-      enqueueSnackbar("Nursery Registration successful", {
-        variant: "success",
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "left",
-        },
-        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
-        iconVariant: "success",
-        autoHideDuration: 2000,
-      });
+      if (response.status === 201) {
+        enqueueSnackbar(response?.data?.message || "Server Error", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+        setNurseryRegistration({
+          nursery_name: "",
+          license_no: "",
+          latitude: "",
+          longitude: "",
+          state: "",
+          division: "",
+          pin_code: "",
+          address: "",
+          area: "",
+          owner_name: "",
+          owner_mobile: "",
+          district: "",
+          plant_category: "",
+        });
+      } else {
+        enqueueSnackbar(response?.data?.error, {
+          variant: "warning",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+      }
+
       if (response && response.status === 404) {
         enqueueSnackbar(response?.data?.message, {
           variant: "warning",
@@ -355,7 +416,7 @@ const Home = () => {
         });
       }
     } catch (error) {
-      enqueueSnackbar("Nursery Registration failed", {
+      enqueueSnackbar(error.data?.error || "Server Error", {
         variant: "error",
         anchorOrigin: {
           vertical: "bottom",
@@ -370,18 +431,20 @@ const Home = () => {
 
   //HMT Place Order
   const [OTPModal, setOTPModal] = useState(false);
-  const [HMTOrder, setHMTOder] = useState({
+  const [otpOrder, setOtpOrder] = useState({
     farmer_name: "",
     mobile_number: "",
     aadhaar_number: "",
-    latitude: "",
-    longitude: "",
+  });
+  const [HMTOrder, setHMTOder] = useState({
+    latitude: tokenData?.data.lat,
+    longitude: tokenData?.data.long,
     address: "",
     pin_code: "",
     plant_category: "",
     plant_name: "",
     plant_quantity: "",
-    season: "",
+    season: "Kharif",
     scheme: "",
     district: tokenData?.data.district,
   });
@@ -399,12 +462,19 @@ const Home = () => {
       [name]: value,
     }));
   };
+  const handleChangeorderOder = (event) => {
+    const { name, value } = event.target;
+    setOtpOrder((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
   const validateHMTOrder = () => {
     const newErrors = {};
     const requiredFields = [
-      "farmer_name",
-      "mobile_number",
-      "aadhaar_number",
+      // "farmer_name",
+      // "mobile_number",
+      // "aadhaar_number",
       "latitude",
       "longitude",
       "address",
@@ -422,12 +492,25 @@ const Home = () => {
       }
     });
 
-    setErrors(newErrors);
+    setOrderError(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  const validateOTPFields = () => {
+    const newErrors = {};
+    const requiredFields = ["farmer_name", "mobile_number", "aadhaar_number"];
+    requiredFields.forEach((field) => {
+      if (!nurseryRegistration[field]) {
+        newErrors[field] = `${field.replace(/_/g, " ")} is required`;
+      }
+    });
+
+    // console.log(newErrors, "=newErrors");
+    setOtpError(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleHMTOrderSubmit = async () => {
-    handleOpenOTPModal();
+    // handleOpenOTPModal();
 
     if (!validateHMTOrder()) {
       return;
@@ -435,13 +518,14 @@ const Home = () => {
 
     try {
       const response = await postFetch(
-        `${process.env.REACT_APP_API_URL_LOCAL}/hmt/submit-demand`,
-        HMTOrder
+        `${process.env.REACT_APP_API_URL_LOCAL}/hmt/placeOrder`,
+        { ...HMTOrder, farmer_id: farmerId }
       );
-      console.log(response.data, "FARMER IDDD");
-      setFarmerId(response.data.demand.farmer_id);
-      if (response && response.status === 200) {
-        enqueueSnackbar("Nursery Registration successful", {
+      // console.log(response);
+      if (response && response.status === 201) {
+        setHMTModalOpen(false);
+        setOTPModal(false);
+        enqueueSnackbar(response.data.message || "Server Error", {
           variant: "success",
           anchorOrigin: {
             vertical: "bottom",
@@ -451,18 +535,36 @@ const Home = () => {
           iconVariant: "success",
           autoHideDuration: 2000,
         });
+      } else {
+        enqueueSnackbar(
+          response.data.message || "Nursery Registration failed",
+          {
+            variant: "error",
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "left",
+            },
+            action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+            iconVariant: "error",
+            autoHideDuration: 2000,
+          }
+        );
       }
     } catch (error) {
-      enqueueSnackbar("Nursery Registration failed", {
-        variant: "error",
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "left",
-        },
-        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
-        iconVariant: "error",
-        autoHideDuration: 2000,
-      });
+      // console.log(error);
+      enqueueSnackbar(
+        error.response.data.message || "Nursery Registration failed",
+        {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "error",
+          autoHideDuration: 2000,
+        }
+      );
     }
   };
 
@@ -487,17 +589,18 @@ const Home = () => {
     },
   ];
   const submitOtp = async (enteredOtp) => {
-    console.log(enteredOtp, "ENTERD OTP");
+    // console.log(enteredOtp, "ENTERD OTP");
     try {
       const response = await postFetch(
         `${process.env.REACT_APP_API_URL_LOCAL}/demand/validate-otp`,
         { farmer_id: farmerId, otp: enteredOtp }
       );
-      console.log(response);
+      // console.log(response);
       if (response && response.status === 200) {
-        setHMTModalOpen(false);
+        // setHMTModalOpen(false);
         setOTPModal(false);
-        enqueueSnackbar("Nursery Registration successful", {
+        setOTPStatus(false);
+        enqueueSnackbar(response.data.message || "Server Error", {
           variant: "success",
           anchorOrigin: {
             vertical: "bottom",
@@ -523,7 +626,7 @@ const Home = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       enqueueSnackbar(
         error.response.data.message || "Nursery Registration failed",
         {
@@ -539,17 +642,68 @@ const Home = () => {
       );
     }
   };
+  const sendOtp = async () => {
+    // if (!validateOTPFields()) {
+    //   return;
+    // }
+
+    try {
+      const response = await postFetch(
+        `${process.env.REACT_APP_API_URL_LOCAL}/hmt/submit-demand`,
+        otpOrder
+      );
+      // console.log(response.data, "FARMER IDDD");
+      setFarmerId(response.data.farmer_id);
+      if (response && response.status === 200) {
+        handleOpenOTPModal();
+
+        enqueueSnackbar(response.data.message || "Server Error", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+      }
+    } catch (error) {
+      enqueueSnackbar("Nursery Registration failed", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+        iconVariant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
+  useEffect(() => {
+    setErrors({});
+    setOrderError({});
+    setOtpError({});
+  }, []);
+
   return (
     <React.Fragment>
       <HMTModal
         OTPModal={OTPModal}
         HMTOrder={HMTOrder}
         HMTModalopen={HMTModalopen}
+        sendOtp={sendOtp}
+        oTPStatus={oTPStatus}
         submitOtp={submitOtp}
         handleCloseOTPModal={handleCloseOTPModal}
         handleChangeHMTOder={handleChangeHMTOder}
+        handleChangeorderOder={handleChangeorderOder}
         handleHMTModalClose={handleHMTModalClose}
         handleHMTOrderSubmit={handleHMTOrderSubmit}
+        errors={errors}
+        orderError={orderError}
+        otpError={otpError}
       />
       <NurseryRegistrationModal
         errors={errors}
@@ -558,6 +712,9 @@ const Home = () => {
         nurseryRegistration={nurseryRegistration}
         NurseryRegistrationModalopen={NurseryRegistrationModalopen}
         handleChangeNurseryRegistration={handleChangeNurseryRegistration}
+        handleChangeNurseryRegistrationDropdown={
+          handleChangeNurseryRegistrationDropdown
+        }
         handleNurseryRegistrationSubmit={handleNurseryRegistrationSubmit}
         handleNurseryRegistrationModalClose={
           handleNurseryRegistrationModalClose

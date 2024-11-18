@@ -15,14 +15,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const VisitApprovalModal = ({ open, handleClose }) => {
-  const [nurseryQuantityDate, setNurseryQuantityDate] = useState(null);
-  const [visitDate, setVisitDate] = useState(null);
-  const [nurseryQuantity, setNurseryQuantity] = useState("");
-  const [visitStatus, setVisitStatus] = useState("");
-  const [dhoApprovedQuantity, setDhoApprovedQuantity] = useState("");
-  const [remarks, setRemarks] = useState("");
-
+const VisitApprovalModal = ({
+  open,
+  handleClose,
+  handleVisitChange,
+  handleVisitDateChange,
+  visitAprForm,
+  handleApprSubmit,
+}) => {
   return (
     <React.Fragment>
       <Dialog
@@ -66,12 +66,12 @@ const VisitApprovalModal = ({ open, handleClose }) => {
                   label="Date"
                   inputFormat="MM/dd/yyyy"
                   className="textfield-form"
-                  value={nurseryQuantityDate}
-                  onChange={(newValue) => setNurseryQuantityDate(newValue)}
+                  value={visitAprForm.nurseryVisitDate}
+                  onChange={handleVisitDateChange("nurseryQuantityDate")}
                   renderInput={(params) => <TextField {...params} fullWidth />}
                 />
               </Grid>
-              <Grid item lg={6} sm={6} xs={12}>
+              {/* <Grid item lg={6} sm={6} xs={12}>
                 <TextField
                   label="Visit Status"
                   variant="outlined"
@@ -80,36 +80,47 @@ const VisitApprovalModal = ({ open, handleClose }) => {
                   onChange={(e) => setVisitStatus(e.target.value)}
                   fullWidth
                 />
-              </Grid>
+              </Grid> */}
               <Grid item lg={6} sm={6} xs={12}>
-                <DesktopDatePicker
+                <TextField
                   label="Nursery Quantity"
-                  inputFormat="MM/dd/yyyy"
+                  variant="outlined"
+                  name="nurseryPlantQuantity"
                   className="textfield-form"
-                  value={visitDate}
-                  onChange={(newValue) => setVisitDate(newValue)}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  value={visitAprForm.nurseryPlantQuantity}
+                  disabled={true}
+                  // defaultValue={visitAprForm.nurseryPlantQuantity}
+                  onChange={handleVisitChange}
+                  // onChange={(e) => setVisitStatus(e.target.value)}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true, // This ensures the label stays shrunk when there is a value
+                  }}
                 />
               </Grid>
               <Grid item lg={6} sm={6} xs={12}>
                 <TextField
                   label="DHO Approved Quantity"
+                  name="dhoApprQuan"
                   variant="outlined"
                   className="textfield-form"
-                  value={dhoApprovedQuantity}
-                  onChange={(e) => setDhoApprovedQuantity(e.target.value)}
+                  value={visitAprForm.dhoApprQuan}
+                  // onChange={(e) => setDhoApprovedQuantity(e.target.value)}
+                  onChange={handleVisitChange}
                   fullWidth
                 />
               </Grid>
               <Grid item lg={12} sm={12} xs={12}>
                 <TextField
                   label="Remarks"
+                  name="remark"
                   variant="outlined"
                   className="textfield-form"
                   multiline
                   rows={4}
-                  value={remarks}
-                  onChange={(e) => setRemarks(e.target.value)}
+                  value={visitAprForm.remark}
+                  // onChange={(e) => setRemarks(e.target.value)}
+                  onChange={handleVisitChange}
                   fullWidth
                 />
               </Grid>
@@ -125,9 +136,21 @@ const VisitApprovalModal = ({ open, handleClose }) => {
               borderRadius: "10px",
               boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.11)",
             }}
-            onClick={handleClose}
+            onClick={() => handleApprSubmit("Approve")}
           >
-            Submit
+            Approve
+          </Button>
+          <Button
+            style={{
+              width: "130px",
+              height: "40px",
+              color: "#2f73fa",
+              borderRadius: "10px",
+              boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.11)",
+            }}
+            onClick={() => handleApprSubmit("Reject")}
+          >
+            Reject
           </Button>
         </DialogActions>
       </Dialog>

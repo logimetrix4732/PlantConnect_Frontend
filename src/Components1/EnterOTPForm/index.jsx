@@ -72,7 +72,7 @@ const EnterOTPForm = ({ open, onClose, submitOtp }) => {
   const handleSubmit = () => {
     const enteredOtp = otp.join("");
     submitOtp(enteredOtp);
-    console.log("Entered OTP: ", enteredOtp);
+    // console.log("Entered OTP: ", enteredOtp);
   };
 
   return (

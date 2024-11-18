@@ -84,7 +84,7 @@ export default function Login() {
             roles: [data.data.user_role],
           });
           ls.set("authToken", JSON.stringify(data.data));
-          console.log(data.data, "========");
+          // console.log(data.data, "========");
           if (data.data.user_role === "JS") {
             navigate("/da&fw", { replace: true });
             window.history.replaceState("/da&fw");
@@ -138,10 +138,10 @@ export default function Login() {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/login`;
     try {
       const response = await postFetchData(url, data);
-      console.log(response, "141===>");
+      // console.log(response, "141===>");
       ls.set("authToken", JSON.stringify(response.data));
       if (response.status === 200) {
-        console.log(response);
+        // console.log(response);
         if (response.data.data.user_role === "HMT") {
           // console.log("hfkjdshfkshdf");
           navigate("/hmt", { replace: true });
@@ -174,8 +174,8 @@ export default function Login() {
         });
       }
     } catch (error) {
-      console.log(error, "ERROR");
-      enqueueSnackbar(error.message || "Server Error11", {
+      // console.log(error, "ERROR");
+      enqueueSnackbar(error?.message || "Server Error", {
         variant: "warning",
         anchorOrigin: {
           vertical: "bottom",
@@ -283,7 +283,8 @@ export default function Login() {
             }}
           >
             <Stack>
-              <img src={loginlog} alt="image" width={100} />
+              <img src="./planet.jpg" style={{ height: "3rem" }} alt="movcd" />
+              {/* <img src={loginlog} alt="image" width={100} /> */}
             </Stack>
             <Typography variant="h5" className="heading" align="center">
               Login to Your Account

@@ -15,7 +15,9 @@ import {
   Typography,
   FormHelperText,
   FormControl,
+  Autocomplete,
 } from "@mui/material";
+import { stateOptions } from "../../Home/NursRegStDivDisStaticData";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -28,24 +30,25 @@ const NurseryRegistrationModal = ({
   nurseryRegistration,
   NurseryRegistrationModalopen,
   handleChangeNurseryRegistration,
+  handleChangeNurseryRegistrationDropdown,
   handleNurseryRegistrationSubmit,
   handleNurseryRegistrationModalClose,
 }) => {
-  const field = {
-    name: "fieldName",
-    options: stateDropDown,
-    options1: divisionDropdown,
-    options2: [
-      "Chamoli",
-      "Dehradun",
-      "Haridwar",
-      "Pauri Garhwal",
-      "Rudraprayag",
-      "Tehri Garhwal",
-      "Uttarkashi"
-    ]
-    ,
-  };
+  // const field = {
+  //   name: "fieldName",
+  //   options: stateDropDown,
+  //   options1: divisionDropdown,
+  //   options2: [
+  //     "Chamoli",
+  //     "Dehradun",
+  //     "Haridwar",
+  //     "Pauri Garhwal",
+  //     "Rudraprayag",
+  //     "Tehri Garhwal",
+  //     "Uttarkashi"
+  //   ]
+  //   ,
+  // };
 
   return (
     <React.Fragment>
@@ -265,6 +268,123 @@ const NurseryRegistrationModal = ({
               <Typography component="div" className="label-Form">
                 State
               </Typography>
+              <Autocomplete
+                // freeSolo
+                name="state"
+                placeholder="Select State"
+                size="small"
+                sx={{ color: "#000000" }}
+                options={stateOptions.map((option) => option.name)}
+                value={nurseryRegistration.state}
+                onChange={(event, value) =>
+                  handleChangeNurseryRegistrationDropdown("state", value)
+                }
+                // sx={{ color: "#000000" }}
+                // onChange={(event, value) => {
+                //   setSelectedState(value);
+                //   setSelectedDivision(null); // Reset division when state changes
+                //   setSelectedDistrict(""); // Reset district when state changes
+                // }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    placeholder="Select State"
+                    size="small"
+                    variant="outlined"
+                    className="textfield-form"
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                Division
+              </Typography>
+              <Autocomplete
+                // freeSolo
+                options={
+                  nurseryRegistration.state
+                    ? stateOptions
+                        .find(
+                          (state) => state.name === nurseryRegistration.state
+                        )
+                        ?.divisions.map((division) => division.name)
+                    : []
+                }
+                name="division"
+                placeholder="Division"
+                size="small"
+                value={nurseryRegistration.division}
+                onChange={(event, value) =>
+                  handleChangeNurseryRegistrationDropdown("division", value)
+                }
+                // onChange={handleChangeNurseryRegistration}
+                sx={{ color: "#000000" }}
+                // value={selectedDivision || ""}
+                // onChange={(event, value) => {
+                //   setSelectedDivision(value);
+                //   setSelectedDistrict(""); // Reset district when division changes
+                // }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    placeholder="Select Division"
+                    size="small"
+                    variant="outlined"
+                    className="textfield-form"
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                District
+              </Typography>
+              <Autocomplete
+                // freeSolo
+                options={
+                  nurseryRegistration.division
+                    ? stateOptions
+                        .find(
+                          (state) => state.name === nurseryRegistration.state
+                        )
+                        ?.divisions.find(
+                          (division) =>
+                            division.name === nurseryRegistration.division
+                        )?.districts || []
+                    : []
+                }
+                // value={selectedDistrict}
+                name="district"
+                placeholder="Select District"
+                size="small"
+                value={nurseryRegistration.district}
+                // onChange={handleChangeNurseryRegistration}
+                onChange={(event, value) =>
+                  handleChangeNurseryRegistrationDropdown("district", value)
+                }
+                sx={{ color: "#000000" }}
+                // onChange={(event, value) => setSelectedDistrict(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    placeholder="Select District"
+                    size="small"
+                    variant="outlined"
+                    className="textfield-form"
+                  />
+                )}
+              />
+            </Grid>
+            {/* <Grid item lg={4} sm={6} xs={12}>
+              <Typography component="div" className="label-Form">
+                State
+              </Typography>
               <FormControl fullWidth error={!!errors.division}>
                 <Select
                   displayEmpty
@@ -348,7 +468,7 @@ const NurseryRegistrationModal = ({
                 </Select>
                 <FormHelperText>{errors.district}</FormHelperText>
               </FormControl>
-            </Grid>
+            </Grid> */}
           </Grid>
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center" }}>

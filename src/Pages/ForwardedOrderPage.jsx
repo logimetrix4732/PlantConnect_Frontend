@@ -4,7 +4,7 @@ import ForwardedOrderTable from "../Components1/JointDirecComponent/ForwardedOrd
 import JDForwModal from "../Components1/JointDirecComponent/JDForwModal";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import CloseIcon from "@mui/icons-material/Close";
-import { getFetchWithToken } from "../Components/API/Api";
+import { getFetchWithToken, postFetch } from "../Components/API/Api";
 
 // const tableData = [
 //   {
@@ -33,11 +33,58 @@ import { getFetchWithToken } from "../Components/API/Api";
 //   // Additional rows as needed...
 // ];
 export default function ForwardedOrderPage() {
+  const [nearByNurseryTableData, setNearByNurseryTableData] = useState();
   const [nurseryTableData, setNurseryTableData] = useState();
+
   const [jdModalOpen, setJdModalOpen] = useState(false);
+  const [jdModalHeading, setJdModalHeading] = useState("");
   const handleClickParent = (row) => {
-    console.log("HANDLECLICK PARENT", row);
+    // console.log("HANDLECLICK PARENT", row);
+    setJdModalHeading(row.hmt_name);
+    handleFetchNearby(row);
     setJdModalOpen(true);
+  };
+  const handleFetchNearby = async (row) => {
+    // console.log(row, "ROW+++++++++>");
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/nearby`;
+    const data = {
+      demand_id: row.demand_id,
+      plant_name: row.plant_name,
+      plant_variety: row.plant_category,
+    };
+    try {
+      const response = await postFetch(url, data);
+      // console.log(response, "nurseries/nearby=====>");
+      if (response.status === 200) {
+        setNearByNurseryTableData(response.data.nurseries);
+      }
+
+      // setPlantVarietiesData(response.data.data);
+      // enqueueSnackbar(response?.message || "Server Error", {
+      //   variant: "success",
+      //   anchorOrigin: {
+      //     vertical: "bottom",
+      //     horizontal: "left",
+      //   },
+      //   action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+      //   iconVariant: "success",
+      //   autoHideDuration: 2000,
+      // });
+
+      // fetchPlantsData(tokenData?.id);
+    } catch (error) {
+      // console.log(error, "ERRORRR");
+      enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+        variant: "warning",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+        iconVariant: "success",
+        autoHideDuration: 2000,
+      });
+    }
   };
   const handleJDModalClose = () => {
     setJdModalOpen(false);
@@ -46,7 +93,7 @@ export default function ForwardedOrderPage() {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/demands/view`;
     try {
       const response = await getFetchWithToken(url);
-      console.log(response, "ORDER DATA ");
+      // console.log(response, "ORDER DATA ");
       setNurseryTableData(response.data.demands);
       // if (response.status === 200) {
       //   setMainMapCard(response.data.data);
@@ -68,12 +115,70 @@ export default function ForwardedOrderPage() {
   useEffect(() => {
     fetchOrderData();
   }, []);
+  const handleApproval = async (row, status) => {
+    // console.log(row, "HANDLE ROW APPROVAL");
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/demands/assign-to-nursery`;
+    const data = {
+      demand_id: row.demand_id,
+      assigned_nursery_id: row.nursery_id,
+      required_quantity: row.farmerPlantRequirement,
+      demand_status: status,
+    };
+    try {
+      const response = await postFetch(url, data);
+      // console.log(response, "nurseries/nearby=====>");
+      if (response.status === 200) {
+        setJdModalOpen(false);
+        fetchOrderData();
+        enqueueSnackbar(response?.data.message || "Server Error", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left",
+          },
+          action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+          iconVariant: "success",
+          autoHideDuration: 2000,
+        });
+        // setNearByNurseryTableData(response.data.nurseries);
+      }
+
+      // setPlantVarietiesData(response.data.data);
+      // enqueueSnackbar(response?.message || "Server Error", {
+      //   variant: "success",
+      //   anchorOrigin: {
+      //     vertical: "bottom",
+      //     horizontal: "left",
+      //   },
+      //   action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+      //   iconVariant: "success",
+      //   autoHideDuration: 2000,
+      // });
+
+      // fetchPlantsData(tokenData?.id);
+    } catch (error) {
+      // console.log(error, "ERRORRR");
+      enqueueSnackbar(error?.response?.data?.message || "Server Error", {
+        variant: "warning",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+        iconVariant: "success",
+        autoHideDuration: 2000,
+      });
+    }
+  };
   return (
     <>
       <JDForwModal
+        jdModalHeading={jdModalHeading}
+        handleApproval={handleApproval}
         jdModalOpen={jdModalOpen}
         handleJDModalClose={handleJDModalClose}
-        // tableData={tableData}
+        tableData={nearByNurseryTableData}
+        setTableData={setNearByNurseryTableData}
       />
       <Grid
         style={{

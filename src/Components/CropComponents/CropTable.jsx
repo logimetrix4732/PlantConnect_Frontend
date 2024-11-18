@@ -255,7 +255,7 @@ export default function CropTable({ data, loading, handleClickCrop }) {
                       ).length
                   )
                 )}
-              {!loading && filteredData.length > 0 && (
+              {/* {!loading && filteredData.length > 0 && (
                 <StyledTableRow key={"totals-state"}>
                   <StyledTableCell
                     align="center"
@@ -285,7 +285,7 @@ export default function CropTable({ data, loading, handleClickCrop }) {
                     {totals.TotalProduction || 0}
                   </StyledTableCell>
                 </StyledTableRow>
-              )}
+              )} */}
             </TableBody>
           </Table>
         </StyledTableContainer>

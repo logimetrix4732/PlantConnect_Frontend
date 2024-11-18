@@ -1,7 +1,8 @@
 import { Button, Grid } from "@mui/material";
 // import MapBox from "./MapContent/MapBox";
-import CloseIcon from "@mui/icons-material/Close";
 import { UserContext } from "../context/UserContext";
+import CloseIcon from "@mui/icons-material/Close";
+
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import HMTModal from "../Components1/PlantModals/HMTModal";
 import { getFetch, getFetchWithToken, postFetch } from "../Components/API/Api";
@@ -50,7 +51,7 @@ const DhoChoPage = () => {
     plant_category: "",
   });
   const [breadcrumbData, setBreadcrumbData] = useState(
-    tokenData?.data?.user_role === "HMT" ? ["Nurseries"] : ["District"]
+    tokenData?.data?.user_role === "DHO" ? ["Nurseries"] : ["District"]
   );
   const [districtDropdown, setDistrictDropdown] = useState([]);
 
@@ -144,7 +145,7 @@ const DhoChoPage = () => {
         const response = await getFetchWithToken(url);
         if (response.status === 200) {
           let data = response?.data?.districts;
-          console.log(data[0].district_name, "REPONSE District");
+          // console.log(data[0].district_name, "REPONSE District");
           if (
             Array.isArray(data) &&
             tokenData?.data?.user_role !== "HMT" &&
@@ -185,10 +186,10 @@ const DhoChoPage = () => {
       try {
         const response = await getFetch(url);
         if (response.status === 200) {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           setPlantDistrictTableLoder(false);
           setMainMapCard(response?.data?.data);
-          setDistrictWisePlantData(response?.data?.data?.collectiveData);
+          // setDistrictWisePlantData(response?.data?.data?.collectiveData);
         }
       } catch (error) {
         setPlantDistrictTableLoder(false);
@@ -218,11 +219,11 @@ const DhoChoPage = () => {
     try {
       const response = await postFetch(url, data);
       setPlantNurseryTableLoder(false);
-      console.log(response.data);
-      if (district !== "All" && tokenData?.data?.user_role !== "HMT") {
-        setBreadcrumbData([...breadcrumbData, district]);
-        setLevel(1);
-      }
+      // console.log(response.data);
+      // if (district !== "All" && tokenData?.data?.user_role !== "HMT") {
+      //   setBreadcrumbData([...breadcrumbData, district]);
+      //   setLevel(1);
+      // }
 
       setNurseryWiseData(response.data);
     } catch (error) {
@@ -248,7 +249,7 @@ const DhoChoPage = () => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/plantName`;
     try {
       const response = await postFetch(url, { nursery_id: nurseryId });
-      console.log(response, "FETCH PLANT NAME===>");
+      // console.log(response, "FETCH PLANT NAME===>");
       if (response.status === 200) {
         setPlantWiseData(response.data.nursery);
       }
@@ -270,7 +271,7 @@ const DhoChoPage = () => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nursery/plantVarieties?nursery_id=${nurseryId}&plant_name=${plantName}`;
     try {
       const response = await getFetch(url);
-      console.log(response, "RESPONSE PLANTS VARIETY DATA ");
+      // console.log(response, "RESPONSE PLANTS VARIETY DATA ");
       if (response.status === 200) {
         setPlantVarietiesData(response.data.plantVarieties);
       }
@@ -320,12 +321,12 @@ const DhoChoPage = () => {
       }
     });
 
-    console.log(newErrors, "=newErrors");
+    // console.log(newErrors, "=newErrors");
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
   const handleNurseryRegistrationSubmit = async () => {
-    console.log("testwrok");
+    // console.log("testwrok");
     if (!validateNurseryRegistration()) {
       return;
     }
@@ -443,7 +444,7 @@ const DhoChoPage = () => {
         `${process.env.REACT_APP_API_URL_LOCAL}/hmt/submit-demand`,
         HMTOrder
       );
-      console.log(response.data, "FARMER IDDD");
+      // console.log(response.data, "FARMER IDDD");
       setFarmerId(response.data.demand.farmer_id);
       if (response && response.status === 200) {
         enqueueSnackbar("Nursery Registration successful", {
@@ -492,13 +493,13 @@ const DhoChoPage = () => {
     },
   ];
   const submitOtp = async (enteredOtp) => {
-    console.log(enteredOtp, "ENTERD OTP");
+    // console.log(enteredOtp, "ENTERD OTP");
     try {
       const response = await postFetch(
         `${process.env.REACT_APP_API_URL_LOCAL}/demand/validate-otp`,
         { farmer_id: farmerId, otp: enteredOtp }
       );
-      console.log(response);
+      // console.log(response);
       if (response && response.status === 200) {
         setHMTModalOpen(false);
         setOTPModal(false);
@@ -528,7 +529,7 @@ const DhoChoPage = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       enqueueSnackbar(
         error.response.data.message || "Nursery Registration failed",
         {
@@ -546,7 +547,7 @@ const DhoChoPage = () => {
   };
   return (
     <React.Fragment>
-      <HMTModal
+      {/* <HMTModal
         OTPModal={OTPModal}
         HMTOrder={HMTOrder}
         HMTModalopen={HMTModalopen}
@@ -555,7 +556,7 @@ const DhoChoPage = () => {
         handleChangeHMTOder={handleChangeHMTOder}
         handleHMTModalClose={handleHMTModalClose}
         handleHMTOrderSubmit={handleHMTOrderSubmit}
-      />
+      /> */}
       <NurseryRegistrationModal
         errors={errors}
         stateDropDown={stateDropDown}
@@ -672,7 +673,24 @@ const DhoChoPage = () => {
           </Grid>
         )}
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          {tokenData?.data?.user_role === "HMT" ? (
+          <PlanttblContainerNur
+            level={level}
+            setLevel={setLevel}
+            tokenData={tokenData}
+            fetchPlants={fetchPlants}
+            setSelectedValue={setSelectedValue}
+            selectedValue={selectedValue}
+            plantWiseData={plantWiseData}
+            fetchNurserys={fetchNurserys}
+            breadcrumbData={breadcrumbData}
+            nurseryWiseData={nurseryWiseData}
+            setBreadcrumbData={setBreadcrumbData}
+            fetchPlantVariety={fetchPlantVariety}
+            plantVarietiesData={plantVarietiesData}
+            districtWisePlantData={districtWisePlantData}
+            PlantDistrictTableLoder={PlantDistrictTableLoder}
+          />
+          {/* {tokenData?.data?.user_role === "HMT" ? (
             <PlanttblContainerNur
               level={level}
               setLevel={setLevel}
@@ -706,7 +724,7 @@ const DhoChoPage = () => {
               districtWisePlantData={districtWisePlantData}
               PlantDistrictTableLoder={PlantDistrictTableLoder}
             />
-          )}
+          )} */}
         </Grid>
       </Grid>
     </React.Fragment>

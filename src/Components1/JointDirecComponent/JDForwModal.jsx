@@ -24,12 +24,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const JDForwModal = ({
   OTPModal,
   HMTOrder,
+  jdModalHeading,
   tableData,
+  setTableData,
   jdModalOpen,
   handleCloseOTPModal,
   handleChangeHMTOder,
   handleJDModalClose,
   handleHMTOrderSubmit,
+  handleApproval,
 }) => {
   const field = [
     {
@@ -45,7 +48,7 @@ const JDForwModal = ({
         keepMounted
         onClose={handleJDModalClose}
         aria-describedby="alert-dialog-slide-description"
-        maxWidth="lg"
+        maxWidth="xlg"
         fullWidth
       >
         <DialogTitle
@@ -58,7 +61,9 @@ const JDForwModal = ({
           }}
           id="customized-dialog-title"
         >
-          <span className="colorCodeTable">Near By Nurseries</span>
+          <span className="colorCodeTable">
+            {jdModalHeading} Near By Nurseries
+          </span>
           <IconButton
             aria-label="close"
             onClick={handleJDModalClose}
@@ -304,10 +309,16 @@ const JDForwModal = ({
           </Grid>
           <EnterOTPForm open={OTPModal} onClose={handleCloseOTPModal} /> */}
           <Grid container spacing={2} mt={0.1}>
-            <PlantModalTable tableData={tableData} />
+            <Grid item xs={12} md={12} lg={12}>
+              <PlantModalTable
+                tableData={tableData}
+                setTableData={setTableData}
+                handleApproval={handleApproval}
+              />
+            </Grid>
           </Grid>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "center" }}>
+        {/* <DialogActions sx={{ justifyContent: "center" }}>
           <Button
             onClick={handleHMTOrderSubmit}
             style={{
@@ -320,7 +331,7 @@ const JDForwModal = ({
           >
             Submit
           </Button>
-        </DialogActions>
+        </DialogActions> */}
       </Dialog>
     </React.Fragment>
   );

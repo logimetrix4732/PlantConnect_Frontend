@@ -16,7 +16,7 @@ const fetchToken = () => {
   return token;
 };
 const token = fetchToken()?.token || "";
-console.log(token, "TOKEN====>");
+// console.log(token, "TOKEN====>");
 // GET request
 export const getFetch = async (url) => {
   try {
@@ -27,7 +27,7 @@ export const getFetch = async (url) => {
     });
     return response;
   } catch (error) {
-    console.error("GET request error:", error);
+    // console.error("GET request error:", error);
     return error.response;
   }
 };
@@ -67,12 +67,12 @@ export const postFetch = async (url, data) => {
     const response = await axios.post(url, data, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${fetchToken()?.token}`,
       },
     });
     return response;
   } catch (error) {
-    console.error("POST request error:", error);
+    // console.error("POST request error:", error);
     return error;
   }
 };

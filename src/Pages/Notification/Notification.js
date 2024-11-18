@@ -10,11 +10,14 @@ import { styled } from "@mui/system";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import NotificationCreateModal from "./NotificationCreateModal";
 import "./notification.css";
+import { getFetchWithToken, postFetch } from "../../Components/API/Api";
+
 const headCells = [
   { id: "id", label: "S.No" },
   { id: "notification", label: "Notification" },
-  { id: "category", label: "Category" },
+  // { id: "category", label: "Category" },
   { id: "createDate", label: "Created Dates" },
+  { id: "status", label: "Status" },
   { id: "action", label: "Action" },
 ];
 
@@ -50,7 +53,7 @@ export default function Notification({ loading }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [jsNotification, setJsNotification] = useState([]);
+  const [notification, setNotification] = useState([]);
   const [fileUpload, setFileUpload] = useState(null);
   const categories = {
     JS: ["Guidelines", "MOM", "Instructions", "Progress Reports", "Any Other"],
@@ -112,11 +115,12 @@ export default function Notification({ loading }) {
   //file upload
 
   const handleEditClick = (row) => {
+    // console.log(row, "HANDLE EDIT ROW");
     setSelectedRow(row);
-    setNewEntry({
-      notification: row.Notification,
-    });
-    setSelectedValue(row.Category);
+    // setNewEntry({
+    //   notification: row.Notification,
+    // });
+    // setSelectedValue(row.Category);
     setModalOpen(true);
   };
 
@@ -137,30 +141,19 @@ export default function Notification({ loading }) {
     fetchNotification();
   }, []);
   const fetchNotification = async () => {
-    let url;
-    if (userRole === "SLA") {
-      url = `${process.env.REACT_APP_API_URL_LOCAL}/getNotificationBySLA`;
-    } else if (userRole === "JS") {
-      url = `${process.env.REACT_APP_API_URL_LOCAL}/getNotification`;
-    }
+    const url = `${process.env.REACT_APP_API_URL_LOCAL}/notifications`;
     try {
-      const response = await axios.get(url);
-      if (userRole === "SLA") {
-        setJsNotification(response.data.data);
-      } else {
-        let fetchDetails = response.data.data;
-
-        let array = fetchDetails.flatMap((item) =>
-          item.notifications.map((notification) => ({
-            ...notification,
-            Category: item.Category,
-          }))
-        );
-
-        setJsNotification(array);
+      const response = await getFetchWithToken(url);
+      // console.log(response, "RESPONSE DATA Notification");
+      if (response.status === 200) {
+        setNotification(response.data.notifications);
       }
+
+      // if (response.status === 200) {
+      //   setDivisionDropdown(response?.data?.divisions);
+      // }
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message || "server error", {
+      enqueueSnackbar(error?.response?.data?.message || "Server Error", {
         variant: "warning",
         anchorOrigin: {
           vertical: "bottom",
@@ -219,25 +212,16 @@ export default function Notification({ loading }) {
       });
     }
   };
-
-  //Edit
-  const handleEditSubmit = async () => {
+  // handle Reject and Approved
+  const handleEditSubmit = async (event, status) => {
+    // console.log(event.target.value, status, "CHECK BTN STATUS");
+    let url = `${process.env.REACT_APP_API_URL_LOCAL}/notifications/update-status`;
+    const data = {
+      notification_id: selectedRow.notification_id,
+      notification_status: status,
+    };
     try {
-      const data = {
-        notification: newEntry?.notification,
-        notificationId: selectedRow.id,
-        Category: selectedValue,
-      };
-      const response = await axios.put(
-        `${process.env.REACT_APP_API_URL_LOCAL}/updateNotification`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await postFetch(url, data);
       if (response.status === 200) {
         enqueueSnackbar(response.data.message || "Server Error", {
           variant: "success",
@@ -256,6 +240,42 @@ export default function Notification({ loading }) {
       console.error("Error updating notification:", error);
     }
   };
+  //Edit
+  // const handleEditSubmit = async () => {
+  //   try {
+  //     const data = {
+  //       notification: newEntry?.notification,
+  //       notificationId: selectedRow.id,
+  //       Category: selectedValue,
+  //     };
+  //     const response = await axios.put(
+  //       `${process.env.REACT_APP_API_URL_LOCAL}/updateNotification`,
+  //       data,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     if (response.status === 200) {
+  //       enqueueSnackbar(response.data.message || "Server Error", {
+  //         variant: "success",
+  //         anchorOrigin: {
+  //           vertical: "bottom",
+  //           horizontal: "left",
+  //         },
+  //         action: (key) => <CloseIcon onClick={() => closeSnackbar(key)} />,
+  //         iconVariant: "success",
+  //         autoHideDuration: 2000,
+  //       });
+  //       fetchNotification();
+  //       setModalOpen(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating notification:", error);
+  //   }
+  // };
 
   //Delete
   const handleDelete = async (id) => {
@@ -314,12 +334,12 @@ export default function Notification({ loading }) {
           zIndex: 1000,
           borderBottomLeftRadius: "53px",
           borderBottomRightRadius: "53px",
-          backgroundColor: "#16b566",
+          backgroundColor: "#426D52",
           height: "3rem",
         }}
       ></Grid>
       <div style={{ padding: "20px 33px 20px 33px" }}>
-        <Grid
+        {/* <Grid
           container
           sx={{ display: "flex", justifyContent: "end", marginBottom: "10px" }}
         >
@@ -331,11 +351,11 @@ export default function Notification({ loading }) {
           >
             Create New
           </Button>
-        </Grid>
+        </Grid> */}
         <NotificationTable
           loading={loading}
           headCells={headCells}
-          tableData={jsNotification}
+          tableData={notification}
           handleDelete={handleDelete}
           handleEditClick={handleEditClick}
           handleEditSubmit={handleEditSubmit}

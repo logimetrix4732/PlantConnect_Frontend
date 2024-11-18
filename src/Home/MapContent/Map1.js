@@ -18,6 +18,7 @@ import { useLocation } from "react-router-dom";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { colorList } from "../../Components/MapData/AllStateDist";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
+import { UttrakhandData } from "./MapStaticData";
 export default function Map1({
   selectedState,
   selectedDistrict,
@@ -54,7 +55,7 @@ export default function Map1({
   });
   // const [mapCenter, setMapCenter] = useState({ lat: 26.2006, lng: 92.9376 });
   const [mapCenter, setMapCenter] = useState({ lat: 30.0668, lng: 79.0193 });
-  const [mapZoom, setMapZoom] = useState(7);
+  const [mapZoom, setMapZoom] = useState(8);
   const [highlightedColor, setHighlightedColor] = useState(null);
 
   const [boundaries, setBoundaries] = useState([]);
@@ -154,7 +155,7 @@ export default function Map1({
       setBoundaries(polygons);
       if (selectedState === "All") {
         setMapCenter(mapCenter);
-        setMapZoom(7);
+        setMapZoom(8);
       } else {
         if (selectedState === "ARUNACHAL PRADESH") {
           setMapCenter({
@@ -205,6 +206,30 @@ export default function Map1({
       setMapLoading(false); // Stop loading indicator
     }
   };
+  useEffect(() => {
+    // const arrayData = response.data.data;
+    // const polygons = [].reduce((acc, item, ind) => {
+    const polygons = UttrakhandData.reduce((acc, item, ind) => {
+      if (item.type === "administrative" && item.class === "boundary") {
+        const boundaryCoords = item.coordinates.map((coord) => ({
+          lat: parseFloat(coord.lat),
+          lng: parseFloat(coord.lng),
+        }));
+
+        acc.push({
+          name: item.name,
+          center: item.center,
+          zoom: item.zoom,
+          boundaries: boundaryCoords,
+          color: getColor(ind), // or use predefined colors
+        });
+      }
+      return acc;
+    }, []);
+    setBoundaries(polygons);
+    setMapCenter({ lat: 30.0668, lng: 79.0193 });
+    setMapZoom(8);
+  }, []);
 
   // useEffect(() => {
   //   // fetchData({ stateName: selectedState });

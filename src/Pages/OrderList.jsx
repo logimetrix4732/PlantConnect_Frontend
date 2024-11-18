@@ -271,7 +271,7 @@ const OrderList = () => {
       const url = `${process.env.REACT_APP_API_URL_LOCAL}/hmt/data`;
       try {
         const response = await getFetchWithToken(url);
-        console.log(response, "ResponseDemands");
+        // console.log(response, "ResponseDemands");
         setOrderListData(response.data.recent_demands);
         // if (response.status === 200) {
         //   SetStateDropDown(response?.data?.states);

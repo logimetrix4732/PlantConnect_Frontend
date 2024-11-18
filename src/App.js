@@ -153,10 +153,15 @@ const App = () => {
                       }
                     >
                       <Route path="/approval" element={<VisitApproval />} />
-                      <Route
+                      {/* <Route
                         path="/regisNurseries"
                         element={<RegisteredNurseries />}
+                      /> */}
+                      <Route
+                        path="/regisNurseries"
+                        element={<Notification />}
                       />
+
                       <Route
                         path="/hmtOrder"
                         element={<ForwardedOrderPage />}
@@ -174,6 +179,7 @@ const App = () => {
                     <Route element={<RequireAuth allowedRoles={[ROLES.HMT]} />}>
                       <Route path="/hmt" element={<Home />} />
                       <Route path="/orderList" element={<OrderList />} />
+                      <Route path="/notification" element={<Notification />} />
                     </Route>
                     <Route
                       element={<RequireAuth allowedRoles={[ROLES.Nursery]} />}

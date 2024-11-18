@@ -25,49 +25,55 @@ import NotificationLoder from "../../Home/NotificationLoder";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 const headCells = [
-  { id: "number", label: "No." },
-  { id: "hmtName", label: "HMT Name" },
+  { id: "number", label: "Sr No." },
+  { id: "nurseryName", label: "Nursery Name" },
+  { id: "nurseryOwnName", label: "Nursery Own Name" },
+  // { id: "hmtName2", label: "District" },
+  { id: "plantName", label: "Plant Name" },
   { id: "plantVariety", label: "Plant Variety" },
   { id: "plantQuantity", label: "Plant Quantity" },
+  { id: "plantUnit", label: "Plant Unit Price" },
   { id: "hmtAddress", label: "HMT Address" },
   { id: "contactDetail", label: "Contact Detail" },
   { id: "distance", label: "Distance" },
   { id: "requirement", label: "Requirement" },
   { id: "action", label: "Action" },
 ];
-const tableDataStatic = [
-  {
-    hmtId: 1,
-    hmtName: "Plant A",
-    plantVariety: "red",
-    plantQuantity: "5",
-    hmtAddress: "123 Solar Rd, Sunnyville",
-    contact: "123-456-7890",
-    distance: "5 km",
-    requirement: 5,
-    nearest: true,
-    approvalActvBtn: true,
-  },
-  {
-    hmtId: 2,
-    hmtName: "Plant B",
-    plantVariety: "green",
-    plantQuantity: "5",
-    hmtAddress: "123 Solar Rd, Sunnyville",
-    contact: "123-456-7890",
-    distance: "10 km",
-    requirement: 5,
-    nearest: false,
-    approvalActvBtn: false,
-  },
+// const tableDataStatic = [
+//   {
+//     hmtId: 1,
+//     hmtName: "Plant A",
+//     plantVariety: "red",
+//     plantQuantity: "5",
+//     hmtAddress: "123 Solar Rd, Sunnyville",
+//     contact: "123-456-7890",
+//     distance: "5 km",
+//     requirement: 5,
+//     nearest: true,
+//     approvalActvBtn: true,
+//   },
+//   {
+//     hmtId: 2,
+//     hmtName: "Plant B",
+//     plantVariety: "green",
+//     plantQuantity: "5",
+//     hmtAddress: "123 Solar Rd, Sunnyville",
+//     contact: "123-456-7890",
+//     distance: "10 km",
+//     requirement: 5,
+//     nearest: false,
+//     approvalActvBtn: false,
+//   },
 
-  // Additional rows as needed...
-];
+//   // Additional rows as needed...
+// ];
 export default function PlantModalTable({
   loading,
-  //  tableData
+  tableData,
+  setTableData,
+  handleApproval,
 }) {
-  const [tableData, setTableData] = useState(tableDataStatic);
+  // const [tableData, setTableData] = useState(tableDataStatic);
   const [search, setSearch] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -96,6 +102,7 @@ export default function PlantModalTable({
     borderBottom: 0,
     whiteSpace: "nowrap",
     minHeight: { xs: "400px", md: "400px", lg: "500px" },
+
     borderRight: "1px solid rgba(224, 224, 224, 1)",
     [theme.breakpoints.down("sm")]: {
       padding: "4px",
@@ -165,26 +172,36 @@ export default function PlantModalTable({
       </StyledTableRow>
     ));
   };
+  // const handleChangeRequirement = (row, value) => {
+  //   console.log(row, value, "HANDLE INPUT FIELD");
+  //   const updatedRows = tableData.map((r) =>
+  //     r.hmtId === row.hmtId
+  //       ? { ...r, farmerPlantRequirement: value } // Update the 'requirement' field
+  //       : r
+  //   );
+  //   setTableData(updatedRows); // Update the state with new rows
+  // };
   const handleChangeRequirement = (row, value) => {
+    console.log(row, value, "HANDLE INPUT FIELD");
+
     const updatedRows = tableData.map((r) =>
-      r.hmtId === row.hmtId
-        ? { ...r, requirement: value } // Update the 'requirement' field
+      r.nursery_id === row.nursery_id
+        ? {
+            ...r,
+            farmerPlantRequirement: Math.min(value, r.nursery_plant_quantity),
+          }
         : r
     );
-    setTableData(updatedRows); // Update the state with new rows
+    setTableData(updatedRows);
   };
-  const handleApproval = (row) => {
-    console.log(row, "HANDLE APPPROVAL");
-    // Clone the row and add an 'approved' key
-    // const updatedRow = { ...row, approved: true };
-    // console.log("Approved Row:", updatedRow);
-    // Send updatedRow to the backend or update state as needed
-  };
-  const handleOnward = (clickedRow) => {
+  // const handleApproval = (row) => {
+  //   console.log(row, "HANDLE APPPROVAL");
+
+  // };
+  const handleOnward = (value) => {
     const updatedData = tableData.map((row) => ({
       ...row,
-      nearest: row.hmtId === clickedRow.hmtId ? true : false,
-      approvalActvBtn: row.hmtId === clickedRow.hmtId ? true : false,
+      nearest: row.nursery_id === value.nursery_id, // Set true only for the clicked row
     }));
     setTableData(updatedData);
   };
@@ -199,7 +216,7 @@ export default function PlantModalTable({
         elevation={6}
       >
         <StyledTableContainer component={Paper}>
-          <Table aria-label="simple table" size={"medium"}>
+          <Table aria-label="simple table" size={"small"}>
             <TableHead style={{ backgroundColor: "#426d52" }}>
               <TableRow>
                 {headCells.map((headCell, index) => (
@@ -232,19 +249,43 @@ export default function PlantModalTable({
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.hmtName}
+                          {row.nursery_name}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.owner_name}
+                        </StyledTableCell>
+                        {/* <StyledTableCell
+                          align="center"
+                          className="colorCodeTable"
+                        >
+                          {row.district}
+                        </StyledTableCell> */}
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable tableRowNameWidth"
+                        >
+                          {row.plant_name}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable tableRowNameWidth"
                         >
-                          {row.plantVariety}
+                          {row.plant_category}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable tableRowNumberWidth"
                         >
-                          {row.plantQuantity}
+                          {row.nursery_plant_quantity}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          className="colorCodeTable tableRowNumberWidth"
+                        >
+                          {row.unit_price}
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
@@ -283,16 +324,26 @@ export default function PlantModalTable({
                           >
                             <input
                               type="number"
-                              name="requirement"
+                              name="farmerPlantRequirement"
+                              // onChange={(e) =>
+                              //   handleChangeRequirement(
+                              //     row,
+                              //     Number(e.target.value)
+                              //   )
+                              // }
                               onChange={(e) =>
                                 handleChangeRequirement(
                                   row,
-                                  Number(e.target.value)
+                                  Math.min(
+                                    Number(e.target.value),
+                                    row.nursery_plant_quantity
+                                  )
                                 )
                               }
                               min={0}
-                              disabled={!row.approvalActvBtn}
-                              defaultValue={row.requirement}
+                              max={row.nursery_plant_quantity}
+                              disabled={!row.nearest}
+                              defaultValue={row.farmerPlantRequirement}
                               style={{
                                 width: "60px",
                                 height: "25px",
@@ -314,17 +365,15 @@ export default function PlantModalTable({
                         >
                           {row.nearest ? (
                             <Button
-                              onClick={() => handleApproval(row)}
-                              disabled={!row.approvalActvBtn}
+                              onClick={() => handleApproval(row, "Assigned")}
+                              disabled={!row.nearest || row.demand_status}
                               style={{
                                 color: "#fff",
                                 width: "80px",
                                 marginRight: "10px",
 
                                 height: "30px",
-                                background: row.approvalActvBtn
-                                  ? "#426D52"
-                                  : "#808080",
+                                background: row.nearest ? "#426D52" : "#808080",
                                 boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.13)",
                                 borderRadius: "4px",
                               }}
@@ -334,7 +383,7 @@ export default function PlantModalTable({
                           ) : (
                             <Button
                               onClick={() => handleOnward(row)}
-                              disabled={row.approvalActvBtn}
+                              disabled={row.nearest}
                               style={{
                                 color: "#fff",
                                 width: "80px",

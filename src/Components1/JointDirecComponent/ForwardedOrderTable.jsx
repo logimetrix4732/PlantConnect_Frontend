@@ -34,9 +34,23 @@ const headCells = [
   { id: "plantVariety", label: "Plant Variety" },
   { id: "plantRequire", label: "Plant Requirement" },
   { id: "scheme", label: "Scheme" },
+  { id: "status", label: "Status" },
   { id: "action", label: "Action" },
 ];
-
+const getStatusColor = (status) => {
+  switch (status) {
+    case "Approved":
+      return "#59c88a";
+    case "Pending":
+      return "#fabe5e";
+    case "Processing":
+      return "#feba55";
+    case "Rejected":
+      return "#f12e00";
+    default:
+      return "#000000";
+  }
+};
 // const data = [
 //   {
 //     sNo: 1,
@@ -394,9 +408,27 @@ export default function ForwardedOrderTable({
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
+                          style={{
+                            color: getStatusColor(
+                              row.demand_status === null
+                                ? "Pending"
+                                : row.demand_status
+                            ),
+                          }}
                           // className="colorCodeTable"
                         >
-                          <IconButton onClick={() => handleClickParent(row)}>
+                          {row.demand_status === null
+                            ? "Pending"
+                            : row.demand_status}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
+                          // className="colorCodeTable"
+                        >
+                          <IconButton
+                            disabled={row.demand_status === "Approved"}
+                            onClick={() => handleClickParent(row)}
+                          >
                             <img
                               style={{
                                 height: "auto",
@@ -452,7 +484,7 @@ export default function ForwardedOrderTable({
                       ).length
                   )
                 )} */}
-              {!loading && filteredData.length > 0 && (
+              {/* {!loading && filteredData.length > 0 && (
                 <StyledTableRow key={"totals-state"}>
                   <StyledTableCell
                     align="center"
@@ -466,12 +498,7 @@ export default function ForwardedOrderTable({
                     align="center"
                     className="colorCodeTable"
                   ></StyledTableCell>
-                  {/* <StyledTableCell align="center" className="colorCodeTable">
-                    {totals.districtCount}
-                  </StyledTableCell> */}
-                  {/* <StyledTableCell align="center" className="colorCodeTable">
-                    {totals.fpoCount}
-                  </StyledTableCell> */}
+
                   <StyledTableCell align="center" className="colorCodeTable">
                     {totals.figCount}
                   </StyledTableCell>
@@ -482,7 +509,7 @@ export default function ForwardedOrderTable({
                     {totals.farmerCount}
                   </StyledTableCell>
                 </StyledTableRow>
-              )}
+              )} */}
             </TableBody>
           </Table>
         </StyledTableContainer>

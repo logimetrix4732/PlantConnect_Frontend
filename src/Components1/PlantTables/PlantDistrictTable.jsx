@@ -78,8 +78,8 @@ export default function PlantDistrictTable({
   const calculateTotals = (data) => {
     return data.reduce(
       (totals, row) => {
-        totals.hmtCount += Number(row.hmtCount);
-        totals.nurseryCount += Number(row.nurseryCount);
+        totals.total_no_of_hmts += Number(row.total_no_of_hmts);
+        totals.total_no_of_nurseries += Number(row.total_no_of_nurseries);
         totals.plantCount += Number(row.plantCount);
         for (let key in totals) {
           totals[key] = Math.round((totals[key] + Number.EPSILON) * 100) / 100;
@@ -87,8 +87,8 @@ export default function PlantDistrictTable({
         return totals;
       },
       {
-        hmtCount: 0,
-        nurseryCount: 0,
+        total_no_of_hmts: 0,
+        total_no_of_nurseries: 0,
         plantCount: 0,
       }
     );
@@ -202,20 +202,20 @@ export default function PlantDistrictTable({
                         <StyledTableCell
                           style={{
                             color:
-                              row.total_no_of_nurseries === 0
+                              row.total_no_of_nurseries === "0"
                                 ? "#808080"
                                 : "blue",
                             textDecoration:
-                              row.total_no_of_nurseries === 0
+                              row.total_no_of_nurseries === "0"
                                 ? "none"
                                 : "underline",
                             cursor:
-                              row.total_no_of_nurseries === 0
+                              row.total_no_of_nurseries === "0"
                                 ? "default"
                                 : "pointer",
                           }}
                           onClick={() =>
-                            row.total_no_of_nurseries !== 0 &&
+                            row.total_no_of_nurseries !== "0" &&
                             handleClickParent(row)
                           }
                           align="center"
@@ -223,12 +223,12 @@ export default function PlantDistrictTable({
                           {row.total_no_of_nurseries}
                         </StyledTableCell>
 
-                        {/* <StyledTableCell
+                        <StyledTableCell
                           align="center"
                           className="colorCodeTable"
                         >
                           {row.plantCount}
-                        </StyledTableCell> */}
+                        </StyledTableCell>
                       </StyledTableRow>
                     );
                   })
@@ -273,14 +273,14 @@ export default function PlantDistrictTable({
                     className="colorCodeTable"
                   ></StyledTableCell>
                   <StyledTableCell align="center" className="colorCodeTable">
-                    {totals.hmtCount}
+                    {totals.total_no_of_hmts}
                   </StyledTableCell>
                   <StyledTableCell align="center" className="colorCodeTable">
-                    {totals.nurseryCount}
+                    {totals.total_no_of_nurseries}
                   </StyledTableCell>
-                  <StyledTableCell align="center" className="colorCodeTable">
+                  {/* <StyledTableCell align="center" className="colorCodeTable">
                     {totals.plantCount}
-                  </StyledTableCell>
+                  </StyledTableCell> */}
                 </StyledTableRow>
               )}
             </TableBody>

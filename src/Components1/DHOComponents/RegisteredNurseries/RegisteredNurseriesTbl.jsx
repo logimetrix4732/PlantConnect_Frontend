@@ -7,7 +7,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableContainer from "@mui/material/TableContainer";
-import FieldVisitIcon from "../../../assets/images/FieldVisitIcon.png"
+import FieldVisitIcon from "../../../assets/images/FieldVisitIcon.png";
 import {
   Box,
   Card,
@@ -26,7 +26,11 @@ const headCells = [
   { id: "UPdate", label: "UPdate" },
 ];
 
-export default function RegisteredNurseriesTbl({ data, loading,handleVisitApprovalOpen }) {
+export default function RegisteredNurseriesTbl({
+  data,
+  loading,
+  handleVisitApprovalOpen,
+}) {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [search, setSearch] = useState("");
@@ -113,7 +117,7 @@ export default function RegisteredNurseriesTbl({ data, loading,handleVisitApprov
     ));
   };
   const getStatusColor = (status) => {
-    console.log(status);
+    // console.log(status);
     switch (status) {
       case "Approved":
         return "#59c88a";

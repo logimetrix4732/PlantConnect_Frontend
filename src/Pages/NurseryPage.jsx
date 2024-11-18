@@ -165,7 +165,7 @@ const NurseryPage = () => {
   };
 
   const tokenData = fetchToken()?.data;
-  console.log(tokenData, "TOKEN DATA ");
+  // console.log(tokenData, "TOKEN DATA ");
   const handleClickNurseryModalOpen = () => {
     setNurseryFormData([
       {
@@ -287,7 +287,7 @@ const NurseryPage = () => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/nurseries/plants/status?nursery_id=${nurseryId}`;
     try {
       const response = await getFetch(url);
-      console.log(response, "Respomsne283");
+      // console.log(response, "Respomsne283");
       if (response.status === 200) {
         setMainMapCard(response.data.data);
         setPlantWiseData(response.data.plant);
@@ -340,10 +340,10 @@ const NurseryPage = () => {
     ];
     try {
       const response = await postFetch(url, data);
-      console.log(response, "RESPONSEEEE");
+      // console.log(response, "RESPONSEEEE of Add Stock");
 
       // setPlantVarietiesData(response.data.data);
-      enqueueSnackbar(response?.message || "Server Error", {
+      enqueueSnackbar(response?.data?.message || "Server Error", {
         variant: "success",
         anchorOrigin: {
           vertical: "bottom",

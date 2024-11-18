@@ -65,7 +65,7 @@ export default function NurseryOrderPage() {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/demands/view`;
     try {
       const response = await getFetchWithToken(url);
-      console.log(response, "ORDER DATA ");
+      // console.log(response, "ORDER DATA ");
       setNurseryTableData(response.data.demands);
       // if (response.status === 200) {
       //   setMainMapCard(response.data.data);
@@ -90,14 +90,16 @@ export default function NurseryOrderPage() {
   const handleAppReject = async (row, btntype) => {
     const url = `${process.env.REACT_APP_API_URL_LOCAL}/demands/assign-to-nursery`;
     let data = {
+      plant_id: row.plant_id,
       demand_id: row.demand_id,
       assigned_nursery_id: row.assigned_nursery_id,
+      nursery_stock: row.quantity,
       required_quantity: row.required_quantity,
       demand_status: btntype,
     };
     try {
       const response = await postFetch(url, data);
-      console.log(response, "demands/assign-to-nursery");
+      // console.log(response, "demands/assign-to-nursery");
       if (response.status === 200) {
         enqueueSnackbar(response?.data?.message || "Server Error", {
           variant: "success",

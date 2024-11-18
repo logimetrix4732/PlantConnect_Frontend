@@ -23,7 +23,7 @@ export default function PlanttblContainerNur({
   PlantDistrictTableLoder,
 }) {
   const handleClickParent = (row) => {
-    console.log(row, "dfdfdfdf");
+    // console.log(row, "dfdfdfdf");
     if (level === 0) {
       setLevel(1);
       fetchPlants(row?.nurseryId);

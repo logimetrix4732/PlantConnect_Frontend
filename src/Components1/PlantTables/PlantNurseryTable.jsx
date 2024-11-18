@@ -204,16 +204,14 @@ export default function PlantNurseryTable({
                         <StyledTableCell
                           style={{
                             color:
-                              row.TotalPlantName === "0" ? "#808080" : "blue",
+                              row.TotalPlantName === 0 ? "#808080" : "blue",
                             textDecoration:
-                              row.TotalPlantName === "0" ? "none" : "underline",
+                              row.TotalPlantName === 0 ? "none" : "underline",
                             cursor:
-                              row.TotalPlantName === "0"
-                                ? "default"
-                                : "pointer",
+                              row.TotalPlantName === 0 ? "default" : "pointer",
                           }}
                           onClick={() =>
-                            row.TotalPlantName !== "0" && handleClickParent(row)
+                            row.TotalPlantName !== 0 && handleClickParent(row)
                           }
                           align="center"
                         >

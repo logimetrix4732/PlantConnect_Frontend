@@ -44,7 +44,7 @@ export default function NotificationTable({
   useEffect(() => {
     if (tableData?.length) {
       const filtered = tableData.filter((item) =>
-        item.Notification?.toLowerCase()?.includes(search?.toLowerCase())
+        item.created_at?.toLowerCase()?.includes(search?.toLowerCase())
       );
       setFilteredData(filtered);
       setPageIndex(0);
@@ -144,7 +144,7 @@ export default function NotificationTable({
       >
         <StyledTableContainer component={Paper}>
           <Table aria-label="simple table" size={"medium"}>
-            <TableHead style={{ backgroundColor: "#43C17A" }}>
+            <TableHead style={{ backgroundColor: "#426D52" }}>
               <TableRow>
                 {headCells.map((headCell, index) => (
                   <StyledTableCell
@@ -164,7 +164,7 @@ export default function NotificationTable({
                 filteredData
                   .slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)
                   .map((row, ind) => {
-                    const originalTimestamp = row?.createdAt;
+                    const originalTimestamp = row?.created_at;
                     const originalDate = new Date(originalTimestamp);
                     const options = {
                       year: "numeric",
@@ -191,14 +191,14 @@ export default function NotificationTable({
                           align="center"
                           className="colorCodeTable"
                         >
-                          {row.Notification}
+                          {row.message}
                         </StyledTableCell>
-                        <StyledTableCell
+                        {/* <StyledTableCell
                           align="center"
                           className="colorCodeTable tableRowNameWidth"
                         >
                           {row.Category}
-                        </StyledTableCell>
+                        </StyledTableCell> */}
                         <StyledTableCell
                           align="center"
                           className="colorCodeTable tableRowNumberWidth"
@@ -207,19 +207,32 @@ export default function NotificationTable({
                         </StyledTableCell>
                         <StyledTableCell
                           align="center"
+                          className="colorCodeTable tableRowNumberWidth"
+                        >
+                          {row.notification_status}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="center"
                           style={{ width: "10%" }}
                           className="colorCodeTable"
                         >
-                          <IconButton onClick={() => handleEditClick(row)}>
+                          <IconButton
+                            onClick={() => handleEditClick(row)}
+                            disabled={
+                              row.notification_status === "Approved"
+                                ? true
+                                : false
+                            }
+                          >
                             <img src={edit} height="20px" alt="edit-icon" />
                           </IconButton>
-                          <IconButton onClick={() => handleDeleteClick(row.id)}>
+                          {/* <IconButton onClick={() => handleDeleteClick(row.id)}>
                             <img
                               src={deleteIcon}
                               height="20px"
                               alt="delete-icon"
                             />
-                          </IconButton>
+                          </IconButton> */}
                         </StyledTableCell>
                       </StyledTableRow>
                     );

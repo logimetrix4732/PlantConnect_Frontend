@@ -8,6 +8,7 @@ import {
   DialogActions,
   DialogContentText,
   Tooltip,
+  Grid,
 } from "@mui/material";
 import { Menu, MenuItem } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -37,10 +38,11 @@ const NotificationCreateModal = ({
     <Dialog fullWidth maxWidth="sm" open={modalOpen} onClose={handleModalClose}>
       <DialogContent>
         <DialogContentText>
-          {selectedRow
+          Notification
+          {/* {selectedRow
             ? "Edit the details of the notification."
-            : "Enter the details for the new notification."}
-          <div>
+            : "Enter the details for the new notification."} */}
+          {/* <div>
             <StyledBreadcrumb onClick={handleClick}>
               {selectedValue}
               <ExpandMoreIcon />
@@ -56,9 +58,50 @@ const NotificationCreateModal = ({
                 </MenuItem>
               ))}
             </Menu>
-          </div>
+          </div> */}
         </DialogContentText>
-        <TextField
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Grid item xs={12} md={4} lg={4}>
+            <TextField
+              label="Nursery Name"
+              variant="outlined"
+              className="textfield-form"
+              value={selectedRow?.nursery_name}
+              // onChange={(e) => setVisitStatus(e.target.value)}
+              // fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} md={4} lg={4}>
+            <TextField
+              label="Nursery Owner Name"
+              variant="outlined"
+              className="textfield-form"
+              value={selectedRow?.nursery_owner}
+              // onChange={(e) => setVisitStatus(e.target.value)}
+              // fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} md={4} lg={4}>
+            <TextField
+              label="Nursery Address"
+              variant="outlined"
+              className="textfield-form"
+              value={selectedRow?.nursery_address}
+              // onChange={(e) => setVisitStatus(e.target.value)}
+              // fullWidth
+            />
+          </Grid>
+        </Grid>
+
+        {/* <TextField
           margin="dense"
           multiline
           rows={5}
@@ -70,11 +113,11 @@ const NotificationCreateModal = ({
           onChange={(e) =>
             setNewEntry({ ...newEntry, notification: e.target.value })
           }
-        />
-        <DialogContentText mt={0.7} mb={1}>
+        /> */}
+        {/* <DialogContentText mt={0.7} mb={1}>
           Upload File
-        </DialogContentText>
-        <div className="kb-file-upload">
+        </DialogContentText> */}
+        {/* <div className="kb-file-upload">
           <div className="file-upload-box">
             {!fileUpload ? (
               <React.Fragment>
@@ -114,7 +157,7 @@ const NotificationCreateModal = ({
               </div>
             )}
           </div>
-        </div>
+        </div> */}
       </DialogContent>
       <DialogActions
         style={{
@@ -147,10 +190,29 @@ const NotificationCreateModal = ({
           elevation={2}
         >
           <Button
-            onClick={selectedRow ? handleEditSubmit : handlePostData}
+            onClick={(event) => handleEditSubmit(event, "Approved")}
+            // onClick={selectedRow ? handleEditSubmit : handlePostData}
             style={{ color: "#226AFA" }}
+            name="Approved"
           >
-            {selectedRow ? "Save" : "Submit"}
+            {"Approved"}
+          </Button>
+        </Card>
+        <Card
+          style={{
+            width: "150px",
+            display: "flex",
+            justifyContent: "center",
+            borderRadius: "12px",
+          }}
+          elevation={2}
+        >
+          <Button
+            onClick={(event) => handleEditSubmit(event, "Reject")}
+            // onClick={selectedRow ? handleEditSubmit : handlePostData}
+            style={{ color: "#A52B0E" }}
+          >
+            {"Reject"}
           </Button>
         </Card>
       </DialogActions>

@@ -74,13 +74,13 @@ export default function PlantNameTable({ data, handleClickParent, loading }) {
   const calculateTotals = (data) => {
     return data.reduce(
       (totals, row) => {
-        totals.plantVariety += Number(row.plantVariety);
+        totals.varietyCount += Number(row.varietyCount);
         totals.plantCount += Number(row.plantCount);
 
         return totals;
       },
       {
-        plantVariety: 0,
+        varietyCount: 0,
         plantCount: 0,
       }
     );
@@ -188,14 +188,15 @@ export default function PlantNameTable({ data, handleClickParent, loading }) {
 
                         <StyledTableCell
                           style={{
-                            color: row.fpoCount === "0" ? "#808080" : "blue",
+                            color:
+                              row.varietyCount === "0" ? "#808080" : "blue",
                             textDecoration:
-                              row.fpoCount === "0" ? "none" : "underline",
+                              row.varietyCount === "0" ? "none" : "underline",
                             cursor:
-                              row.fpoCount === "0" ? "default" : "pointer",
+                              row.varietyCount === "0" ? "default" : "pointer",
                           }}
                           onClick={() =>
-                            row.fpoCount !== "0" && handleClickParent(row)
+                            row.varietyCount !== "0" && handleClickParent(row)
                           }
                           align="center"
                         >
@@ -251,7 +252,7 @@ export default function PlantNameTable({ data, handleClickParent, loading }) {
                   ></StyledTableCell>
 
                   <StyledTableCell align="center" className="colorCodeTable">
-                    {totals.plantVariety}
+                    {totals.varietyCount}
                   </StyledTableCell>
                   <StyledTableCell align="center" className="colorCodeTable">
                     {totals.plantCount}

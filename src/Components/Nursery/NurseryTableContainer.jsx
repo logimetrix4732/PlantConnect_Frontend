@@ -11,7 +11,7 @@ export default function NurseryTableContainer({
   loading,
 }) {
   const handleClickParent = (row) => {
-    console.log(level, "===level");
+    // console.log(level, "===level");
     if (level === 0) {
       setLevel(1);
       //   fetchNurserys(row?.districtName);

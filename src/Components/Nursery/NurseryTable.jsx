@@ -127,7 +127,7 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
   };
   const getStatusColor = (status) => {
     switch (status) {
-      case "Approved":
+      case "Approve":
         return "#59c88a";
       case "Pending":
         return "#fabe5e";
@@ -281,7 +281,7 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
                 </TableRow>
               )}
               {!loading &&
-                filteredData.length > pageSize &&
+                filteredData.length < pageSize &&
                 filteredData.length > 0 &&
                 renderPlaceholderRows(
                   Math.max(
@@ -293,7 +293,7 @@ export default function NurseryTable({ data, loading, handleClickParent }) {
                       ).length
                   )
                 )}
-              {!loading && filteredData.length >= 0 && (
+              {!loading && filteredData.length > 0 && (
                 <StyledTableRow key={"totals-state"}>
                   <StyledTableCell
                     align="center"
